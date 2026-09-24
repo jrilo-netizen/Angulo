@@ -423,16 +423,16 @@ a{color:inherit}
   .gap-row > :nth-child(4){grid-column:2;grid-row:1}
 }
 
-/* ---------- Batch (horizontal pan on desktop) ---------- */
-.lote{padding-block:clamp(96px,10vw,152px) clamp(64px,7vw,104px)}
-.lote.is-pinned{padding-block:0}
-.lote.is-pinned .lote-pin{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding-block:104px 40px}
+/* ---------- Batch carousel: native horizontal scroll, the page wheel keeps scrolling down ---------- */
+.lote{--lote-pad:calc(max(0px,(100vw - 1240px) / 2) + clamp(16px,4vw,48px));padding-block:clamp(88px,9vw,136px) clamp(64px,7vw,104px)}
 .lote-head .h2{max-width:17ch}
-.lote-viewport{margin-top:clamp(36px,4.5vw,56px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.lote-viewport{margin-top:clamp(36px,4.5vw,56px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--lote-pad);scrollbar-width:none;overscroll-behavior-x:contain;outline-offset:-4px}
 .lote-viewport::-webkit-scrollbar{display:none}
-.lote.is-pinned .lote-viewport{overflow:hidden;scroll-snap-type:none}
-.lote-track{display:flex;gap:20px;width:max-content;list-style:none;margin:0;padding:8px max(16px,calc((100vw - 1240px) / 2 + clamp(16px,4vw,48px))) 28px}
-.hcard{scroll-snap-align:center;width:min(520px,86vw);display:grid;grid-template-columns:188px minmax(0,1fr);gap:22px;padding:10px 22px 10px 10px;border-radius:24px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.lote-viewport.is-dragging{scroll-snap-type:none;cursor:grabbing;-webkit-user-select:none;user-select:none}
+@media (hover:hover) and (pointer:fine){.lote-viewport{cursor:grab}}
+@media (min-width:900px){.lote-viewport{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent)}}
+.lote-track{position:relative;display:flex;gap:20px;width:max-content;list-style:none;margin:0;padding:8px var(--lote-pad) 28px}
+.hcard{scroll-snap-align:start;width:min(520px,86vw);display:grid;grid-template-columns:188px minmax(0,1fr);gap:22px;padding:10px 22px 10px 10px;border-radius:24px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
 .hcard .cv{font-size:12.5px;aspect-ratio:auto;height:100%;min-height:262px}
 .hcard-body{display:flex;flex-direction:column;gap:12px;min-width:0;padding-block:12px 6px}
 .hcard-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font:600 .74rem/1 var(--font-body);color:var(--ink-3)}
@@ -445,15 +445,22 @@ a{color:inherit}
 .delta-good{color:var(--positive)}
 .delta-bad{color:var(--negative)}
 .muted{color:var(--ink-3);font-weight:500}
-.hcard-learn{width:min(420px,86vw);display:flex;flex-direction:column;padding:clamp(24px,3vw,34px);border-radius:24px;scroll-snap-align:center;background:radial-gradient(80% 70% at 0% 0%,var(--glow-a),transparent 70%),radial-gradient(80% 80% at 100% 100%,var(--glow-b),transparent 70%),var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.hcard-learn{width:min(420px,86vw);display:flex;flex-direction:column;padding:clamp(24px,3vw,34px);border-radius:24px;scroll-snap-align:start;background:radial-gradient(80% 70% at 0% 0%,var(--glow-a),transparent 70%),radial-gradient(80% 80% at 100% 100%,var(--glow-b),transparent 70%),var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
 .hcard-learn .b-label{display:flex;align-items:center;gap:8px}
 .hcard-learn .b-label .icon{width:18px;height:18px}
 .hcard-learn h3{margin-top:auto;padding-top:40px;font-size:clamp(1.5rem,1.1rem + 1vw,2rem);font-weight:700;line-height:1.08;letter-spacing:-.03em}
 .hcard-learn p{margin-top:14px;font-size:.92rem}
 .hcard-learn .muted{margin-top:18px;font-size:.8rem}
-.lote-progress{height:2px;margin-top:22px;border-radius:2px;display:none}
-.lote.is-pinned .lote-progress{display:block}
-.lote-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--mag-soft),rgb(var(--vio) / .65));transform-origin:left;transform:scaleX(0)}
+.lote-controls{display:flex;align-items:center;gap:24px;margin-top:4px}
+.lote-progress{position:relative;flex:1;height:2px;border-radius:2px;background:var(--line);overflow:hidden}
+.lote-progress i{position:absolute;top:0;left:0;bottom:0;width:20%;border-radius:inherit;background:linear-gradient(90deg,var(--mag-soft),rgb(var(--vio) / .65))}
+.lote-nav{display:flex;gap:10px}
+.lote-btn{width:48px;height:48px;padding:0;border:0;border-radius:999px;display:grid;place-items:center;background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-strong);cursor:pointer;transition:transform .16s var(--ease-out),background-color .2s ease,color .2s ease,opacity .2s ease}
+.lote-btn .icon{width:18px;height:18px}
+.lote-btn--prev .icon{transform:scaleX(-1)}
+.lote-btn:active{transform:scale(.94)}
+.lote-btn:disabled{opacity:.35;cursor:default}
+@media (hover:hover) and (pointer:fine){.lote-btn:not(:disabled):hover{background:var(--btn-bg);color:var(--btn-fg)}}
 @media (max-width:899px){
   .hcard{grid-template-columns:1fr;padding:10px 10px 18px}
   .hcard .cv{aspect-ratio:16/11;height:auto;min-height:0}
@@ -830,7 +837,7 @@ a{color:inherit}
           </div>
         </article>
       </div>
-      <p class="caption">Ejemplo con datos del prototipo: Lumbre Cosmética, una marca de skincare. Análisis basado en 212 reseñas, 38 preguntas, 24 productos y 38 anuncios activos de 5 competidores.</p>
+      <p class="caption">Datos de ejemplo.</p>
     </div>
   </section>
 
@@ -841,7 +848,7 @@ a{color:inherit}
         <h2 class="h2" id="lote-t">Cada creativo llega con la hipótesis que prueba.</h2>
         <p class="lede">Así sabés qué ángulo probar, por qué, y qué repetir en el próximo lote. Nada se publica sin tu aprobación.</p>
       </div>
-      <div class="lote-viewport">
+      <div class="lote-viewport" role="region" aria-label="Creativos del lote" tabindex="0">
         <ul class="lote-track">
           <li class="hcard">
             <div class="cv cv-01"><div class="cv-days"><span>Día 1</span><span>Día 14</span></div><span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-hook">Día 1 y día 14. Sin filtro, misma luz.</p></div>
@@ -911,8 +918,14 @@ a{color:inherit}
           </li>
         </ul>
       </div>
-      <div class="wrap"><div class="lote-progress" aria-hidden="true"><i class="js-lote-progress"></i></div></div>
-      <div class="wrap"><p class="caption">Ejemplo con datos del prototipo: lote de Lumbre Cosmética para un sérum de vitamina C de 30 ml.</p></div>
+      <div class="wrap lote-controls">
+        <div class="lote-progress" aria-hidden="true"><i class="js-lote-progress"></i></div>
+        <div class="lote-nav">
+          <button class="lote-btn lote-btn--prev js-lote-prev" type="button" aria-label="Creativo anterior"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+          <button class="lote-btn js-lote-next" type="button" aria-label="Creativo siguiente"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+        </div>
+      </div>
+      <div class="wrap"><p class="caption">Datos de ejemplo.</p></div>
     </div>
   </section>
 
@@ -1283,6 +1296,103 @@ void main(){
     }));
   }
 
+  /* ===================== Batch carousel ===================== */
+  // Native horizontal scroll, so the page wheel still scrolls down. Arrows, mouse drag, trackpad and swipe move the
+  // cards. While on screen it advances one card every few seconds, pauses on hover or focus, and stops for good as
+  // soon as someone moves it themselves.
+  (() => {
+    const vp = $('.lote-viewport');
+    const track = $('.lote-track', vp);
+    const thumb = $('.js-lote-progress');
+    const prev = $('.js-lote-prev');
+    const next = $('.js-lote-next');
+    const AUTOPLAY_MS = 6500;
+    const cards = () => Array.from(track.children);
+    const behavior = () => (reduceMQ.matches ? 'auto' : 'smooth');
+    const maxScroll = () => Math.max(0, vp.scrollWidth - vp.clientWidth);
+    const pad = () => parseFloat(getComputedStyle(vp).scrollPaddingLeft) || 0;
+
+    const update = () => {
+      const max = maxScroll();
+      const p = max > 0 ? vp.scrollLeft / max : 0;
+      const w = Math.min(1, vp.clientWidth / vp.scrollWidth);
+      thumb.style.width = `${w * 100}%`;
+      thumb.style.transform = `translateX(${w < 1 ? (p * (1 - w) / w) * 100 : 0}%)`;
+      prev.disabled = vp.scrollLeft <= 4;
+      next.disabled = vp.scrollLeft >= max - 4;
+    };
+    let raf = 0;
+    vp.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+
+    // Scroll positions where each card sits at the left edge of the content column.
+    const stops = () => cards().map((c) => Math.min(maxScroll(), Math.max(0, c.offsetLeft - pad())));
+    const go = (dir) => {
+      const x = vp.scrollLeft;
+      const s = stops();
+      let target = dir > 0 ? s.find((v) => v > x + 8) : [...s].reverse().find((v) => v < x - 8);
+      if (target === undefined) target = dir > 0 ? maxScroll() : 0;
+      vp.scrollTo({ left: target, behavior: behavior() });
+    };
+
+    let auto = !reduceMQ.matches, hovering = false, focused = false, visible = false;
+    const stop = () => { auto = false; };
+    prev.addEventListener('click', () => { stop(); go(-1); });
+    next.addEventListener('click', () => { stop(); go(1); });
+    vp.addEventListener('keydown', stop);
+    vp.addEventListener('touchstart', stop, { passive: true });
+    vp.addEventListener('wheel', (e) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) stop(); }, { passive: true });
+    vp.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hovering = true; });
+    vp.addEventListener('pointerleave', () => { hovering = false; });
+    const section = $('#lote');
+    section.addEventListener('focusin', () => { focused = true; });
+    section.addEventListener('focusout', () => { focused = false; });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.5 }).observe(vp);
+    setInterval(() => {
+      if (!auto || hovering || focused || !visible || document.hidden) return;
+      if (vp.scrollLeft >= maxScroll() - 4) vp.scrollTo({ left: 0, behavior: behavior() });
+      else go(1);
+    }, AUTOPLAY_MS);
+
+    // Mouse drag; release settles on the nearest card in the direction of the drag.
+    let drag = null;
+    vp.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      stop();
+      drag = { x: e.clientX, left: vp.scrollLeft, dx: 0, moved: false, id: e.pointerId };
+    });
+    vp.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      drag.dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(drag.dx) > 5) {
+        drag.moved = true;
+        vp.classList.add('is-dragging');
+        vp.setPointerCapture(drag.id);
+        if (window.getSelection) window.getSelection().removeAllRanges();
+      }
+      if (drag.moved) vp.scrollLeft = drag.left - drag.dx;
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      const { moved, dx } = drag;
+      drag = null;
+      if (!moved) return;
+      const x = vp.scrollLeft;
+      const s = stops();
+      const ahead = s.find((v) => v > x - 24);
+      const behind = [...s].reverse().find((v) => v < x + 24);
+      const target = dx < 0 ? (ahead === undefined ? maxScroll() : ahead) : (behind === undefined ? 0 : behind);
+      vp.scrollTo({ left: target, behavior: behavior() });
+      let done = false;
+      const release = () => { if (done) return; done = true; vp.classList.remove('is-dragging'); };
+      vp.addEventListener('scrollend', release, { once: true });
+      setTimeout(release, 700);
+    };
+    vp.addEventListener('pointerup', endDrag);
+    vp.addEventListener('pointercancel', endDrag);
+  })();
+
   /* ===================== Lead form ===================== */
   const form = $('.js-form');
   const okBox = $('.form-ok');
@@ -1513,33 +1623,11 @@ void main(){
     counters(evidence);
     gsap.from($$('.js-bars .bar', evidence), { scaleX: 0, duration: 1.3, ease: EASE, stagger: 0.1, scrollTrigger: { trigger: '.js-bars', start: 'top 85%', once: true } });
 
-    /* ---- Batch: horizontal pan ---- */
-    const lote = $('#lote');
-    if (desktop) {
-      lote.classList.add('is-pinned');
-      const vp = $('.lote-viewport', lote);
-      const track = $('.lote-track', lote);
-      const progress = $('.js-lote-progress', lote);
-      const dist = () => Math.max(0, track.scrollWidth - vp.clientWidth);
-      const pan = gsap.to(track, {
-        x: () => -dist(), ease: 'none',
-        scrollTrigger: {
-          trigger: $('.lote-pin', lote), start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.6,
-          invalidateOnRefresh: true, anticipatePin: 1,
-          onUpdate: (self) => { progress.style.transform = `scaleX(${self.progress})`; },
-        },
-      });
-      $$('.hcard, .hcard-learn', track).forEach((card) => {
-        if (card.offsetLeft < vp.clientWidth * 0.6) return;
-        gsap.from(card, {
-          scale: 0.9, autoAlpha: 0.35, ease: 'none', transformOrigin: 'left center',
-          scrollTrigger: { trigger: card, containerAnimation: pan, start: 'left 100%', end: 'left 62%', scrub: true },
-        });
-      });
-      cleanups.push(() => lote.classList.remove('is-pinned'));
-    } else {
-      reveal(lote);
-    }
+    /* ---- Batch: cards slide in once; the carousel itself is plain scrolling ---- */
+    gsap.from($$('.lote-track > li'), {
+      x: 80, autoAlpha: 0, duration: 1.1, ease: EASE, stagger: 0.08,
+      scrollTrigger: { trigger: '.lote-track', start: 'top 85%', once: true },
+    });
 
     /* ---- Why ---- */
     const why = $('#por-que');
