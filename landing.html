@@ -285,21 +285,23 @@ a{color:inherit}
 .stop-b{stop-color:rgb(var(--vio) / 0)}
 @media (max-width:899px){.figs{grid-template-columns:1fr}}
 
-/* ---------- How it works (pinned on desktop) ---------- */
+/* ---------- How it works (autoplays while in view) ---------- */
 .how{padding-bottom:clamp(64px,8vw,120px)}
 .how-pin{padding-top:clamp(48px,6vw,80px)}
-.how.is-pinned .how-pin{min-height:100dvh;display:flex;align-items:center;padding-block:96px 32px}
 .how-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:center}
 .how-grid > *{min-width:0}
 .how-steps{position:relative;list-style:none;margin:0;padding:0 0 0 30px;display:grid;gap:40px}
 .how-rail{position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:2px;background:var(--line)}
 .how-rail i{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(var(--mag-soft),rgb(var(--vio) / .6));transform-origin:top;transform:scaleY(1)}
-.how-step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;transition:opacity .45s var(--ease-out)}
-.how.is-pinned .how-step:not(.is-active){opacity:.38}
-.how:not(.is-pinned) .how-grid{align-items:start}
-.how:not(.is-pinned) .how-steps{position:sticky;top:120px}
+.how-step{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;transition:opacity .45s var(--ease-out)}
+.how.is-playing .how-step:not(.is-active){opacity:.38}
+.how-hit{display:none}
+.how.is-playing .how-hit{display:block;position:absolute;inset:-10px -12px;z-index:1;padding:0;border:0;border-radius:14px;background:none;cursor:pointer}
+@media (hover:hover) and (pointer:fine){.how.is-playing .how-step:not(.is-active):hover{opacity:.72}}
+.how:not(.is-playing) .how-grid{align-items:start}
+.how:not(.is-playing) .how-steps{position:sticky;top:120px}
 .how-num{width:38px;height:38px;border-radius:999px;display:grid;place-items:center;font:700 .95rem/1 var(--font-display);color:var(--ink);background:var(--raised);box-shadow:inset 0 0 0 1px var(--line-strong);transition:background-color .35s ease,color .35s ease,box-shadow .35s ease}
-.how-step.is-active .how-num,.how:not(.is-pinned) .how-num{background:var(--btn-bg);color:var(--btn-fg);box-shadow:0 8px 20px -8px rgb(var(--mag) / .6)}
+.how-step.is-active .how-num,.how:not(.is-playing) .how-num{background:var(--btn-bg);color:var(--btn-fg);box-shadow:0 8px 20px -8px rgb(var(--mag) / .6)}
 .how-step h3{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;line-height:1.2;padding-top:4px}
 .how-step p{margin-top:6px;max-width:34ch}
 
@@ -309,8 +311,9 @@ a{color:inherit}
 .app-bar .logo{height:16px;width:auto;aspect-ratio:1077/351;color:var(--ink)}
 .app-step{font:600 .75rem/1 var(--font-body);color:var(--ink-3)}
 .app-views{display:grid;grid-template-columns:minmax(0,1fr);gap:44px;padding:26px 26px 28px}
-.how.is-pinned .app-views{gap:0}
-.how.is-pinned .app-view{grid-area:1/1}
+.how.is-playing .app-views{gap:0}
+.how.is-playing .app-view{grid-area:1/1}
+.how.is-playing .app-view + .app-view{padding-top:0;border-top:0}
 .app-view > h4{font:700 1.35rem/1.15 var(--font-display);letter-spacing:-.02em}
 .app-view > p{margin-top:6px;font-size:.93rem;color:var(--ink-2)}
 .view-step{display:none;margin-bottom:10px;font:600 .8rem/1 var(--font-body);color:var(--ink-3)}
@@ -701,9 +704,9 @@ a{color:inherit}
       <div class="wrap how-grid">
         <ol class="how-steps">
           <span class="how-rail" aria-hidden="true"><i class="js-rail"></i></span>
-          <li class="how-step is-active"><span class="how-num">1</span><div><h3>Pegás el link</h3><p>La URL de tu tienda. Nada más.</p></div></li>
-          <li class="how-step"><span class="how-num">2</span><div><h3>Un click</h3><p>Ángulo lee tus productos, beneficios, objeciones y precios.</p></div></li>
-          <li class="how-step"><span class="how-num">3</span><div><h3>Recibís los creativos</h3><p>Un lote listo para lanzar, cada pieza etiquetada con la hipótesis que testea.</p></div></li>
+          <li class="how-step is-active"><button class="how-hit" type="button" aria-label="Ver paso 1: Pegás el link"></button><span class="how-num">1</span><div><h3>Pegás el link</h3><p>La URL de tu tienda. Nada más.</p></div></li>
+          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 2: Un click"></button><span class="how-num">2</span><div><h3>Un click</h3><p>Ángulo lee tus productos, beneficios, objeciones y precios.</p></div></li>
+          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 3: Recibís los creativos"></button><span class="how-num">3</span><div><h3>Recibís los creativos</h3><p>Un lote listo para lanzar, cada pieza etiquetada con la hipótesis que testea.</p></div></li>
         </ol>
 
         <figure class="shell app" style="margin:0" aria-label="Vista previa del producto">
@@ -1416,11 +1419,11 @@ void main(){
       .from('.chart-area', { autoAlpha: 0, duration: 1.2, ease: 'power1.out' }, 0.5)
       .from('.chart-marker', { autoAlpha: 0, y: 10, duration: 0.8, ease: EASE }, 1.2);
 
-    /* ---- How it works: pinned product walkthrough ---- */
+    /* ---- How it works: product walkthrough that plays on its own while in view ---- */
     const how = $('#como-funciona');
     reveal(how);
-    if (desktop) {
-      how.classList.add('is-pinned');
+    {
+      how.classList.add('is-playing');
       const views = $$('.app-view', how);
       const steps = $$('.how-step', how);
       const urlEl = $('.js-url', how);
@@ -1450,40 +1453,55 @@ void main(){
       const setStep = (i) => {
         if (i === current) return;
         current = i;
-        steps.forEach((s, j) => s.classList.toggle('is-active', j === i));
+        steps.forEach((s, j) => {
+          s.classList.toggle('is-active', j === i);
+          if (j === i) s.setAttribute('aria-current', 'step'); else s.removeAttribute('aria-current');
+        });
         stepEl.textContent = labels[i];
       };
-      render();
-      setStep(0);
-      let b1 = 0.3, b2 = 0.7;
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: {
-          trigger: $('.how-pin', how), start: 'top top', end: '+=2800', pin: true, scrub: 0.7, anticipatePin: 1,
-          onUpdate: (self) => {
-            railEl.style.transform = `scaleY(${self.progress})`;
-            setStep(self.progress < b1 ? 0 : self.progress < b2 ? 1 : 2);
-          },
-        },
+      const tl = gsap.timeline({ paused: true, repeat: -1 });
+      const sync = () => {
+        const t = tl.time();
+        railEl.style.transform = `scaleY(${tl.progress()})`;
+        setStep(t < tl.labels.s1 ? 0 : t < tl.labels.s2 ? 1 : 2);
+        render();
+      };
+      tl.eventCallback('onUpdate', sync);
+      tl.fromTo(views[0], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+        .fromTo(state, { n: 0 }, { n: URL_TXT.length, duration: 1.8, ease: 'none' }, 0.45)
+        .to('.js-analyze', { scale: 0.94, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' })
+        .addLabel('s1', '+=0.2')
+        .to(views[0], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, 's1')
+        .fromTo(views[1], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 's1+=0.15')
+        .fromTo(state, { pct: 0 }, { pct: 100, duration: 3.6, ease: 'none' }, 's1+=0.5')
+        .addLabel('s2', '+=0.6')
+        .to(views[1], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, 's2')
+        .fromTo(views[2], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 's2+=0.15')
+        .from($$('.mini', how), { autoAlpha: 0, y: 22, scale: 0.94, duration: 0.6, stagger: 0.12, ease: 'power2.out' }, 's2+=0.4')
+        .to(views[2], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, '+=3.4');
+      state.n = 0; state.pct = 0;
+      sync();
+
+      // Plays only while the section is on screen, from the start the first time.
+      let inView = false;
+      ScrollTrigger.create({
+        trigger: $('.how-grid', how), start: 'top 88%', end: 'bottom 12%',
+        onToggle: (self) => { inView = self.isActive; if (inView) tl.play(); else tl.pause(); },
       });
-      tl.to(state, { n: URL_TXT.length, duration: 3, onUpdate: render })
-        .to('.js-analyze', { scale: 0.94, duration: 0.25, yoyo: true, repeat: 1, ease: 'power2.inOut' })
-        .addLabel('s1')
-        .to(views[0], { autoAlpha: 0, y: -18, duration: 0.6, ease: 'power2.inOut' })
-        .fromTo(views[1], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '<0.15')
-        .to(state, { pct: 100, duration: 4, onUpdate: render })
-        .addLabel('s2')
-        .to(views[1], { autoAlpha: 0, y: -18, duration: 0.6, ease: 'power2.inOut' })
-        .fromTo(views[2], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '<0.15')
-        .from($$('.mini', how), { autoAlpha: 0, y: 22, scale: 0.94, duration: 0.7, stagger: 0.14, ease: 'power2.out' })
-        .to({}, { duration: 0.8 });
-      b1 = tl.labels.s1 / tl.duration();
-      b2 = tl.labels.s2 / tl.duration();
-      railEl.style.transform = 'scaleY(0)';
+
+      // Each step on the left jumps straight to that part of the demo.
+      const jumps = steps.map((s, i) => {
+        const btn = $('.how-hit', s);
+        const go = () => { tl.seek(i === 0 ? 0 : `s${i}`, false); sync(); if (inView) tl.play(); };
+        btn.addEventListener('click', go);
+        return () => btn.removeEventListener('click', go);
+      });
+
       cleanups.push(() => {
-        how.classList.remove('is-pinned');
+        jumps.forEach((off) => off());
+        how.classList.remove('is-playing');
         state.n = URL_TXT.length; state.pct = 100; render();
-        steps.forEach((s) => s.classList.remove('is-active'));
+        steps.forEach((s) => { s.classList.remove('is-active'); s.removeAttribute('aria-current'); });
         stepEl.textContent = 'Prototipo';
         railEl.style.transform = '';
       });
