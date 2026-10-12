@@ -69,6 +69,7 @@
   --lf-cream:#F7EFEA; --lf-pink:#E3A8D0; --lf-mag:#D2519F; --lf-vio:#5F2C9F; --lf-lilac:#DDD6EF;
   --cta-cream:#F6EEEA; --cta-pink:#DCA0CB; --cta-mag:#D26AB0; --cta-vio:#8D6BC6; --cta-lilac:#CAC1E5;
   --word:#F4F0E8; --on-btn-positive:#8AD1AA;
+  --nt-cream:#140910; --nt-pink:#2B0F24; --nt-mag:#8E2069; --nt-vio:#3C1B80; --nt-lilac:#20112F;
   --disc-a:#F2D2E3; --disc-b:#D9CFEE; --disc-c:#EFE4EA;
 
   /* Creatives are ads: they keep one palette in both themes */
@@ -140,6 +141,11 @@ a{color:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .icon{width:1em;height:1em;fill:currentColor;flex:none;display:block}
 .logo{fill:currentColor;display:block}
+/* Fine print grain over everything, like the deck's gradients. Fixed layer, never repaints on scroll. */
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:var(--grain,.05);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* Section headings: each word rises out of its own mask */
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:.12em 0 .16em;margin:-.12em 0 -.16em}
+.wi{display:inline-block}
 .wrap{width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(16px,4vw,48px)}
 .section{padding-block:clamp(88px,9vw,136px);position:relative}
 .h2{font-weight:700;font-size:clamp(2rem,1.2rem + 2.6vw,3.5rem);line-height:1.04;letter-spacing:-.03em}
@@ -182,7 +188,9 @@ a{color:inherit}
 }
 
 /* ---------- Nav ---------- */
-.nav{position:fixed;z-index:40;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);width:min(780px,calc(100% - 24px));height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 8px 0 22px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);box-shadow:inset 0 0 0 1px var(--glass-ring),0 14px 34px -22px rgb(23 21 18 / .45);transition:box-shadow .3s ease}
+.nav{position:fixed;z-index:40;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);width:min(780px,calc(100% - 24px));height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 8px 0 22px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);box-shadow:inset 0 0 0 1px var(--glass-ring),0 14px 34px -22px rgb(23 21 18 / .45);transition:transform .5s var(--ease-out),box-shadow .3s ease}
+.nav.is-hidden{transform:translate(-50%,calc(-100% - 28px))}
+.nav.is-hidden:focus-within{transform:translateX(-50%)}
 .nav.is-scrolled{box-shadow:inset 0 0 0 1px var(--glass-ring),0 18px 40px -20px rgb(74 29 143 / .45)}
 .nav-home{display:block;color:var(--ink);border-radius:8px}
 .nav-home .logo{height:21px;width:auto;aspect-ratio:1077/351}
@@ -215,6 +223,17 @@ a{color:inherit}
 .fan-slot:nth-child(2){--l:33.2%;--t:0px;--r:-1.5deg;--z:3}
 .fan-slot:nth-child(3){--l:66.5%;--t:52px;--r:6deg;--z:2}
 .fan-tilt{transform-style:preserve-3d}
+.fan-slot:nth-child(n+4){display:none}
+/* Live batch (JS): every card is placed by transforms; the oldest one tires out and a new one arrives. */
+.fan.is-live .fan-slot{display:block;left:0;top:0;transform:none}
+.fan-slot .cv{transition:filter .7s ease,opacity .7s ease}
+.fan-slot.is-tired .cv{filter:grayscale(1) contrast(.9);opacity:.72}
+.ccard-meta .chip{height:20px;padding:0 8px;font-size:.62rem}
+.ccard-meta .fm-state{display:none}
+.fan-slot.is-tired .fm-format,.fan-slot.is-new .fm-format{display:none}
+.ccard-meta .fm-state{display:none}
+.fan-slot.is-tired .ccard-meta .fm-tired,.fan-slot.is-new .ccard-meta .fm-new{display:inline-flex;animation:chip-in .4s var(--ease-out)}
+@keyframes chip-in{from{opacity:0;transform:scale(.9)}}
 .fan .cv{font-size:13px}
 @media (max-height:760px) and (min-width:900px){.fan{transform:scale(.84);transform-origin:bottom right}}
 @media (max-width:1180px) and (min-width:900px){.fan{width:480px;height:330px}.fan .cv{font-size:11px}}
@@ -269,7 +288,7 @@ a{color:inherit}
 .pains-kicker{font:600 clamp(1rem,.95rem + .2vw,1.1rem)/1.4 var(--font-body);color:var(--ink-2)}
 .pains-title{margin-top:14px;max-width:19ch}
 .pains-q{display:block}
-.pains{list-style:none;margin:clamp(56px,7vw,96px) 0 0;padding:0;display:grid;gap:clamp(40px,5vw,72px);max-width:1000px}
+.pains{list-style:none;margin:clamp(56px,7vw,96px) 0 0;padding:0;display:grid;gap:clamp(48px,6vw,88px)}
 .pain{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(18px,2.4vw,32px);align-items:start;transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
 .pain-icon{width:clamp(46px,4.4vw,60px);aspect-ratio:1;border-radius:999px;display:grid;place-items:center;color:var(--ink);background:var(--raised);box-shadow:inset 0 0 0 1px var(--line-strong);transition:background-color .6s ease,box-shadow .7s var(--ease-out),color .4s ease}
 .pain-icon .icon{width:46%;height:46%}
@@ -279,6 +298,63 @@ a{color:inherit}
 .pains.is-focus .pain{opacity:.2;transform:translateY(14px)}
 .pains.is-focus .pain.is-seen{opacity:1;transform:none}
 .pain.is-current .pain-icon{color:#171512;background:radial-gradient(circle at 40% 35%,#FFF4FA 0 14%,var(--mag-soft) 60%,rgb(var(--mag) / .7));box-shadow:0 0 0 6px rgb(var(--mag) / .1),0 0 30px 6px rgb(var(--mag) / .38)}
+/* Each pain gets a small scene the reader recognises from their own week */
+.pv{grid-column:2;margin-top:22px;max-width:420px;padding:18px;border-radius:22px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow);transition:opacity .8s var(--ease-out) .12s,transform .9s var(--ease-out) .12s}
+@media (min-width:1000px){
+  .pain{grid-template-columns:auto minmax(0,1fr) minmax(0,380px);align-items:start}
+  .pv{grid-column:3;margin-top:0;max-width:none;align-self:center}
+}
+.pv-top{display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 .74rem/1.2 var(--font-body);color:var(--ink-3)}
+.pv-metric{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin-top:14px}
+.pv-metric b{font:700 2rem/1 var(--font-display);letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+.pv-metric span{font:600 .78rem/1 var(--font-body);color:var(--ink-3)}
+.pv-metric em{margin-left:auto;font:600 .78rem/1 var(--font-body);font-style:normal}
+.pv-spark{display:block;width:100%;height:68px;margin-top:12px;overflow:visible}
+.pv-spark-line{fill:none;stroke:var(--negative);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s var(--ease-out) .25s}
+.pv-spark-fill{fill:var(--negative-bg)}
+.pv-spark-dot{fill:var(--negative)}
+.pv-axis{display:flex;justify-content:space-between;margin-top:6px;font:500 .68rem/1 var(--font-body);color:var(--ink-3)}
+.pv-avatar{width:34px;height:34px;flex:none;border-radius:999px;display:grid;place-items:center;font:700 .85rem/1 var(--font-display);color:#171512;background:radial-gradient(circle at 30% 25%,#FCE9F2,var(--mag-soft) 70%)}
+.pv-who{display:grid;gap:3px;margin-right:auto}
+.pv-who b{font:600 .85rem/1 var(--font-body);color:var(--ink)}
+.pv-who span{font:500 .72rem/1 var(--font-body);color:var(--ink-3)}
+.pv-bubble{width:fit-content;max-width:88%;margin-top:10px;padding:10px 14px;border-radius:16px 16px 16px 5px;background:var(--paper-2);font-size:.9rem;line-height:1.4;color:var(--ink);transition:opacity .5s var(--ease-out) var(--d,0s),transform .6s var(--ease-out) var(--d,0s)}
+.pv-chat .pv-top{justify-content:flex-start}
+.pv-typing{display:inline-flex;gap:4px;margin-top:10px;padding:12px 14px;border-radius:16px 16px 16px 5px;background:var(--paper-2)}
+.pv-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-3)}
+.pain.is-current .pv-typing i{animation:typing 1.2s ease-in-out infinite}
+.pain.is-current .pv-typing i:nth-child(2){animation-delay:.15s}
+.pain.is-current .pv-typing i:nth-child(3){animation-delay:.3s}
+@keyframes typing{0%,60%,100%{transform:none;opacity:.45}30%{transform:translateY(-4px);opacity:1}}
+.pv-alert{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;background:var(--caution-bg);color:var(--caution);font:600 .7rem/1 var(--font-body)}
+.pv-days{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.pv-days li{display:grid;place-items:center;height:42px;border-radius:12px;background:var(--paper-2);font:600 .85rem/1 var(--font-display);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.pv-days .is-today{background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.pv-days .is-hot{color:#171512;background:radial-gradient(circle at 40% 30%,#FFF1F8 0 12%,var(--mag-soft) 75%)}
+.pv-hot-label{margin-top:8px;text-align:right;font:600 .7rem/1 var(--font-body);color:var(--ink-2)}
+.pv-meter{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.pv-meter-top{display:flex;justify-content:space-between;font:600 .8rem/1 var(--font-body);color:var(--ink-2)}
+.pv-meter-top b{color:var(--ink)}
+.pv-bar{display:block;height:8px;margin-top:10px;border-radius:999px;background:var(--paper-2);overflow:hidden}
+.pv-bar i{display:block;height:100%;width:20%;border-radius:inherit;background:var(--caution);transform-origin:left;transition:transform 1.2s var(--ease-out) .4s}
+.pv-rows{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.pv-rows li{display:grid;grid-template-columns:minmax(0,1fr) auto 64px;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:.84rem;color:var(--ink-2)}
+.pv-rows b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.pv-rows .chip{height:22px;padding:0 9px;justify-self:end}
+.pv-rows .is-win{background:var(--positive-bg)}
+.pv-ask{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 14px 9px 10px;border-radius:999px;background:var(--btn-bg);color:var(--btn-fg);font:600 .82rem/1 var(--font-body);transform-origin:left center;transition:opacity .5s var(--ease-out) .7s,transform .6s cubic-bezier(.34,1.56,.64,1) .7s}
+.pv-ask .icon{width:18px;height:18px}
+/* Scenes play in as their row lights up */
+.pains.is-focus .pv{opacity:0;transform:translateY(22px) scale(.97)}
+.pains.is-focus .pain.is-seen .pv{opacity:1;transform:none}
+.pains.is-focus .pv-spark-line{stroke-dashoffset:1}
+.pains.is-focus .pain.is-seen .pv-spark-line{stroke-dashoffset:0}
+.pains.is-focus .pv-bubble{opacity:0;transform:translateY(8px)}
+.pains.is-focus .pain.is-seen .pv-bubble{opacity:1;transform:none}
+.pains.is-focus .pv-bar i{transform:scaleX(0)}
+.pains.is-focus .pain.is-seen .pv-bar i{transform:none}
+.pains.is-focus .pv-ask{opacity:0;transform:scale(.9)}
+.pains.is-focus .pain.is-seen .pv-ask{opacity:1;transform:none}
 .pains-end{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;margin-top:clamp(64px,8vw,112px);padding-top:clamp(32px,4vw,48px);border-top:1px solid var(--line)}
 .pains-answer{flex:1 1 380px;max-width:30ch;font:700 clamp(1.4rem,1rem + 1.4vw,2.1rem)/1.15 var(--font-display);letter-spacing:-.02em;color:var(--ink)}
 
@@ -303,6 +379,8 @@ a{color:inherit}
 .how-step p{margin-top:6px;max-width:34ch}
 
 .shell{padding:8px;border-radius:30px;background:var(--shell);box-shadow:inset 0 0 0 1px var(--shell-ring)}
+.app{position:relative;isolation:isolate}
+.app::before{content:"";position:absolute;inset:6% -8% -12%;z-index:-1;pointer-events:none;background:radial-gradient(45% 50% at 35% 55%,rgb(var(--mag) / .22),transparent 72%),radial-gradient(45% 50% at 70% 70%,rgb(var(--vio) / .18),transparent 72%)}
 .core{border-radius:22px;background:var(--raised);box-shadow:var(--core-hi),0 0 0 1px var(--line),var(--shadow)}
 .app-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;border-bottom:1px solid var(--line)}
 .app-bar .logo{height:16px;width:auto;aspect-ratio:1077/351;color:var(--ink)}
@@ -421,7 +499,31 @@ a{color:inherit}
 }
 
 /* ---------- Batch carousel: native horizontal scroll, the page wheel keeps scrolling down ---------- */
-.lote{--lote-pad:calc(max(0px,(100vw - 1240px) / 2) + clamp(16px,4vw,48px));padding-block:clamp(88px,9vw,136px) clamp(64px,7vw,104px)}
+.lote{--lote-pad:calc(max(0px,(100vw - 20px - 1240px) / 2) + clamp(16px,4vw,48px));padding:10px}
+/* Night stage: the one dark panel on the page, lit by its own light field. Tokens are scoped, so it reads the same in both themes. */
+.night{color-scheme:dark;color:var(--ink-2);
+  --paper:#150A10; --paper-2:#211419; --paper-3:#2E1E25; --raised:#1C1116;
+  --ink:#F5ECF0; --ink-2:#D3C6CC; --ink-3:#A1939A;
+  --line:rgb(245 236 240 / .10); --line-strong:rgb(245 236 240 / .18);
+  --glow-a:rgb(var(--mag) / .62); --glow-b:rgb(var(--vio) / .45);
+  --shell:rgb(245 236 240 / .035); --shell-ring:rgb(245 236 240 / .09);
+  --core-hi:inset 0 1px 0 rgb(255 255 255 / .06);
+  --shadow:0 1px 0 rgb(0 0 0 / .2),0 30px 60px -30px rgb(0 0 0 / .7);
+  --positive:#8AD1AA; --positive-bg:rgb(138 209 170 / .12);
+  --negative:#F0A094; --negative-bg:rgb(240 160 148 / .12);
+  --caution:#E6C57A; --caution-bg:rgb(230 197 122 / .13);
+  --violet-bg:rgb(74 29 143 / .42);
+  --btn-bg:#F5ECF0; --btn-fg:#150A10;
+  --focus:0 0 0 4px rgb(74 29 143 / .6)}
+.stage--night{padding-block:clamp(80px,9vw,132px) clamp(40px,5vw,72px);background:
+  radial-gradient(55% 70% at 62% 100%,var(--nt-vio),transparent 72%),
+  radial-gradient(45% 55% at 98% 8%,var(--nt-mag),transparent 72%),
+  linear-gradient(90deg,var(--nt-cream) 0 30%,var(--nt-pink))}
+.lote-pin{position:relative;z-index:1}
+/* Giant outlined sales angles drifting behind the cards */
+.angle-band{position:relative;margin:clamp(36px,5vw,64px) 0 calc(-1 * clamp(40px,5vw,72px));overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.angle-band-track{display:flex;align-items:center;gap:.35em;width:max-content;padding-left:4vw;white-space:nowrap;font:800 clamp(4rem,1rem + 9vw,10.5rem)/1 var(--font-display);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px rgb(245 236 240 / .2);padding-bottom:.06em}
+.angle-band-track .icon{width:.55em;height:.55em;color:rgb(219 158 184 / .4)}
 .lote-head .h2{max-width:17ch}
 .lote-viewport{margin-top:clamp(36px,4.5vw,56px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--lote-pad);scrollbar-width:none;overscroll-behavior-x:contain;outline-offset:-4px}
 .lote-viewport::-webkit-scrollbar{display:none}
@@ -478,6 +580,10 @@ a{color:inherit}
 .vs-miss{color:var(--ink-2)}
 .vs-miss .icon{color:var(--negative)}
 .vs-us{grid-template-columns:minmax(0,1.1fr) minmax(0,2.35fr);padding-block:26px;background:radial-gradient(90% 160% at 0% 0%,var(--glow-a),transparent 62%),radial-gradient(90% 160% at 100% 100%,var(--glow-b),transparent 62%),var(--raised)}
+@property --spin{syntax:'<angle>';inherits:false;initial-value:0deg}
+.vs-us{position:relative;isolation:isolate}
+.vs-us::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--spin),transparent 0 58%,rgb(var(--mag) / .9) 74%,rgb(var(--vio) / .7) 86%,transparent 97%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin-light 7s linear infinite}
+@keyframes spin-light{to{--spin:360deg}}
 .vs-us .logo{height:26px;width:auto;aspect-ratio:1077/351;color:var(--ink)}
 .vs-us p{font:600 1.05rem/1.4 var(--font-body);color:var(--ink)}
 @media (max-width:899px){
@@ -562,7 +668,7 @@ a{color:inherit}
 </head>
 <body>
 <!-- Icons: Phosphor Light (MIT). Logo: Ángulo wordmark. -->
-<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-books" viewBox="0 0 256 256"><path d="M104,34H56A14,14,0,0,0,42,48V208a14,14,0,0,0,14,14h48a14,14,0,0,0,14-14V48A14,14,0,0,0,104,34ZM54,78h52V178H54Zm2-32h48a2,2,0,0,1,2,2V66H54V48A2,2,0,0,1,56,46Zm48,164H56a2,2,0,0,1-2-2V190h52v18A2,2,0,0,1,104,210Zm125.7-15L196.51,37.16a14,14,0,0,0-16.63-10.85L133.07,36.37A14.09,14.09,0,0,0,122.3,53l33.19,157.81a14,14,0,0,0,6.1,8.9,13.85,13.85,0,0,0,7.57,2.26,13.55,13.55,0,0,0,3-.32l46.81-10.05A14.09,14.09,0,0,0,229.7,195Zm-82.81-83.32,50.73-10.9,14.12,67.16L161,178.81Zm-6.63-31.56L191,69.19,195.15,89l-50.73,10.9Zm-4.66-32,46.8-10.05a2.18,2.18,0,0,1,.42,0,1.89,1.89,0,0,1,1.05.32,2,2,0,0,1,.89,1.31l3.75,17.82L137.79,68.34l-3.74-17.78A2.07,2.07,0,0,1,135.6,48.1Zm80.81,151.8L169.6,210a1.92,1.92,0,0,1-1.47-.27,2,2,0,0,1-.89-1.31l-3.75-17.82,50.72-10.9L218,197.43A2.07,2.07,0,0,1,216.41,199.9Z"/></symbol><symbol id="i-chat-circle-text" viewBox="0 0 256 256"><path d="M166,112a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,112Zm-6,26H96a6,6,0,0,0,0,12h64a6,6,0,0,0,0-12Zm70-10A102,102,0,0,1,79.31,217.65L44.44,229.27a14,14,0,0,1-17.71-17.71l11.62-34.87A102,102,0,1,1,230,128Zm-12,0A90,90,0,1,0,50.08,173.06a6,6,0,0,1,.5,4.91L38.12,215.35a2,2,0,0,0,2.53,2.53L78,205.42a6.2,6.2,0,0,1,1.9-.31,6.09,6.09,0,0,1,3,.81A90,90,0,0,0,218,128Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-circle-notch" viewBox="0 0 256 256"><path d="M230,128a102,102,0,0,1-204,0c0-40.18,23.35-76.86,59.5-93.45a6,6,0,0,1,5,10.9C58.61,60.09,38,92.49,38,128a90,90,0,0,0,180,0c0-35.51-20.61-67.91-52.5-82.55a6,6,0,0,1,5-10.9C206.65,51.14,230,87.82,230,128Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-cursor-click" viewBox="0 0 256 256"><path d="M90,24V16a6,6,0,0,1,12,0v8a6,6,0,0,1-12,0ZM16,102h8a6,6,0,0,0,0-12H16a6,6,0,0,0,0,12ZM125.32,37.37a6,6,0,0,0,8.05-2.69l8-16a6,6,0,0,0-10.74-5.37l-8,16A6,6,0,0,0,125.32,37.37Zm-96,85.26-16,8a6,6,0,0,0,5.36,10.74l16-8a6,6,0,1,0-5.36-10.74ZM217.9,185.41a14,14,0,0,1,0,19.8L205.21,217.9a14,14,0,0,1-19.8,0L134.1,166.59a2,2,0,0,0-3.21.54l-17.75,46.24a2.44,2.44,0,0,0-.1.24A13.85,13.85,0,0,1,100.26,222c-.23,0-.45,0-.68,0A13.85,13.85,0,0,1,87,212.38L34.7,52.3A14,14,0,0,1,52.3,34.7L212.38,87A14,14,0,0,1,213.61,113l-.24.09-46.25,17.76a2,2,0,0,0-.53,3.21Zm-8.49,8.49L158.1,142.59h0a14,14,0,0,1,4.32-22.74l.24-.1L208.91,102a2,2,0,0,0-.26-3.61L48.58,46.11a2.33,2.33,0,0,0-.65-.11,2,2,0,0,0-1.82,2.58L98.38,208.65a1.84,1.84,0,0,0,1.77,1.35,1.81,1.81,0,0,0,1.84-1.09l17.76-46.25.1-.24a14,14,0,0,1,22.74-4.32l51.31,51.31a2,2,0,0,0,2.83,0l12.68-12.68A2,2,0,0,0,209.41,193.9Z"/></symbol><symbol id="i-film-strip" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM38,86h84v84H38Zm96-12V54h36V74Zm-12,0H86V54h36Zm0,108v20H86V182Zm12,0h36v20H134Zm0-12V86h84v84ZM218,56V74H182V54h34A2,2,0,0,1,218,56ZM40,54H74V74H38V56A2,2,0,0,1,40,54ZM38,200V182H74v20H40A2,2,0,0,1,38,200Zm178,2H182V182h36v18A2,2,0,0,1,216,202Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-lightning" viewBox="0 0 256 256"><path d="M213.84,118.63a6,6,0,0,0-3.73-4.25L150.88,92.17l15-75a6,6,0,0,0-10.27-5.27l-112,120a6,6,0,0,0,2.28,9.71l59.23,22.21-15,75a6,6,0,0,0,3.14,6.52A6.07,6.07,0,0,0,96,246a6,6,0,0,0,4.39-1.91l112-120A6,6,0,0,0,213.84,118.63ZM106,220.46l11.85-59.28a6,6,0,0,0-3.77-6.8l-55.6-20.85,91.46-98L138.12,94.82a6,6,0,0,0,3.77,6.8l55.6,20.85Z"/></symbol><symbol id="i-link-simple" viewBox="0 0 256 256"><path d="M164.25,91.75a6,6,0,0,1,0,8.49l-64,64a6,6,0,0,1-8.49-8.48l64-64A6,6,0,0,1,164.25,91.75ZM214.2,41.8a54.07,54.07,0,0,0-76.38,0L107.75,71.85a6,6,0,0,0,8.49,8.49l30.07-30.06a42,42,0,0,1,59.41,59.41l-30.08,30.07a6,6,0,1,0,8.49,8.49l30.07-30.07A54,54,0,0,0,214.2,41.8ZM139.76,175.64l-30.07,30.08a42,42,0,0,1-59.41-59.41l30.06-30.07a6,6,0,0,0-8.49-8.49l-30,30.07a54,54,0,0,0,76.38,76.39l30.07-30.08a6,6,0,0,0-8.49-8.49Z"/></symbol><symbol id="i-play" viewBox="0 0 256 256"><path d="M231.36,116.19,87.28,28.06a14,14,0,0,0-14.18-.27A13.69,13.69,0,0,0,66,39.87V216.13a13.69,13.69,0,0,0,7.1,12.08,14,14,0,0,0,14.18-.27l144.08-88.13a13.82,13.82,0,0,0,0-23.62Zm-6.26,13.38L81,217.7a2,2,0,0,1-2.06,0,1.78,1.78,0,0,1-1-1.61V39.87a1.78,1.78,0,0,1,1-1.61A2.06,2.06,0,0,1,80,38a2,2,0,0,1,1,.31L225.1,126.43a1.82,1.82,0,0,1,0,3.14Z"/></symbol><symbol id="i-shopping-bag-open" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM40,54H216a2,2,0,0,1,2,2V74H38V56A2,2,0,0,1,40,54ZM216,202H40a2,2,0,0,1-2-2V86H218V200A2,2,0,0,1,216,202Zm-42-90a46,46,0,0,1-92,0,6,6,0,0,1,12,0,34,34,0,0,0,68,0,6,6,0,0,1,12,0Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-stack" viewBox="0 0 256 256"><path d="M229.18,173a6,6,0,0,1-2.16,8.2l-96,56a6,6,0,0,1-6,0l-96-56a6,6,0,0,1,6-10.36l93,54.23,93-54.23A6,6,0,0,1,229.18,173ZM221,122.82l-93,54.23L35,122.82a6,6,0,0,0-6,10.36l96,56a6,6,0,0,0,6,0l96-56a6,6,0,0,0-6-10.36ZM26,80a6,6,0,0,1,3-5.18l96-56a6,6,0,0,1,6,0l96,56a6,6,0,0,1,0,10.36l-96,56a6,6,0,0,1-6,0l-96-56A6,6,0,0,1,26,80Zm17.91,0L128,129.05,212.09,80,128,31Z"/></symbol><symbol id="i-star" viewBox="0 0 256 256"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-question" viewBox="0 0 256 256"><path d="M138,180a10,10,0,1,1-10-10A10,10,0,0,1,138,180ZM128,74c-21,0-38,15.25-38,34v4a6,6,0,0,0,12,0v-4c0-12.13,11.66-22,26-22s26,9.87,26,22-11.66,22-26,22a6,6,0,0,0-6,6v8a6,6,0,0,0,12,0v-2.42c18.11-2.58,32-16.66,32-33.58C166,89.25,149,74,128,74Zm102,54A102,102,0,1,1,128,26,102.12,102.12,0,0,1,230,128Zm-12,0a90,90,0,1,0-90,90A90.1,90.1,0,0,0,218,128Z"/></symbol></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-books" viewBox="0 0 256 256"><path d="M104,34H56A14,14,0,0,0,42,48V208a14,14,0,0,0,14,14h48a14,14,0,0,0,14-14V48A14,14,0,0,0,104,34ZM54,78h52V178H54Zm2-32h48a2,2,0,0,1,2,2V66H54V48A2,2,0,0,1,56,46Zm48,164H56a2,2,0,0,1-2-2V190h52v18A2,2,0,0,1,104,210Zm125.7-15L196.51,37.16a14,14,0,0,0-16.63-10.85L133.07,36.37A14.09,14.09,0,0,0,122.3,53l33.19,157.81a14,14,0,0,0,6.1,8.9,13.85,13.85,0,0,0,7.57,2.26,13.55,13.55,0,0,0,3-.32l46.81-10.05A14.09,14.09,0,0,0,229.7,195Zm-82.81-83.32,50.73-10.9,14.12,67.16L161,178.81Zm-6.63-31.56L191,69.19,195.15,89l-50.73,10.9Zm-4.66-32,46.8-10.05a2.18,2.18,0,0,1,.42,0,1.89,1.89,0,0,1,1.05.32,2,2,0,0,1,.89,1.31l3.75,17.82L137.79,68.34l-3.74-17.78A2.07,2.07,0,0,1,135.6,48.1Zm80.81,151.8L169.6,210a1.92,1.92,0,0,1-1.47-.27,2,2,0,0,1-.89-1.31l-3.75-17.82,50.72-10.9L218,197.43A2.07,2.07,0,0,1,216.41,199.9Z"/></symbol><symbol id="i-chat-circle-text" viewBox="0 0 256 256"><path d="M166,112a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,112Zm-6,26H96a6,6,0,0,0,0,12h64a6,6,0,0,0,0-12Zm70-10A102,102,0,0,1,79.31,217.65L44.44,229.27a14,14,0,0,1-17.71-17.71l11.62-34.87A102,102,0,1,1,230,128Zm-12,0A90,90,0,1,0,50.08,173.06a6,6,0,0,1,.5,4.91L38.12,215.35a2,2,0,0,0,2.53,2.53L78,205.42a6.2,6.2,0,0,1,1.9-.31,6.09,6.09,0,0,1,3,.81A90,90,0,0,0,218,128Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-circle-notch" viewBox="0 0 256 256"><path d="M230,128a102,102,0,0,1-204,0c0-40.18,23.35-76.86,59.5-93.45a6,6,0,0,1,5,10.9C58.61,60.09,38,92.49,38,128a90,90,0,0,0,180,0c0-35.51-20.61-67.91-52.5-82.55a6,6,0,0,1,5-10.9C206.65,51.14,230,87.82,230,128Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-cursor-click" viewBox="0 0 256 256"><path d="M90,24V16a6,6,0,0,1,12,0v8a6,6,0,0,1-12,0ZM16,102h8a6,6,0,0,0,0-12H16a6,6,0,0,0,0,12ZM125.32,37.37a6,6,0,0,0,8.05-2.69l8-16a6,6,0,0,0-10.74-5.37l-8,16A6,6,0,0,0,125.32,37.37Zm-96,85.26-16,8a6,6,0,0,0,5.36,10.74l16-8a6,6,0,1,0-5.36-10.74ZM217.9,185.41a14,14,0,0,1,0,19.8L205.21,217.9a14,14,0,0,1-19.8,0L134.1,166.59a2,2,0,0,0-3.21.54l-17.75,46.24a2.44,2.44,0,0,0-.1.24A13.85,13.85,0,0,1,100.26,222c-.23,0-.45,0-.68,0A13.85,13.85,0,0,1,87,212.38L34.7,52.3A14,14,0,0,1,52.3,34.7L212.38,87A14,14,0,0,1,213.61,113l-.24.09-46.25,17.76a2,2,0,0,0-.53,3.21Zm-8.49,8.49L158.1,142.59h0a14,14,0,0,1,4.32-22.74l.24-.1L208.91,102a2,2,0,0,0-.26-3.61L48.58,46.11a2.33,2.33,0,0,0-.65-.11,2,2,0,0,0-1.82,2.58L98.38,208.65a1.84,1.84,0,0,0,1.77,1.35,1.81,1.81,0,0,0,1.84-1.09l17.76-46.25.1-.24a14,14,0,0,1,22.74-4.32l51.31,51.31a2,2,0,0,0,2.83,0l12.68-12.68A2,2,0,0,0,209.41,193.9Z"/></symbol><symbol id="i-film-strip" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM38,86h84v84H38Zm96-12V54h36V74Zm-12,0H86V54h36Zm0,108v20H86V182Zm12,0h36v20H134Zm0-12V86h84v84ZM218,56V74H182V54h34A2,2,0,0,1,218,56ZM40,54H74V74H38V56A2,2,0,0,1,40,54ZM38,200V182H74v20H40A2,2,0,0,1,38,200Zm178,2H182V182h36v18A2,2,0,0,1,216,202Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-lightning" viewBox="0 0 256 256"><path d="M213.84,118.63a6,6,0,0,0-3.73-4.25L150.88,92.17l15-75a6,6,0,0,0-10.27-5.27l-112,120a6,6,0,0,0,2.28,9.71l59.23,22.21-15,75a6,6,0,0,0,3.14,6.52A6.07,6.07,0,0,0,96,246a6,6,0,0,0,4.39-1.91l112-120A6,6,0,0,0,213.84,118.63ZM106,220.46l11.85-59.28a6,6,0,0,0-3.77-6.8l-55.6-20.85,91.46-98L138.12,94.82a6,6,0,0,0,3.77,6.8l55.6,20.85Z"/></symbol><symbol id="i-link-simple" viewBox="0 0 256 256"><path d="M164.25,91.75a6,6,0,0,1,0,8.49l-64,64a6,6,0,0,1-8.49-8.48l64-64A6,6,0,0,1,164.25,91.75ZM214.2,41.8a54.07,54.07,0,0,0-76.38,0L107.75,71.85a6,6,0,0,0,8.49,8.49l30.07-30.06a42,42,0,0,1,59.41,59.41l-30.08,30.07a6,6,0,1,0,8.49,8.49l30.07-30.07A54,54,0,0,0,214.2,41.8ZM139.76,175.64l-30.07,30.08a42,42,0,0,1-59.41-59.41l30.06-30.07a6,6,0,0,0-8.49-8.49l-30,30.07a54,54,0,0,0,76.38,76.39l30.07-30.08a6,6,0,0,0-8.49-8.49Z"/></symbol><symbol id="i-play" viewBox="0 0 256 256"><path d="M231.36,116.19,87.28,28.06a14,14,0,0,0-14.18-.27A13.69,13.69,0,0,0,66,39.87V216.13a13.69,13.69,0,0,0,7.1,12.08,14,14,0,0,0,14.18-.27l144.08-88.13a13.82,13.82,0,0,0,0-23.62Zm-6.26,13.38L81,217.7a2,2,0,0,1-2.06,0,1.78,1.78,0,0,1-1-1.61V39.87a1.78,1.78,0,0,1,1-1.61A2.06,2.06,0,0,1,80,38a2,2,0,0,1,1,.31L225.1,126.43a1.82,1.82,0,0,1,0,3.14Z"/></symbol><symbol id="i-shopping-bag-open" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM40,54H216a2,2,0,0,1,2,2V74H38V56A2,2,0,0,1,40,54ZM216,202H40a2,2,0,0,1-2-2V86H218V200A2,2,0,0,1,216,202Zm-42-90a46,46,0,0,1-92,0,6,6,0,0,1,12,0,34,34,0,0,0,68,0,6,6,0,0,1,12,0Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-stack" viewBox="0 0 256 256"><path d="M229.18,173a6,6,0,0,1-2.16,8.2l-96,56a6,6,0,0,1-6,0l-96-56a6,6,0,0,1,6-10.36l93,54.23,93-54.23A6,6,0,0,1,229.18,173ZM221,122.82l-93,54.23L35,122.82a6,6,0,0,0-6,10.36l96,56a6,6,0,0,0,6,0l96-56a6,6,0,0,0-6-10.36ZM26,80a6,6,0,0,1,3-5.18l96-56a6,6,0,0,1,6,0l96,56a6,6,0,0,1,0,10.36l-96,56a6,6,0,0,1-6,0l-96-56A6,6,0,0,1,26,80Zm17.91,0L128,129.05,212.09,80,128,31Z"/></symbol><symbol id="i-star" viewBox="0 0 256 256"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-question" viewBox="0 0 256 256"><path d="M138,180a10,10,0,1,1-10-10A10,10,0,0,1,138,180ZM128,74c-21,0-38,15.25-38,34v4a6,6,0,0,0,12,0v-4c0-12.13,11.66-22,26-22s26,9.87,26,22-11.66,22-26,22a6,6,0,0,0-6,6v8a6,6,0,0,0,12,0v-2.42c18.11-2.58,32-16.66,32-33.58C166,89.25,149,74,128,74Zm102,54A102,102,0,1,1,128,26,102.12,102.12,0,0,1,230,128Zm-12,0a90,90,0,1,0-90,90A90.1,90.1,0,0,0,218,128Z"/></symbol><symbol id="i-angle" viewBox="0 0 256 256"><path d="M98,72a6,6,0,0,1,6-6A102.12,102.12,0,0,1,206,168a6,6,0,0,1-12,0,90.1,90.1,0,0,0-90-90A6,6,0,0,1,98,72ZM240,194H78V32a6,6,0,0,0-12,0V66H32a6,6,0,0,0,0,12H66V200a6,6,0,0,0,6,6H240a6,6,0,0,0,0-12Z"/></symbol></defs></svg>
 
 <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -573,7 +679,7 @@ a{color:inherit}
     <li><a href="#por-que">Por qué Ángulo</a></li>
     <li><a href="#lote">Ejemplos</a></li>
   </ul>
-  <a class="btn btn-primary btn-sm js-calendly" href="https://calendly.com/contacto-angulo/30min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
+  <a class="btn btn-primary btn-sm js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
 </nav>
 
 <main>
@@ -589,7 +695,7 @@ a{color:inherit}
         </h1>
         <p class="hero-sub">Pegás el link de tu tienda y recibís un lote de creativos para Meta Ads, cada uno con su hipótesis.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary js-calendly" href="https://calendly.com/contacto-angulo/30min" target="_blank" rel="noopener">Agendá una llamada<span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
+          <a class="btn btn-primary js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener">Agendá una llamada<span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
           <a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
         </div>
 
@@ -602,7 +708,7 @@ a{color:inherit}
                 <p class="cv-fine">Paula G., compra verificada</p>
                 <div class="cv-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
               </div>
-              <p class="ccard-meta"><b>#04</b><span>Carrusel</span></p>
+              <p class="ccard-meta"><b>#04</b><span class="fm-format">Carrusel</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
               <p class="ccard-hyp">Citas reales de clientes generan más confianza que un claim de marca.</p>
             </div>
           </div></div></li>
@@ -613,7 +719,7 @@ a{color:inherit}
                 <span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span>
                 <p class="cv-hook">Día 1 y día 14. Sin filtro, misma luz.</p>
               </div>
-              <p class="ccard-meta"><b>#01</b><span>Video 9:16</span></p>
+              <p class="ccard-meta"><b>#01</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
               <p class="ccard-hyp">Mostrar el cambio real a las dos semanas convence más que los ingredientes.</p>
             </div>
           </div></div></li>
@@ -624,8 +730,29 @@ a{color:inherit}
                 <p class="cv-big">$315<small>por día</small></p>
                 <p class="cv-fine">Sérum vitamina C a $18.900. Rinde 60 días.</p>
               </div>
-              <p class="ccard-meta"><b>#02</b><span>Imagen 1:1</span></p>
+              <p class="ccard-meta"><b>#02</b><span class="fm-format">Imagen 1:1</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
               <p class="ccard-hyp">Traducir el precio a costo por día baja la objeción de precio.</p>
+            </div>
+          </div></div></li>
+          <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
+            <div class="ccard">
+              <div class="cv cv-03"><span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-kicker">Mi rutina entera</p><p class="cv-big">2:00</p><p class="cv-hook">antes de que se haga el café.</p></div>
+              <p class="ccard-meta"><b>#03</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
+              <p class="ccard-hyp">Mostrar que la rutina entra en dos minutos baja el “no tengo tiempo”.</p>
+            </div>
+          </div></div></li>
+          <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
+            <div class="ccard">
+              <div class="cv cv-07"><span class="cv-play cv-play--corner" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-quote">“Tengo rosácea y esto es lo único que tolero.”</p></div>
+              <p class="ccard-meta"><b>#07</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
+              <p class="ccard-hyp">Resolver la objeción de irritación abre un público que hoy no compra.</p>
+            </div>
+          </div></div></li>
+          <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
+            <div class="ccard">
+              <div class="cv cv-10"><p class="cv-kicker">Vs. marcas de farmacia</p><p class="cv-big">1/3</p><p class="cv-hook">Misma concentración, un tercio del precio.</p></div>
+              <p class="ccard-meta"><b>#10</b><span class="fm-format">Imagen 4:5</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
+              <p class="ccard-hyp">Comparar con farmacia lo posiciona como la opción inteligente.</p>
             </div>
           </div></div></li>
         </ul>
@@ -636,26 +763,57 @@ a{color:inherit}
   <!-- ================= Problem ================= -->
   <section class="section problem" id="problema" aria-labelledby="problema-t">
     <div class="wrap">
-      <div data-reveal>
-        <p class="pains-kicker">Si vendés con Meta Ads, esto te suena.</p>
+      <div>
+        <p class="pains-kicker" data-reveal>Si vendés con Meta Ads, esto te suena.</p>
         <h2 class="h2 pains-title" id="problema-t">Tu mejor anuncio dejó de vender. <span class="pains-q">¿Y ahora qué subís?</span></h2>
       </div>
       <ul class="pains js-pains">
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-trend-down"/></svg></span>
           <div><p class="pain-line">El CTR cae y no tenés nada nuevo para reemplazarlo.</p><p class="pain-fact">Un anuncio suele cansarse en menos de tres semanas.</p></div>
+          <div class="pv pv-ctr" aria-hidden="true">
+            <div class="pv-top"><span>Anuncio: Promo 2×1</span><span class="chip chip-fat">Fatigado</span></div>
+            <div class="pv-metric"><b>1,12%</b><span>CTR</span><em class="delta-bad">38% menos que en la semana 1</em></div>
+            <svg class="pv-spark" viewBox="0 0 280 70" preserveAspectRatio="none">
+              <path class="pv-spark-fill" d="M0,14 L24,10 L48,16 L72,13 L96,22 L120,26 L144,24 L168,34 L192,40 L216,44 L240,52 L276,58 L276,70 L0,70 Z"/>
+              <path class="pv-spark-line" pathLength="1" d="M0,14 L24,10 L48,16 L72,13 L96,22 L120,26 L144,24 L168,34 L192,40 L216,44 L240,52 L276,58"/>
+              <circle class="pv-spark-dot" cx="276" cy="58" r="3.5"/>
+            </svg>
+            <div class="pv-axis"><span>Día 1</span><span>Día 18</span></div>
+          </div>
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
           <div><p class="pain-line">Le pedís videos a un creador y tardan días en llegar.</p><p class="pain-fact">Y cada uno te sale cerca de USD 200.</p></div>
+          <div class="pv pv-chat" aria-hidden="true">
+            <div class="pv-top"><span class="pv-avatar">M</span><span class="pv-who"><b>Mica</b><span>Creadora UGC</span></span><span>Lun 9:41</span></div>
+            <p class="pv-bubble" style="--d:.3s">¡Hola! Te paso los 3 videos el jueves.</p>
+            <p class="pv-bubble" style="--d:.8s">Serían USD 600 en total.</p>
+            <span class="pv-typing"><i></i><i></i><i></i></span>
+          </div>
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar-blank"/></svg></span>
           <div><p class="pain-line">Llega el Hot Sale y estás grabando a las apuradas.</p><p class="pain-fact">Necesitás el doble de piezas justo cuando menos tiempo tenés.</p></div>
+          <div class="pv pv-week" aria-hidden="true">
+            <div class="pv-top"><span>Mayo</span><span class="pv-alert">Faltan 3 días</span></div>
+            <ol class="pv-days"><li>9</li><li class="is-today">10</li><li>11</li><li>12</li><li class="is-hot">13</li><li class="is-hot">14</li><li class="is-hot">15</li></ol>
+            <p class="pv-hot-label">Hot Sale</p>
+            <div class="pv-meter"><div class="pv-meter-top"><span>Piezas listas</span><b>4 de 20</b></div><span class="pv-bar"><i></i></span></div>
+          </div>
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-question"/></svg></span>
           <div><p class="pain-line">Algo funciona y no sabés por qué.</p><p class="pain-fact">De cada 20 piezas gana una. Si no sabés por qué, no la podés repetir.</p></div>
+          <div class="pv pv-results" aria-hidden="true">
+            <div class="pv-top"><span>Resultados del mes</span></div>
+            <ul class="pv-rows">
+              <li class="is-win"><span>Anuncio 07</span><b>CPA $3.620</b><span class="chip chip-win">Ganó</span></li>
+              <li><span>Anuncio 12</span><b>CPA $6.010</b><span></span></li>
+              <li><span>Anuncio 15</span><b>CPA $7.940</b><span></span></li>
+            </ul>
+            <span class="pv-ask"><svg class="icon"><use href="#i-question"/></svg>¿Por qué ganó el 07?</span>
+          </div>
         </li>
       </ul>
       <div class="pains-end" data-reveal>
@@ -667,9 +825,9 @@ a{color:inherit}
 
   <!-- ================= How it works ================= -->
   <section class="section how" id="como-funciona" aria-labelledby="como-t">
-    <div class="wrap" data-reveal>
+    <div class="wrap">
       <h2 class="h2" id="como-t">Del link al lote, en minutos.</h2>
-      <p class="lede">Generamos con IA, desde un link, lo que hoy toma semanas y cientos de dólares.</p>
+      <p class="lede" data-reveal>Generamos con IA, desde un link, lo que hoy toma semanas y cientos de dólares.</p>
     </div>
 
     <div class="how-pin">
@@ -748,9 +906,9 @@ a{color:inherit}
   <!-- ================= Evidence ================= -->
   <section class="section evidence" id="evidencia" aria-labelledby="evidencia-t">
     <div class="wrap">
-      <div data-reveal>
+      <div>
         <h2 class="h2" id="evidencia-t">Primero lee lo que tus clientes ya dicen.</h2>
-        <p class="lede">Reseñas, preguntas, catálogo y los anuncios activos de tu competencia. Solo información pública, sin conectar tu cuenta de Meta.</p>
+        <p class="lede" data-reveal>Reseñas, preguntas, catálogo y los anuncios activos de tu competencia. Solo información pública, sin conectar tu cuenta de Meta.</p>
       </div>
 
       <div class="bento" data-stagger>
@@ -808,10 +966,12 @@ a{color:inherit}
 
   <!-- ================= Batch ================= -->
   <section class="lote" id="lote" aria-labelledby="lote-t">
+   <div class="stage stage--night night">
+    <canvas class="lightfield" data-variant="night" aria-hidden="true"></canvas>
     <div class="lote-pin">
       <div class="wrap lote-head">
         <h2 class="h2" id="lote-t">Cada creativo llega con la hipótesis que prueba.</h2>
-        <p class="lede">Así sabés qué ángulo probar, por qué, y qué repetir en el próximo lote. Nada se publica sin tu aprobación.</p>
+        <p class="lede" data-reveal>Así sabés qué ángulo probar, por qué, y qué repetir en el próximo lote. Nada se publica sin tu aprobación.</p>
       </div>
       <div class="lote-viewport" role="region" aria-label="Creativos del lote" tabindex="0">
         <ul class="lote-track">
@@ -892,12 +1052,14 @@ a{color:inherit}
       </div>
       <div class="wrap"><p class="caption">Datos de ejemplo.</p></div>
     </div>
+    <div class="angle-band" aria-hidden="true"><div class="angle-band-track js-angle-band"><span>Prueba visible</span><svg class="icon"><use href="#i-angle"/></svg><span>Precio por uso</span><svg class="icon"><use href="#i-angle"/></svg><span>Objeción resuelta</span><svg class="icon"><use href="#i-angle"/></svg><span>Prueba social</span><svg class="icon"><use href="#i-angle"/></svg><span>Conveniencia</span><svg class="icon"><use href="#i-angle"/></svg><span>Comparativa</span></div></div>
+   </div>
   </section>
 
   <!-- ================= Why ================= -->
   <section class="section why" id="por-que" aria-labelledby="por-que-t">
     <div class="wrap">
-      <h2 class="h2" id="por-que-t" data-reveal>Por qué Ángulo y no lo que ya usás.</h2>
+      <h2 class="h2" id="por-que-t">Por qué Ángulo y no lo que ya usás.</h2>
       <div class="why-grid">
         <div class="vs" role="table" aria-label="Comparación con las alternativas actuales" data-stagger>
           <div class="vs-row vs-head" role="row"><span role="columnheader">Alternativa</span><span role="columnheader">Qué te da hoy</span><span role="columnheader">Qué le falta</span></div>
@@ -938,7 +1100,7 @@ a{color:inherit}
             <p class="lede">Estamos probando Ángulo con tiendas de ecommerce. Agendá una llamada de 30 minutos o escribinos por mail.</p>
             <!-- Contact data: Calendly booking link (also on the nav and hero buttons), email address (copied on click) and social profiles. -->
             <div class="contacts">
-              <a class="cbtn cbtn--primary js-calendly" href="https://calendly.com/contacto-angulo/30min" target="_blank" rel="noopener">
+              <a class="cbtn cbtn--primary js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener">
                 <svg class="icon cbtn-lead" aria-hidden="true"><use href="#i-calendar-blank"/></svg>
                 <span class="cbtn-label">Agendá una llamada</span>
                 <span class="cbtn-trail" aria-hidden="true"><span class="cbtn-trail-text">30 min</span><svg class="icon cbtn-arrow"><use href="#i-arrow-up-right"/></svg></span>
@@ -1075,8 +1237,10 @@ void main(){
       this.u = {};
       ['uRes', 'uTime', 'uMouse', 'uMouseAmt', 'uVariant', 'uDark', 'uCream', 'uPink', 'uMag', 'uVio', 'uLilac']
         .forEach((n) => { this.u[n] = gl.getUniformLocation(prog, n); });
-      this.variant = canvas.dataset.variant === 'cta' ? 1 : 0;
-      this.prefix = this.variant ? '--cta-' : '--lf-';
+      const kind = canvas.dataset.variant;
+      this.variant = kind === 'cta' ? 1 : 0;
+      this.prefix = kind === 'cta' ? '--cta-' : kind === 'night' ? '--nt-' : '--lf-';
+      this.forceDark = kind === 'night';
       this.mouse = [0.72, 0.45]; this.target = [0.72, 0.45]; this.amt = 0; this.amtTarget = 0;
       this.visible = false; this.raf = 0; this.t0 = performance.now();
       this.readColors();
@@ -1106,7 +1270,7 @@ void main(){
     readColors() {
       const cs = getComputedStyle(this.canvas);
       this.colors = ['cream', 'pink', 'mag', 'vio', 'lilac'].map((k) => hexToVec(cs.getPropertyValue(this.prefix + k)));
-      this.dark = isDark() ? 1 : 0;
+      this.dark = this.forceDark || isDark() ? 1 : 0;
     }
     resize() {
       const scale = Math.min(window.devicePixelRatio || 1, 1.5) * 0.6;
@@ -1154,6 +1318,29 @@ void main(){
   new MutationObserver(refreshFields).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
   /* ===================== Static enhancements (no GSAP needed) ===================== */
+  // Section headings: wrap each word in a mask so it can rise into place.
+  const splitWords = (el) => {
+    [...el.childNodes].forEach((node) => {
+      if (node.nodeType === 1) { splitWords(node); return; }
+      if (node.nodeType !== 3) return;
+      const frag = document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        const mask = document.createElement('span');
+        const word = document.createElement('span');
+        mask.className = 'wm';
+        word.className = 'wi';
+        word.textContent = part;
+        mask.appendChild(word);
+        frag.appendChild(mask);
+      });
+      node.replaceWith(frag);
+    });
+  };
+  const titles = $$('main .h2');
+  titles.forEach(splitWords);
+
   // Nav elevation once the page scrolls.
   const nav = $('.nav');
   const sentinel = document.createElement('div');
@@ -1373,23 +1560,134 @@ void main(){
     gsap.to('.fan', { yPercent: -10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     if (fineMQ.matches) {
       const stage = $('.stage--hero');
-      const qs = $$('.fan-tilt').map((el, i) => ({
+      const qs = $$('.fan-tilt').map((el) => ({
         rx: gsap.quickTo(el, 'rotationX', { duration: 0.9, ease: 'power3' }),
         ry: gsap.quickTo(el, 'rotationY', { duration: 0.9, ease: 'power3' }),
         x: gsap.quickTo(el, 'x', { duration: 1.1, ease: 'power3' }),
         y: gsap.quickTo(el, 'y', { duration: 1.1, ease: 'power3' }),
-        depth: [0.65, 1, 0.8][i],
       }));
       const move = (e) => {
         const r = stage.getBoundingClientRect();
         const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
         const ny = ((e.clientY - r.top) / r.height) * 2 - 1;
-        qs.forEach((q) => { q.ry(nx * 9 * q.depth); q.rx(-ny * 6 * q.depth); q.x(nx * 16 * q.depth); q.y(ny * 10 * q.depth); });
+        qs.forEach((q) => { q.ry(nx * 8); q.rx(-ny * 5); q.x(nx * 13); q.y(ny * 8); });
       };
       const leave = () => qs.forEach((q) => { q.rx(0); q.ry(0); q.x(0); q.y(0); });
       stage.addEventListener('pointermove', move);
       stage.addEventListener('pointerleave', leave);
       cleanups.push(() => { stage.removeEventListener('pointermove', move); stage.removeEventListener('pointerleave', leave); });
+    }
+
+    // Live batch: the tagline, acted out. The oldest creative tires out and leaves, the rest move up, a new one arrives.
+    {
+      const fan = $('.fan');
+      const pool = $$('.fan-slot', fan);
+      const SLOTS = [{ x: 0, y: 0.11, r: -7, z: 1 }, { x: 0.332, y: 0, r: -1.5, z: 3 }, { x: 0.665, y: 0.13, r: 6, z: 2 }];
+      const ENTER = { x: 0.82, y: 0.6, r: 14 };
+      const EXIT = { x: -0.16, y: 0.6, r: -16 };
+      let order = pool.slice();
+      let busy = false, visible = true, pending = null, current = null;
+      const at = (s) => ({ x: s.x * fan.offsetWidth, y: s.y * fan.offsetHeight, rotation: s.r });
+      const place = () => order.forEach((li, i) => gsap.set(li, i < 3
+        ? { ...at(SLOTS[i]), zIndex: SLOTS[i].z, autoAlpha: 1 }
+        : { ...at(ENTER), zIndex: 0, autoAlpha: 0 }));
+      fan.classList.add('is-live');
+      place();
+      const schedule = (delay) => { if (pending) pending.kill(); pending = gsap.delayedCall(delay, cycle); };
+      function cycle() {
+        pending = null;
+        if (!visible || busy) return;
+        busy = true;
+        const [a, b, c, next] = order;
+        a.classList.add('is-tired');
+        current = gsap.timeline({
+          onComplete: () => {
+            a.classList.remove('is-tired');
+            next.classList.remove('is-new');
+            gsap.set(a, { ...at(ENTER), zIndex: 0, autoAlpha: 0 });
+            order = [b, c, next, ...order.slice(4), a];
+            busy = false;
+            current = null;
+            schedule(2.2);
+          },
+        });
+        current
+          .to(a, { ...at(EXIT), autoAlpha: 0, duration: 0.8, ease: 'power3.out' }, 1.1)
+          .set(b, { zIndex: SLOTS[0].z }, 1.2)
+          .to(b, { ...at(SLOTS[0]), duration: 1.1, ease: 'expo.out' }, 1.2)
+          .set(c, { zIndex: SLOTS[1].z }, 1.25)
+          .to(c, { ...at(SLOTS[1]), duration: 1.1, ease: 'expo.out' }, 1.25)
+          .set(next, { ...at(ENTER), zIndex: SLOTS[2].z, autoAlpha: 0 }, 1.3)
+          .call(() => next.classList.add('is-new'), null, 1.3)
+          .to(next, { ...at(SLOTS[2]), autoAlpha: 1, duration: 1.2, ease: 'expo.out' }, 1.3)
+          .to({}, { duration: 1.4 });
+      }
+      const io = new IntersectionObserver(([en]) => {
+        visible = en.isIntersecting;
+        if (visible && !busy && !pending) schedule(1.4);
+      }, { threshold: 0.2 });
+      io.observe(fan);
+      schedule(3);
+      const onResize = () => { if (!busy) place(); };
+      window.addEventListener('resize', onResize);
+      cleanups.push(() => {
+        io.disconnect();
+        window.removeEventListener('resize', onResize);
+        if (pending) pending.kill();
+        if (current) current.kill();
+        fan.classList.remove('is-live');
+        pool.forEach((li) => { li.classList.remove('is-tired', 'is-new'); gsap.set(li, { clearProps: 'all' }); });
+      });
+    }
+
+    // Section headings rise word by word.
+    titles.forEach((t) => gsap.from($$('.wi', t), {
+      yPercent: 118, duration: 1.05, ease: EASE, stagger: 0.035,
+      scrollTrigger: { trigger: t, start: 'top 86%', once: true },
+    }));
+
+    // Nav steps aside while reading down, comes back on the way up.
+    {
+      const navEl = $('.nav');
+      ScrollTrigger.create({
+        start: 0, end: 'max',
+        onUpdate: (self) => {
+          const y = self.scroll();
+          if (self.direction === 1 && y > 260) navEl.classList.add('is-hidden');
+          else if (self.direction === -1 || y <= 260) navEl.classList.remove('is-hidden');
+        },
+      });
+      cleanups.push(() => navEl.classList.remove('is-hidden'));
+    }
+
+    // Primary calls to action lean toward the pointer.
+    if (fineMQ.matches) {
+      $$('.js-magnetic').forEach((el) => {
+        let raf = 0, tx = 0, ty = 0, cx = 0, cy = 0;
+        const tick = () => {
+          cx += (tx - cx) * 0.18;
+          cy += (ty - cy) * 0.18;
+          el.style.translate = `${cx.toFixed(2)}px ${cy.toFixed(2)}px`;
+          if (Math.abs(tx - cx) + Math.abs(ty - cy) > 0.08) raf = requestAnimationFrame(tick);
+          else { raf = 0; if (!tx && !ty) el.style.translate = ''; }
+        };
+        const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+        const move = (e) => {
+          const r = el.getBoundingClientRect();
+          tx = (e.clientX - (r.left - cx + r.width / 2)) * 0.2;
+          ty = (e.clientY - (r.top - cy + r.height / 2)) * 0.28;
+          kick();
+        };
+        const leave = () => { tx = 0; ty = 0; kick(); };
+        el.addEventListener('pointermove', move);
+        el.addEventListener('pointerleave', leave);
+        cleanups.push(() => {
+          el.removeEventListener('pointermove', move);
+          el.removeEventListener('pointerleave', leave);
+          cancelAnimationFrame(raf);
+          el.style.translate = '';
+        });
+      });
     }
 
     /* ---- Problem: each pain lights up as it reaches the middle of the screen ---- */
@@ -1507,6 +1805,8 @@ void main(){
     gsap.from($$('.js-bars .bar', evidence), { scaleX: 0, duration: 1.3, ease: EASE, stagger: 0.1, scrollTrigger: { trigger: '.js-bars', start: 'top 85%', once: true } });
 
     /* ---- Batch: cards slide in once; the carousel itself is plain scrolling ---- */
+    reveal($('#lote'));
+    gsap.fromTo('.js-angle-band', { xPercent: 0 }, { xPercent: -38, ease: 'none', scrollTrigger: { trigger: '#lote', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
     gsap.from($$('.lote-track > li'), {
       x: 80, autoAlpha: 0, duration: 1.1, ease: EASE, stagger: 0.08,
       scrollTrigger: { trigger: '.lote-track', start: 'top 85%', once: true },
