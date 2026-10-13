@@ -198,32 +198,6 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .nav-links a{display:block;padding:10px 14px;border-radius:999px;font:500 .875rem/1 var(--font-body);color:var(--ink-2);text-decoration:none;transition:background-color .2s ease,color .2s ease}
 .nav-links a:hover{background:var(--tint);color:var(--ink)}
 @media (max-width:899px){.nav-links{display:none}.nav{padding-left:18px}}
-/* Social links: a brand glow blooms from the centre, the icon rolls up and a copy rolls in, a small label appears below. */
-.nav-end{display:flex;align-items:center;gap:10px}
-.nav-social{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-.nav-soc{position:relative;display:block;width:40px;height:40px;border-radius:999px;color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .16s var(--ease-out)}
-.nav-soc:active{transform:scale(.92)}
-.nav-soc::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 0 0 5px rgb(var(--mag) / .1),0 0 26px 4px rgb(var(--mag) / .4);opacity:0;transition:opacity .3s ease;pointer-events:none}
-.nav-soc-face{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;width:100%;height:100%;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--line-strong);transition:box-shadow .3s ease}
-.nav-soc-face::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 40% 35%,#FFF4FA 0 14%,var(--mag-soft) 60%,rgb(var(--mag) / .7));opacity:0;transform:scale(.4);transition:opacity .25s ease,transform .45s var(--ease-out)}
-.nav-soc .icon{grid-area:1/1;width:19px;height:19px;transition:transform .42s var(--ease-out),color .25s ease}
-.nav-soc .nav-soc-next{transform:translateY(170%)}
-.nav-tip{position:absolute;top:calc(100% + 12px);left:50%;translate:-50% 0;padding:7px 10px;border-radius:8px;background:var(--btn-bg);color:var(--btn-fg);font:600 .72rem/1 var(--font-body);letter-spacing:.01em;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(-4px) scale(.97);transform-origin:50% 0;transition:opacity .125s var(--ease-out),transform .125s var(--ease-out)}
-.nav-soc:focus-visible .nav-tip{opacity:1;transform:none}
-/* Once one label has shown, its neighbour's shows at once (class set by the script). */
-.nav-social.is-warm .nav-tip{transition-duration:0s;transition-delay:0s}
-@media (hover:hover) and (pointer:fine){
-  .nav-soc:hover{color:#171512}
-  .nav-soc:hover::after{opacity:1}
-  .nav-soc:hover .nav-soc-face{box-shadow:inset 0 0 0 1px transparent}
-  .nav-soc:hover .nav-soc-face::before{opacity:1;transform:none}
-  .nav-soc:hover .icon{transform:translateY(-170%)}
-  .nav-soc:hover .nav-soc-next{transform:none}
-  .nav-soc:hover .nav-tip{opacity:1;transform:none;transition-delay:.35s}
-  .nav-social.is-warm .nav-soc:hover .nav-tip{transition-delay:0s}
-}
-@media (max-width:899px){.nav-end{gap:8px}.nav-social{gap:2px}.nav-soc{width:38px;height:38px}.nav-soc .icon{width:18px;height:18px}}
-@media (max-width:359px){.nav{gap:10px;padding-left:14px}.nav-end{gap:6px}.nav-social{gap:0}.nav-soc{width:34px;height:34px}.nav-soc .icon{width:17px;height:17px}}
 
 /* ---------- Stage (light field) ---------- */
 .stage{position:relative;isolation:isolate;overflow:hidden;border-radius:30px;background:
@@ -686,7 +660,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 
 /* ---------- Intro gate + reduced motion ---------- */
 .intro-pending .hero-title .line > span{transform:translateY(112%)}
-.intro-pending .hero-eyebrow,.intro-pending .hero-sub,.intro-pending .hero-ctas,.intro-pending .fan-card,.intro-pending .nav-soc-face{opacity:0}
+.intro-pending .hero-eyebrow,.intro-pending .hero-sub,.intro-pending .hero-ctas,.intro-pending .fan-card{opacity:0}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 }
@@ -705,13 +679,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
     <li><a href="#por-que">Por qué Ángulo</a></li>
     <li><a href="#lote">Ejemplos</a></li>
   </ul>
-  <div class="nav-end">
-    <ul class="nav-social" aria-label="Redes de Ángulo">
-      <li><a class="nav-soc js-magnetic" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-instagram-logo"/></svg><svg class="icon nav-soc-next"><use href="#i-instagram-logo"/></svg></span><span class="nav-tip" aria-hidden="true">Instagram</span></a></li>
-      <li><a class="nav-soc js-magnetic" href="https://www.linkedin.com/company/angulo-app" target="_blank" rel="noopener" aria-label="LinkedIn de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-linkedin-logo"/></svg><svg class="icon nav-soc-next"><use href="#i-linkedin-logo"/></svg></span><span class="nav-tip" aria-hidden="true">LinkedIn</span></a></li>
-    </ul>
-    <a class="btn btn-primary btn-sm js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
-  </div>
+  <a class="btn btn-primary btn-sm js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
 </nav>
 
 <main>
@@ -1143,7 +1111,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
                 <span class="cbtn-trail" aria-hidden="true"><span class="cbtn-swap"><svg class="icon i-cp"><use href="#i-copy"/></svg><svg class="icon i-ok"><use href="#i-check"/></svg></span><span class="cbtn-trail-text js-copy-label">Copiar</span></span>
               </button>
               <div class="socials">
-                <a class="cbtn cbtn--soft" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)">
+                <a class="cbtn cbtn--soft" href="https://www.instagram.com/angulo.digital_?vrfl=cnRkNTU2Yno5YnNy" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)">
                   <svg class="icon cbtn-lead" aria-hidden="true"><use href="#i-instagram-logo"/></svg>
                   <span class="cbtn-label">Instagram</span>
                   <span class="cbtn-trail" aria-hidden="true"><svg class="icon cbtn-arrow"><use href="#i-arrow-up-right"/></svg></span>
@@ -1486,19 +1454,6 @@ void main(){
     vp.addEventListener('pointercancel', endDrag);
   })();
 
-  /* ===================== Nav social links: labels ===================== */
-  // The first label waits a moment (so passing over doesn't flash it); after that the neighbour's opens at once.
-  (() => {
-    const group = $('.nav-social');
-    let timer = 0;
-    $$('.nav-soc', group).forEach((a) => a.addEventListener('pointerenter', () => {
-      if (group.classList.contains('is-warm')) return;
-      clearTimeout(timer);
-      timer = setTimeout(() => group.classList.add('is-warm'), 480);
-    }));
-    group.addEventListener('pointerleave', () => { clearTimeout(timer); group.classList.remove('is-warm'); });
-  })();
-
   /* ===================== Calendly: booking opens as a popup over the page ===================== */
   // The widget loads only near the contact section or when a booking button is about to be used.
   // Until it is ready (or if it fails to load), the buttons are plain links that open Calendly in a new tab.
@@ -1599,8 +1554,7 @@ void main(){
       .from('.hero-title .line > span', { yPercent: 112, duration: 1.15, stagger: 0.09 })
       .from('.hero-eyebrow', { y: 14, autoAlpha: 0, duration: 0.9 }, 0.05)
       .from(['.hero-sub', '.hero-ctas'], { y: 18, autoAlpha: 0, duration: 1, stagger: 0.08 }, 0.35)
-      .from('.fan-card', { y: 140, rotate: 6, autoAlpha: 0, duration: 1.3, stagger: 0.1 }, 0.3)
-      .from('.nav-soc-face', { scale: 0.8, rotate: -25, autoAlpha: 0, duration: 1, stagger: 0.08, clearProps: 'transform,opacity,visibility' }, 0.55);
+      .from('.fan-card', { y: 140, rotate: 6, autoAlpha: 0, duration: 1.3, stagger: 0.1 }, 0.3);
 
     // Cards drift up as the hero scrolls away (depth), and lean toward the pointer.
     gsap.to('.fan', { yPercent: -10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
