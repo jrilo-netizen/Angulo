@@ -652,7 +652,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   </ul>
   <div class="nav-end">
     <ul class="nav-social" aria-label="Redes de Ángulo">
-      <li><a class="nav-soc js-magnetic" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-instagram-logo"/></svg></span><span class="nav-tip" aria-hidden="true">Instagram</span></a></li>
+      <li><a class="nav-soc js-magnetic" href="https://www.instagram.com/angulo__digital/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-instagram-logo"/></svg></span><span class="nav-tip" aria-hidden="true">Instagram</span></a></li>
       <li><a class="nav-soc js-magnetic" href="https://www.linkedin.com/company/angulo-app" target="_blank" rel="noopener" aria-label="LinkedIn de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-linkedin-logo"/></svg></span><span class="nav-tip" aria-hidden="true">LinkedIn</span></a></li>
     </ul>
     <a class="btn btn-primary btn-sm js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
@@ -997,7 +997,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
                 <span class="cbtn-trail" aria-hidden="true"><span class="cbtn-swap"><svg class="icon i-cp"><use href="#i-copy"/></svg><svg class="icon i-ok"><use href="#i-check"/></svg></span><span class="cbtn-trail-text js-copy-label">Copiar</span></span>
               </button>
               <div class="socials">
-                <a class="cbtn cbtn--soft" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)">
+                <a class="cbtn cbtn--soft" href="https://www.instagram.com/angulo__digital/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)">
                   <svg class="icon cbtn-lead" aria-hidden="true"><use href="#i-instagram-logo"/></svg>
                   <span class="cbtn-label">Instagram</span>
                   <span class="cbtn-trail" aria-hidden="true"><svg class="icon cbtn-arrow"><use href="#i-arrow-up-right"/></svg></span>
@@ -1695,16 +1695,3 @@ void main(){
 
     /* ---- Contact ---- */
     gsap.from('.js-word', { yPercent: 18, autoAlpha: 0, duration: 1.4, ease: EASE, scrollTrigger: { trigger: '#contacto', start: 'top 75%', once: true } });
-    gsap.from('.cta-card', { y: 50, autoAlpha: 0, duration: 1.2, ease: EASE, delay: 0.15, scrollTrigger: { trigger: '#contacto', start: 'top 70%', once: true } });
-    gsap.from('.contacts .cbtn', { y: 18, autoAlpha: 0, duration: 0.9, ease: EASE, delay: 0.45, stagger: 0.09, clearProps: 'transform', scrollTrigger: { trigger: '#contacto', start: 'top 70%', once: true } });
-
-    return () => cleanups.forEach((fn) => fn());
-  });
-
-  // Pin distances depend on the web fonts; measure again once they are in.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
-  window.addEventListener('load', () => ScrollTrigger.refresh());
-})();
-</script>
-</body>
-</html>
