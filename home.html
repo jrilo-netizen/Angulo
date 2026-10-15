@@ -413,7 +413,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   .screen{aspect-ratio:9/17}
   .screen--start{--tx:12%;--ty:37.5%;--tw:77%;--th:5.3%;--tf:3.7cqw;--px:7.2%;--py:44.7%;--pw:85.7%;--ph:7.5%}
   .screen--angles{--px:64.8%;--py:57.8%;--pw:23.7%;--ph:4.6%}
-  .results{--tile:34cqw}
+  .results{--tile:30cqw}
   .res-band{padding:8cqw 5cqw 6cqw}
   .res-title{font-size:10.5cqw}
   .res-sub{margin-top:2.4cqw;font-size:3.4cqw}
@@ -1695,3 +1695,16 @@ void main(){
 
     /* ---- Contact ---- */
     gsap.from('.js-word', { yPercent: 18, autoAlpha: 0, duration: 1.4, ease: EASE, scrollTrigger: { trigger: '#contacto', start: 'top 75%', once: true } });
+    gsap.from('.cta-card', { y: 50, autoAlpha: 0, duration: 1.2, ease: EASE, delay: 0.15, scrollTrigger: { trigger: '#contacto', start: 'top 70%', once: true } });
+    gsap.from('.contacts .cbtn', { y: 18, autoAlpha: 0, duration: 0.9, ease: EASE, delay: 0.45, stagger: 0.09, clearProps: 'transform', scrollTrigger: { trigger: '#contacto', start: 'top 70%', once: true } });
+
+    return () => cleanups.forEach((fn) => fn());
+  });
+
+  // Pin distances depend on the web fonts; measure again once they are in.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
