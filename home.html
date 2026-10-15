@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ángulo</title>
-<meta name="description" content="Ángulo genera con IA, desde el link de tu tienda, un lote de creativos para Meta Ads, cada uno con la hipótesis que prueba.">
+<meta name="description" content="Ángulo genera con IA, desde el link de tu producto, campañas de imágenes para tus anuncios, cada una con su propia estética.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap">
@@ -71,9 +71,6 @@
   --word:#F4F0E8; --on-btn-positive:#8AD1AA;
   --nt-cream:#140910; --nt-pink:#2B0F24; --nt-mag:#8E2069; --nt-vio:#3C1B80; --nt-lilac:#20112F;
   --disc-a:#F2D2E3; --disc-b:#D9CFEE; --disc-c:#EFE4EA;
-
-  /* Creatives are ads: they keep one palette in both themes */
-  --cv-ink:#171512; --cv-ink-2:#4A443D; --cv-paper:#F6F1EA;
 
   --ease-out:cubic-bezier(.23,1,.32,1);
   --ease-io:cubic-bezier(.77,0,.175,1);
@@ -238,12 +235,12 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .hero{padding:10px;padding-top:calc(env(safe-area-inset-top,0px) + 10px)}
 .stage--hero{min-height:clamp(700px,calc(100dvh - 20px),960px);display:flex}
 .hero-inner{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding-top:clamp(120px,15vh,156px);padding-bottom:56px}
-.hero-title{margin-top:24px;font-weight:700;font-size:clamp(1.95rem,.8rem + 3.3vw,3.7rem);line-height:1.02;letter-spacing:-.04em}
+.hero-title{margin-top:24px;font-weight:700;font-size:clamp(2.3rem,.9rem + 4.2vw,4.6rem);line-height:1.02;letter-spacing:-.04em}
 .hero-title .line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
 .hero-title .line > span{display:inline-block}
 .hero-sub{margin-top:26px;max-width:35ch;font-size:clamp(1.05rem,.95rem + .35vw,1.25rem);line-height:1.5;color:var(--ink-2)}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.fan{position:absolute;right:clamp(16px,4vw,64px);bottom:clamp(28px,5vh,60px);width:600px;height:390px;perspective:1400px}
+.fan{position:absolute;right:clamp(16px,4vw,64px);bottom:clamp(28px,5vh,60px);width:560px;height:480px;perspective:1400px}
 .fan-slot{position:absolute;top:var(--t);left:var(--l);width:33.5%;transform:rotate(var(--r));z-index:var(--z)}
 .fan-slot:nth-child(1){--l:0%;--t:44px;--r:-7deg;--z:1}
 .fan-slot:nth-child(2){--l:33.2%;--t:0px;--r:-1.5deg;--z:3}
@@ -252,65 +249,37 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .fan-slot:nth-child(n+4){display:none}
 /* Live batch (JS): every card is placed by transforms; the oldest one tires out and a new one arrives. */
 .fan.is-live .fan-slot{display:block;left:0;top:0;transform:none}
-.fan-slot .cv{transition:filter .7s ease,opacity .7s ease}
-.fan-slot.is-tired .cv{filter:grayscale(1) contrast(.9);opacity:.72}
+.fan-slot .ph{transition:filter .7s ease,opacity .7s ease}
+.fan-slot.is-tired .ph{filter:grayscale(1) contrast(.9);opacity:.72}
 .ccard-meta .chip{height:20px;padding:0 8px;font-size:.62rem}
 .ccard-meta .fm-state{display:none}
-.fan-slot.is-tired .fm-format,.fan-slot.is-new .fm-format{display:none}
-.ccard-meta .fm-state{display:none}
+.fan-slot.is-tired .fm-format,.fan-slot.is-new .fm-format,.fan-slot.is-tired .ccard-meta b,.fan-slot.is-new .ccard-meta b{display:none}
 .fan-slot.is-tired .ccard-meta .fm-tired,.fan-slot.is-new .ccard-meta .fm-new{display:inline-flex;animation:chip-in .4s var(--ease-out)}
 @keyframes chip-in{from{opacity:0;transform:scale(.9)}}
-.fan .cv{font-size:13px}
 @media (max-height:760px) and (min-width:900px){.fan{transform:scale(.84);transform-origin:bottom right}}
-@media (max-width:1180px) and (min-width:900px){.fan{width:480px;height:330px}.fan .cv{font-size:11px}}
+@media (max-width:1180px) and (min-width:900px){.fan{width:440px;height:380px}}
 @media (max-width:899px){
   .stage--hero{min-height:0}
   .hero-inner{padding-top:112px;padding-bottom:28px}
-  .fan{position:relative;right:auto;bottom:auto;width:min(100%,460px);height:auto;aspect-ratio:460/300;margin:44px auto 0}
-  .fan .cv{font-size:clamp(8px,2.6vw,11px)}
-  .fan .cv-big{font-size:2.35em}
+  .fan{position:relative;right:auto;bottom:auto;width:min(100%,460px);height:auto;aspect-ratio:460/420;margin:44px auto 0}
   .fan-slot:nth-child(1){--t:9%}
   .fan-slot:nth-child(3){--t:11%}
 }
 
 /* Creative card (shell around an ad) */
-.ccard{padding:7px;border-radius:20px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.ccard{margin:0;padding:7px;border-radius:20px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.ph{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:14px;background:var(--paper-2)}
 .ccard-meta{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:10px 6px 2px;font:600 .7rem/1 var(--font-body);color:var(--ink-3)}
-.ccard-meta b{color:var(--ink);font-weight:700}
-.ccard-hyp{padding:6px 6px 5px;font-size:.74rem;line-height:1.35;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-@media (max-width:899px){.ccard-hyp{display:none}.ccard-meta{font-size:.62rem}}
-
-/* ---------- Creatives (typographic ads, em-based so they scale) ---------- */
-.cv{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:4/5;border-radius:14px;padding:1em;display:flex;flex-direction:column;justify-content:flex-end;gap:.5em;background:var(--cv-paper);color:var(--cv-ink);font-size:15px}
-.cv-hook{font:700 1.08em/1.12 var(--font-display);letter-spacing:-.02em}
-.cv-kicker{font:600 .72em/1.25 var(--font-body)}
-.cv-big{font:800 3.7em/.86 var(--font-display);letter-spacing:-.06em;font-variant-numeric:tabular-nums}
-.cv-big small{display:block;margin-top:.4em;font-size:.3em;font-weight:700;letter-spacing:-.01em}
-.cv-fine{font:500 .62em/1.35 var(--font-body);color:var(--cv-ink-2)}
-.cv-play{position:absolute;top:50%;left:50%;width:3em;height:3em;margin:-1.9em 0 0 -1.5em;border-radius:50%;display:grid;place-items:center;background:rgb(255 255 255 / .78);box-shadow:0 .4em 1.2em -.4em rgb(23 21 18 / .35)}
-.cv-play .icon{width:1.15em;height:1.15em;margin-left:.12em}
-.cv-play--corner{top:.9em;left:auto;right:.9em;margin:0;width:2.3em;height:2.3em}
-.cv-01{background:linear-gradient(90deg,#E4DBD1 0 50%,#F5E3EC 50% 100%)}
-.cv-01::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(34% 30% at 25% 40%,rgb(150 128 108 / .28),transparent 70%),radial-gradient(38% 34% at 75% 38%,rgb(226 118 176 / .5),transparent 72%)}
-.cv-days{position:absolute;top:.85em;left:.85em;right:.85em;display:flex;justify-content:space-between;font:600 .62em/1 var(--font-body)}
-.cv-days span{padding:.5em .75em;border-radius:999px;background:rgb(255 255 255 / .75)}
-.cv-01 .cv-hook{margin:0 -1em -1em;padding:2.4em 1em 1em;background:linear-gradient(to top,rgb(246 241 234 / .96) 40%,rgb(246 241 234 / 0))}
-.cv-02{justify-content:space-between;background:radial-gradient(80% 60% at 85% 8%,#EBC4DF,transparent 70%),radial-gradient(75% 60% at 5% 100%,#DACFEF,transparent 72%),#F6F1EA}
-.cv-03{justify-content:space-between;background:radial-gradient(75% 60% at 50% 28%,#D8CCF0,transparent 72%),#F2EEF6}
-.cv-03 .cv-play{top:.9em;left:auto;right:.9em;margin:0;width:2.3em;height:2.3em}
-.cv-04{justify-content:center;gap:.8em;background:radial-gradient(90% 70% at 0% 0%,#F1CBDF,transparent 66%),radial-gradient(80% 70% at 100% 100%,#DCD3EF,transparent 70%),#F7F1EC}
-.cv-stars{display:flex;gap:.2em;color:#A2447D}
-.cv-stars .icon{width:.95em;height:.95em}
-.cv-quote{font:700 1.14em/1.14 var(--font-display);letter-spacing:-.02em}
-.cv-dots{position:absolute;bottom:.95em;left:0;right:0;display:flex;justify-content:center;gap:.35em}
-.cv-dots i{width:.38em;height:.38em;border-radius:50%;background:rgb(23 21 18 / .2)}
-.cv-dots i:first-child{background:var(--cv-ink)}
-.cv-07{background:radial-gradient(80% 60% at 100% 0%,#F0C6DC,transparent 70%),linear-gradient(165deg,#F8EAF0,#E8DDF1)}
-.cv-08{justify-content:space-between;background:#EEE5D8}
-.cv-10{justify-content:space-between;background:radial-gradient(80% 60% at 100% 0%,#D9CFEF,transparent 72%),#F5F0E8}
-.is-fatigued .cv{filter:grayscale(.9) contrast(.92);opacity:.78}
+.ccard-meta b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:700}
+@media (max-width:1180px){.ccard-meta .fm-format{display:none}}
+@media (max-width:899px){.ccard-meta{align-items:flex-start;font-size:.62rem;line-height:1.2}.ccard-meta b{white-space:normal}}
+/* Palette swatches (campaign colours) */
+.sw{display:inline-flex;align-items:center}
+.sw i{width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--sw-ring,var(--raised))}
+.sw i + i{margin-left:-5px}
 
 /* ---------- Problem: the reader's own week, one pain at a time ---------- */
+.problem{padding-bottom:clamp(48px,5vw,72px)}
 .pains-kicker{font:600 clamp(1rem,.95rem + .2vw,1.1rem)/1.4 var(--font-body);color:var(--ink-2)}
 .pains-title{margin-top:14px;max-width:19ch}
 .pains-q{display:block}
@@ -363,13 +332,16 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .pv-meter-top b{color:var(--ink)}
 .pv-bar{display:block;height:8px;margin-top:10px;border-radius:999px;background:var(--paper-2);overflow:hidden}
 .pv-bar i{display:block;height:100%;width:20%;border-radius:inherit;background:var(--caution);transform-origin:left;transition:transform 1.2s var(--ease-out) .4s}
-.pv-rows{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
-.pv-rows li{display:grid;grid-template-columns:minmax(0,1fr) auto 64px;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:.84rem;color:var(--ink-2)}
-.pv-rows b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-.pv-rows .chip{height:22px;padding:0 9px;justify-self:end}
-.pv-rows .is-win{background:var(--positive-bg)}
-.pv-ask{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 14px 9px 10px;border-radius:999px;background:var(--btn-bg);color:var(--btn-fg);font:600 .82rem/1 var(--font-body);transform-origin:left center;transition:opacity .5s var(--ease-out) .7s,transform .6s cubic-bezier(.34,1.56,.64,1) .7s}
-.pv-ask .icon{width:18px;height:18px}
+/* A feed where every post looks like a different brand. Mismatched type and colour on purpose. */
+.pv-feed{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pv-feed li{aspect-ratio:1;display:grid;place-items:center;padding:6px;border-radius:8px;text-align:center;overflow:hidden;transition:opacity .5s var(--ease-out) var(--d,0s),transform .6s var(--ease-out) var(--d,0s)}
+.pf-sale{background:#FFE14D;color:#111;font:400 1.35rem/.95 Impact,"Arial Black",sans-serif;text-transform:uppercase}
+.pf-soft{background:#F7D6E4;color:#9C3D6B;font:italic 400 1rem/1.1 Georgia,serif}
+.pf-new{background:linear-gradient(135deg,#3EC5FF,#2557E8);color:#fff;font:800 1.1rem/1 var(--font-body)}
+.pf-new span{display:block;rotate:-6deg}
+.pf-ship{background:#121212;color:#9BFF3B;font:700 .8rem/1.15 "Courier New",monospace;text-transform:uppercase}
+.pf-hot{background:#E3262E;color:#fff;font:800 1.15rem/.95 var(--font-display);text-transform:uppercase}
+.pf-last{background:#EADBC6;color:#6B4423;font:600 .7rem/1.3 Georgia,serif;letter-spacing:.12em;text-transform:uppercase}
 /* Scenes play in as their row lights up */
 .pains.is-focus .pv{opacity:0;transform:translateY(22px) scale(.97)}
 .pains.is-focus .pain.is-seen .pv{opacity:1;transform:none}
@@ -379,13 +351,13 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .pains.is-focus .pain.is-seen .pv-bubble{opacity:1;transform:none}
 .pains.is-focus .pv-bar i{transform:scaleX(0)}
 .pains.is-focus .pain.is-seen .pv-bar i{transform:none}
-.pains.is-focus .pv-ask{opacity:0;transform:scale(.9)}
-.pains.is-focus .pain.is-seen .pv-ask{opacity:1;transform:none}
+.pains.is-focus .pv-feed li{opacity:0;transform:scale(.88)}
+.pains.is-focus .pain.is-seen .pv-feed li{opacity:1;transform:none}
 
 /* ---------- How it works (autoplays while in view) ---------- */
 .how{padding-bottom:clamp(64px,8vw,120px)}
 .how-pin{padding-top:clamp(48px,6vw,80px)}
-.how-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:center}
+.how-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(32px,5vw,80px);align-items:center}
 .how-grid > *{min-width:0}
 .how-steps{position:relative;list-style:none;margin:0;padding:0 0 0 30px;display:grid;gap:40px}
 .how-rail{position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:2px;background:var(--line)}
@@ -406,121 +378,102 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .app{position:relative;isolation:isolate}
 .app::before{content:"";position:absolute;inset:6% -8% -12%;z-index:-1;pointer-events:none;background:radial-gradient(45% 50% at 35% 55%,rgb(var(--mag) / .22),transparent 72%),radial-gradient(45% 50% at 70% 70%,rgb(var(--vio) / .18),transparent 72%)}
 .core{border-radius:22px;background:var(--raised);box-shadow:var(--core-hi),0 0 0 1px var(--line),var(--shadow)}
-.app-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;border-bottom:1px solid var(--line)}
-.app-bar .logo{height:16px;width:auto;aspect-ratio:1077/351;color:var(--ink)}
-.app-step{font:600 .75rem/1 var(--font-body);color:var(--ink-3)}
-.app-views{display:grid;grid-template-columns:minmax(0,1fr);gap:44px;padding:26px 26px 28px}
-.how.is-playing .app-views{gap:0}
+/* Window frame around the real app screens (screens keep their own light palette in both themes) */
+.device .core{overflow:hidden}
+.device-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;height:42px;padding:0 18px;border-bottom:1px solid var(--line)}
+.device-dots{display:flex;gap:7px}
+.device-dots i{width:10px;height:10px;border-radius:50%;background:var(--line-strong)}
+.device-step{font:600 .75rem/1 var(--font-body);color:var(--ink-3)}
+.app-views{display:grid;grid-template-columns:minmax(0,1fr)}
+.app-view + .app-view{border-top:1px solid var(--line)}
 .how.is-playing .app-view{grid-area:1/1}
-.how.is-playing .app-view + .app-view{padding-top:0;border-top:0}
-.app-view > h4{font:700 1.35rem/1.15 var(--font-display);letter-spacing:-.02em}
-.app-view > p{margin-top:6px;font-size:.93rem;color:var(--ink-2)}
-.view-step{display:none;margin-bottom:10px;font:600 .8rem/1 var(--font-body);color:var(--ink-3)}
-.field{display:flex;align-items:center;gap:10px;height:54px;margin-top:18px;padding:0 6px 0 16px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-strong)}
-.field > .icon{width:18px;height:18px;color:var(--ink-3)}
-.field-text{flex:1 1 0;width:0;min-width:0;overflow:hidden;white-space:nowrap;font:500 1rem/1 var(--font-body);color:var(--ink)}
-.caret{display:inline-block;width:2px;height:1.1em;margin-left:1px;vertical-align:-.2em;background:var(--ink);animation:caret 1s steps(1) infinite}
+.how.is-playing .app-view + .app-view{border-top:0}
+.view-step{display:none;padding:16px 18px 12px;font:600 .8rem/1 var(--font-body);color:var(--ink-3)}
+.screen{position:relative;overflow:hidden;aspect-ratio:16/10;container-type:inline-size;background:#FBF6F5;color:#1E1424}
+.screen picture{display:block;width:100%;height:100%}
+.screen picture img{width:100%;height:100%;object-fit:cover;object-position:top;transform-origin:50% 0}
+/* Hotspots are placed in percentages of the screenshot, so they stay on target at any size */
+.screen--start{--tx:25.6%;--ty:46%;--tw:35.5%;--th:5%;--tf:1.1cqw;--px:61.6%;--py:45.4%;--pw:14.3%;--ph:6.3%}
+.screen--angles{--px:69%;--py:90.6%;--pw:17.8%;--ph:6%}
+.typed{position:absolute;left:var(--tx);top:var(--ty);width:var(--tw);height:var(--th);display:flex;align-items:center;overflow:hidden;white-space:nowrap;background:#FFFDFC;color:#2B2230;font:500 var(--tf)/1 var(--font-body)}
+.caret{display:inline-block;width:2px;height:1.1em;margin-left:1px;vertical-align:-.2em;background:currentColor;animation:caret 1s steps(1) infinite}
 @keyframes caret{50%{opacity:0}}
-.app-btn{display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:999px;background:var(--btn-bg);color:var(--btn-fg);font:600 .85rem/1 var(--font-body);white-space:nowrap}
-.compat{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;font-size:.8rem;color:var(--ink-3)}
-.tag{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--paper-2);color:var(--ink-2);font:500 .74rem/1 var(--font-body)}
-.reads{display:grid;gap:8px;margin-top:22px}
-.read{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:12px 14px;border-radius:14px;background:var(--paper)}
-.read > .icon{width:20px;height:20px;margin-top:2px;color:var(--ink)}
-.read b{display:block;font:600 .86rem/1.3 var(--font-body);color:var(--ink)}
-.read span{display:block;font-size:.8rem;line-height:1.4;color:var(--ink-3)}
-.urlrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;font:500 .84rem/1 var(--font-body);color:var(--ink-3)}
-.urlrow .icon{width:16px;height:16px}
-.progress{margin-top:22px}
-.progress-top{display:flex;justify-content:space-between;gap:12px;font:600 .8rem/1 var(--font-body);color:var(--ink)}
-.progress-top span:last-child{font-variant-numeric:tabular-nums}
-.progress-bar{height:6px;margin-top:10px;border-radius:999px;background:var(--paper-2);overflow:hidden}
-.progress-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--mag-soft),rgb(var(--vio) / .6));transform-origin:left;transform:scaleX(1)}
-.checks{list-style:none;margin:18px 0 0;padding:0}
-.check{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
-.check:first-child{border-top:0}
-.check-dot{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:var(--btn-bg);color:var(--btn-fg);transition:background-color .3s ease}
-.check-dot .icon{width:14px;height:14px}
-.check .i-spin{display:none}
-.check[data-state="active"] .check-dot{background:var(--vio-soft);color:#171512}
-.check[data-state="active"] .i-done{display:none}
-.check[data-state="active"] .i-spin{display:block;animation:spin .9s linear infinite}
-.check[data-state="idle"] .check-dot{background:var(--paper-2);color:var(--ink-3)}
-.check[data-state="idle"] .i-done{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.check-label{font:500 .9rem/1.3 var(--font-body);color:var(--ink)}
-.check[data-state="idle"] .check-label{color:var(--ink-3)}
-.check-meta{font:600 .8rem/1 var(--font-body);color:var(--ink-2);font-variant-numeric:tabular-nums;transition:opacity .3s ease}
-.check:not([data-state="done"]) .check-meta{opacity:0}
-.batch-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.batch-head h4{font:700 1.35rem/1.15 var(--font-display);letter-spacing:-.02em}
-.batch-head span{font:600 .8rem/1 var(--font-body);color:var(--ink-3)}
-.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 0;padding:0;list-style:none}
-.mini .cv{aspect-ratio:5/4;font-size:8.5px;border-radius:12px}
-.mini > p{margin-top:7px;font:600 .74rem/1.25 var(--font-body);color:var(--ink)}
-.batch-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:.85rem;color:var(--ink-2)}
+.tap{position:absolute;left:var(--px);top:var(--py);width:var(--pw);height:var(--ph);border-radius:999px;pointer-events:none}
+.tap i{position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 2px rgb(var(--vio) / .55),0 0 24px 4px rgb(var(--mag) / .35);opacity:0}
+/* Step 3: the result, rebuilt with real campaign photos */
+.results{--tile:18cqw;display:flex;flex-direction:column}
+.res-band{flex:none;padding:3.6cqw 4cqw 3cqw;text-align:center;color:#FFF8FB;background:radial-gradient(60% 130% at 50% 100%,#7A3AA0,transparent 70%),linear-gradient(90deg,#F3E7E3 0%,#DA92C2 22%,#A24FAE 50%,#D7A3D2 78%,#EDE0EE 100%)}
+.res-title{font:800 5cqw/1 var(--font-display);letter-spacing:-.03em}
+.res-sub{margin-top:1.1cqw;font:500 1.3cqw/1.3 var(--font-body)}
+.res-head{display:flex;align-items:center;justify-content:space-between;padding:2.2cqw 4cqw 1.6cqw}
+.res-chip{padding:.7cqw 1.5cqw;border-radius:999px;background:#FBDDE6;color:#7A2E80;font:600 1.2cqw/1 var(--font-body)}
+.res-meta{font:500 1.15cqw/1 var(--font-body);color:#7A6E80}
+.res-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,var(--tile));justify-content:center;gap:1.4cqw}
+.res-grid li{position:relative;aspect-ratio:9/16;border-radius:1cqw;overflow:hidden;background:#EFE4E8}
+.res-grid img{width:100%;height:100%;object-fit:cover}
+.res-grid li:last-child::after{content:"+5";position:absolute;inset:0;display:grid;place-items:center;background:rgb(30 20 36 / .5);color:#fff;font:800 3.4cqw/1 var(--font-display)}
+.res-foot{margin:auto 3cqw 2.2cqw;display:flex;align-items:center;justify-content:space-between;gap:2cqw;padding:1.2cqw 1.2cqw 1.2cqw 2.4cqw;border-radius:999px;background:#fff;box-shadow:0 1cqw 3cqw -1.5cqw rgb(74 29 143 / .4)}
+.res-done b{display:block;font:800 1.6cqw/1 var(--font-display);letter-spacing:-.01em}
+.res-done small{display:block;margin-top:.5cqw;font:500 1cqw/1 var(--font-body);color:#7A6E80}
+.res-btn{display:inline-flex;align-items:center;gap:.8cqw;padding:1.1cqw 2.2cqw;border-radius:999px;background:linear-gradient(135deg,#8A3FB0,#5B2A8F);color:#fff;font:600 1.25cqw/1 var(--font-body)}
+.res-btn .icon{width:1.5cqw;height:1.5cqw}
 @media (max-width:899px){
   .how-grid{grid-template-columns:1fr}
   .how-steps{display:none}
   .view-step{display:block}
-  .app-views{padding:22px 18px 24px}
-  .field .app-btn{padding:0 14px}
-  .field-text{font-size:.92rem}
-  .app-view + .app-view{padding-top:36px;border-top:1px solid var(--line)}
-  .batch-foot{flex-direction:column;align-items:flex-start}
+  .device{width:min(100%,340px);margin-inline:auto}
+  .device-bar{height:36px;padding:0 14px}
+  .screen{aspect-ratio:9/17}
+  .screen--start{--tx:12%;--ty:37.5%;--tw:77%;--th:5.3%;--tf:3.7cqw;--px:7.2%;--py:44.7%;--pw:85.7%;--ph:7.5%}
+  .screen--angles{--px:64.8%;--py:57.8%;--pw:23.7%;--ph:4.6%}
+  .results{--tile:34cqw}
+  .res-band{padding:8cqw 5cqw 6cqw}
+  .res-title{font-size:10.5cqw}
+  .res-sub{margin-top:2.4cqw;font-size:3.4cqw}
+  .res-head{padding:5cqw 6cqw 3.5cqw}
+  .res-chip{padding:1.6cqw 3.2cqw;font-size:3.2cqw}
+  .res-meta{font-size:3cqw}
+  .res-grid{grid-template-columns:repeat(2,var(--tile));gap:3cqw}
+  .res-grid li{border-radius:2.4cqw}
+  .res-grid li:last-child::after{font-size:8cqw}
+  .res-foot{margin:auto 4cqw 5cqw;padding:2.6cqw 2.6cqw 2.6cqw 5cqw;gap:3cqw}
+  .res-done b{font-size:3.8cqw}
+  .res-done small{margin-top:1.2cqw;font-size:2.6cqw}
+  .res-btn{padding:2.6cqw 4cqw;gap:1.6cqw;font-size:3.1cqw}
+  .res-btn .icon{width:3.6cqw;height:3.6cqw}
 }
 
-/* ---------- Evidence bento ---------- */
-.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;gap:16px;margin-top:clamp(48px,6vw,72px)}
-.b{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;padding:clamp(22px,2.6vw,34px);background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring)}
-.b-angle{grid-column:span 7;grid-row:span 2;display:flex;flex-direction:column;background:radial-gradient(75% 80% at 8% 0%,var(--glow-a),transparent 70%),radial-gradient(75% 90% at 100% 100%,var(--glow-b),transparent 70%),var(--raised)}
-.b-reviews,.b-objections{grid-column:span 5}
-.b-gaps{grid-column:span 12}
-.b-label{font:600 .84rem/1.3 var(--font-body);color:var(--ink)}
-.b-sub{margin-top:4px;font-size:.8rem;color:var(--ink-3)}
-.b-angle-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding-block:32px}
-.b-quote{font:700 clamp(2.1rem,1.2rem + 2.8vw,3.6rem)/1 var(--font-display);letter-spacing:-.04em;color:var(--ink)}
-.b-body{margin-top:18px;max-width:46ch;color:var(--ink-2)}
-.b-stats{list-style:none;margin:0;padding:28px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.b-stats strong{display:block;white-space:nowrap;font:800 clamp(1.6rem,1.1rem + 1.2vw,2.3rem)/1 var(--font-display);letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums}
-.b-stats strong small{font-size:.5em;font-weight:700;letter-spacing:-.02em}
-.b-stats span{display:block;margin-top:8px;font-size:.82rem;line-height:1.4;color:var(--ink-2)}
-.themes{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:16px}
-.theme-top{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;color:var(--ink)}
-.theme-top span:last-child{flex:none;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
-.bar{display:block;height:8px;margin-top:8px;border-radius:999px;width:calc(var(--v) * 100%);transform-origin:left;background:linear-gradient(90deg,var(--mag-soft),rgb(var(--vio) / .55))}
-.objs{list-style:none;margin:18px 0 0;padding:0}
-.obj{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
-.obj:first-child{border-top:0}
-.obj b{font-weight:600;font-size:.9rem;color:var(--ink)}
-.obj span{grid-column:1;font-size:.8rem;color:var(--ink-3)}
-.obj .chip{grid-column:2;grid-row:1 / span 2}
-.gaps{margin-top:22px}
-.gap-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.6fr) 120px;gap:16px;align-items:center;padding:14px 0;border-top:1px solid var(--line);font-size:.9rem}
-.gap-head{border-top:0;padding-top:0;font:600 .72rem/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.gap-row b{font-weight:600;color:var(--ink)}
-.gap-row > :last-child{justify-self:end}
-.gap-pct{font:700 1.15rem/1 var(--font-display);color:var(--ink);font-variant-numeric:tabular-nums}
-.gap-pct small{font:500 .78rem/1 var(--font-body);color:var(--ink-3);margin-left:4px}
+/* ---------- Angles: one product, two campaigns side by side ---------- */
+/* Each panel wears its own campaign palette, so it reads the same in both page themes. */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:clamp(44px,5.5vw,72px)}
+.camp{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,.62fr));grid-template-rows:1fr auto;gap:10px;padding:10px;border-radius:24px;color:var(--c-ink);background:var(--c-bg);box-shadow:inset 0 0 0 1px var(--c-ring),var(--shadow);--sw-ring:var(--c-swring)}
+.camp--day{--c-bg:linear-gradient(165deg,#FCF3EC,#F3DCD1);--c-ink:#2A1A16;--c-ink-2:#6A5249;--c-ring:rgb(42 26 22 / .08);--c-chip:#F6D2C2;--c-chip-ink:#7A3B26;--c-swring:#F8E6DD}
+.camp--night{--c-bg:linear-gradient(165deg,#4C2B37,#22131A);--c-ink:#F8E9EE;--c-ink-2:#D2B8C2;--c-ring:rgb(255 255 255 / .08);--c-chip:rgb(255 255 255 / .12);--c-chip-ink:#F6D3DE;--c-swring:#3A2029}
+.camp-ph{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;clip-path:inset(0% 0% 0% 0% round 14px);background:rgb(0 0 0 / .06)}
+.camp-ph.is-lead{grid-column:1;grid-row:1 / span 2;height:100%;min-height:0;aspect-ratio:auto}
+.camp-info{grid-column:2 / -1;grid-row:1;display:flex;flex-direction:column;padding:16px 12px 10px 10px}
+.camp-top{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;font:600 .74rem/1.2 var(--font-body);color:var(--c-ink-2)}
+.camp-chip{padding:6px 11px;border-radius:999px;background:var(--c-chip);color:var(--c-chip-ink)}
+.camp-name{margin-top:16px;color:var(--c-ink);font:800 clamp(1.7rem,1.1rem + 1.3vw,2.4rem)/.98 var(--font-display);letter-spacing:-.035em}
+.camp-line{margin-top:10px;font-size:.95rem;line-height:1.45;color:var(--c-ink)}
+.camp-spec{margin:auto 0 0;padding-top:18px;display:grid;gap:12px}
+.camp-spec div{display:grid;gap:4px}
+.camp-spec dt{font:600 .72rem/1 var(--font-body);color:var(--c-ink-2)}
+.camp-spec dd{margin:0;display:flex;align-items:center;gap:10px;font-size:.88rem;line-height:1.4;color:var(--c-ink)}
+.camp-ph:not(.is-lead){grid-row:2}
+@media (max-width:1099px) and (min-width:900px){.camp-spec div:first-child{display:none}}
+@media (max-width:899px){
+  .duo{grid-template-columns:1fr}
+  .camp{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}
+  .camp-info{grid-column:1 / -1;grid-row:1;padding:14px 10px 8px}
+  .camp-ph.is-lead,.camp-ph:not(.is-lead){grid-column:auto;grid-row:auto;height:auto;aspect-ratio:9/16}
+  .camp-spec{margin-top:0}
+}
 .chip{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:999px;font:600 .72rem/1 var(--font-body);white-space:nowrap}
 .chip-win{background:var(--positive-bg);color:var(--positive)}
-.chip-test{background:var(--violet-bg);color:var(--ink)}
 .chip-fat{background:var(--caution-bg);color:var(--caution)}
-.chip-idle{background:var(--paper-2);color:var(--ink-2)}
-.chip-neg{background:var(--negative-bg);color:var(--negative)}
-.spot::before,.spot::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s ease}
-.spot::after{z-index:-1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgb(var(--mag) / .10),transparent 62%)}
-.spot::before{padding:1px;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgb(var(--mag) / .55),transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-@media (hover:hover) and (pointer:fine){.spot:hover::before,.spot:hover::after{opacity:1}}
-@media (max-width:899px){
-  .b-angle,.b-reviews,.b-objections,.b-gaps{grid-column:1 / -1;grid-row:auto}
-  .b-stats{grid-template-columns:1fr;gap:14px}
-  .gap-head{display:none}
-  .gap-row{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}
-  .gap-row > :nth-child(2){grid-column:1;grid-row:2}
-  .gap-row > :nth-child(3){grid-column:1 / -1;grid-row:3;font-size:.84rem;color:var(--ink-2)}
-  .gap-row > :nth-child(4){grid-column:2;grid-row:1}
-}
+.delta-good{color:var(--positive)}
+.delta-bad{color:var(--negative)}
 
 /* ---------- Batch carousel: native horizontal scroll, the page wheel keeps scrolling down ---------- */
 .lote{--lote-pad:calc(max(0px,(100vw - 20px - 1240px) / 2) + clamp(16px,4vw,48px));padding:10px}
@@ -555,25 +508,18 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 @media (hover:hover) and (pointer:fine){.lote-viewport{cursor:grab}}
 @media (min-width:900px){.lote-viewport{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent)}}
 .lote-track{position:relative;display:flex;gap:20px;width:max-content;list-style:none;margin:0;padding:8px var(--lote-pad) 28px}
-.hcard{scroll-snap-align:start;width:min(520px,86vw);display:grid;grid-template-columns:188px minmax(0,1fr);gap:22px;padding:10px 22px 10px 10px;border-radius:24px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
-.hcard .cv{font-size:12.5px;aspect-ratio:auto;height:100%;min-height:262px}
-.hcard-body{display:flex;flex-direction:column;gap:12px;min-width:0;padding-block:12px 6px}
-.hcard-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font:600 .74rem/1 var(--font-body);color:var(--ink-3)}
-.hcard h3{font-size:1.2rem;font-weight:700;line-height:1.15;letter-spacing:-.02em}
-.hyp{font-size:.88rem;line-height:1.45;color:var(--ink-2)}
-.hyp b{display:block;margin-bottom:5px;font:600 .74rem/1 var(--font-body);color:var(--ink)}
-.src{display:flex;gap:8px;font-size:.8rem;line-height:1.4;color:var(--ink-3)}
-.src .icon{width:16px;height:16px;margin-top:1px}
-.result{margin-top:auto;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;padding-top:12px;border-top:1px solid var(--line);font:600 .85rem/1.25 var(--font-body);color:var(--ink)}
-.delta-good{color:var(--positive)}
-.delta-bad{color:var(--negative)}
-.muted{color:var(--ink-3);font-weight:500}
-.hcard-learn{width:min(420px,86vw);display:flex;flex-direction:column;padding:clamp(24px,3vw,34px);border-radius:24px;scroll-snap-align:start;background:radial-gradient(80% 70% at 0% 0%,var(--glow-a),transparent 70%),radial-gradient(80% 80% at 100% 100%,var(--glow-b),transparent 70%),var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
-.hcard-learn .b-label{display:flex;align-items:center;gap:8px}
-.hcard-learn .b-label .icon{width:18px;height:18px}
-.hcard-learn h3{margin-top:auto;padding-top:40px;font-size:clamp(1.5rem,1.1rem + 1vw,2rem);font-weight:700;line-height:1.08;letter-spacing:-.03em}
-.hcard-learn p{margin-top:14px;font-size:.92rem}
-.hcard-learn .muted{margin-top:18px;font-size:.8rem}
+.gcard{scroll-snap-align:start;width:min(640px,86vw);display:flex;flex-direction:column;gap:18px;padding:10px 10px 22px;border-radius:24px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.gcard-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gcard-ph{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:14px;background:var(--paper-2);-webkit-user-drag:none;user-select:none}
+.gcard-body{padding:0 12px}
+.gcard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font:600 .78rem/1.2 var(--font-body);color:var(--ink-3)}
+.gcard-name{margin-top:12px;color:var(--ink);font:800 clamp(1.5rem,1.1rem + 1vw,2rem)/1 var(--font-display);letter-spacing:-.03em}
+.gcard-line{margin-top:10px;max-width:52ch;font-size:.93rem;line-height:1.45;color:var(--ink-2)}
+.gcard-end{scroll-snap-align:start;width:min(400px,86vw);display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding:clamp(24px,3vw,34px);border-radius:24px;background:radial-gradient(80% 70% at 0% 0%,var(--glow-a),transparent 70%),radial-gradient(80% 80% at 100% 100%,var(--glow-b),transparent 70%),var(--raised);box-shadow:inset 0 0 0 1px var(--shell-ring),var(--shadow)}
+.gcard-end h3{font-size:clamp(1.5rem,1.1rem + 1vw,2rem);font-weight:700;line-height:1.08;letter-spacing:-.03em}
+.gcard-end p{font-size:.95rem}
+.gcard-end .btn{align-self:flex-start;margin-top:10px}
+@media (max-width:899px){.gcard-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.gcard-end{justify-content:center}}
 .lote-controls{display:flex;align-items:center;gap:24px;margin-top:4px}
 .lote-progress{position:relative;flex:1;height:2px;border-radius:2px;background:var(--line);overflow:hidden}
 .lote-progress i{position:absolute;top:0;left:0;bottom:0;width:20%;border-radius:inherit;background:linear-gradient(90deg,var(--mag-soft),rgb(var(--vio) / .65))}
@@ -584,11 +530,6 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .lote-btn:active{transform:scale(.94)}
 .lote-btn:disabled{opacity:.35;cursor:default}
 @media (hover:hover) and (pointer:fine){.lote-btn:not(:disabled):hover{background:var(--btn-bg);color:var(--btn-fg)}}
-@media (max-width:899px){
-  .hcard{grid-template-columns:1fr;padding:10px 10px 18px}
-  .hcard .cv{aspect-ratio:16/11;height:auto;min-height:0}
-  .hcard-body{padding:6px 8px 0}
-}
 
 /* ---------- Why ---------- */
 .why-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vw,48px);margin-top:clamp(48px,6vw,72px);align-items:start}
@@ -692,7 +633,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 </head>
 <body>
 <!-- Icons: Phosphor Light (MIT). Logo: Ángulo wordmark. -->
-<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-books" viewBox="0 0 256 256"><path d="M104,34H56A14,14,0,0,0,42,48V208a14,14,0,0,0,14,14h48a14,14,0,0,0,14-14V48A14,14,0,0,0,104,34ZM54,78h52V178H54Zm2-32h48a2,2,0,0,1,2,2V66H54V48A2,2,0,0,1,56,46Zm48,164H56a2,2,0,0,1-2-2V190h52v18A2,2,0,0,1,104,210Zm125.7-15L196.51,37.16a14,14,0,0,0-16.63-10.85L133.07,36.37A14.09,14.09,0,0,0,122.3,53l33.19,157.81a14,14,0,0,0,6.1,8.9,13.85,13.85,0,0,0,7.57,2.26,13.55,13.55,0,0,0,3-.32l46.81-10.05A14.09,14.09,0,0,0,229.7,195Zm-82.81-83.32,50.73-10.9,14.12,67.16L161,178.81Zm-6.63-31.56L191,69.19,195.15,89l-50.73,10.9Zm-4.66-32,46.8-10.05a2.18,2.18,0,0,1,.42,0,1.89,1.89,0,0,1,1.05.32,2,2,0,0,1,.89,1.31l3.75,17.82L137.79,68.34l-3.74-17.78A2.07,2.07,0,0,1,135.6,48.1Zm80.81,151.8L169.6,210a1.92,1.92,0,0,1-1.47-.27,2,2,0,0,1-.89-1.31l-3.75-17.82,50.72-10.9L218,197.43A2.07,2.07,0,0,1,216.41,199.9Z"/></symbol><symbol id="i-chat-circle-text" viewBox="0 0 256 256"><path d="M166,112a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,112Zm-6,26H96a6,6,0,0,0,0,12h64a6,6,0,0,0,0-12Zm70-10A102,102,0,0,1,79.31,217.65L44.44,229.27a14,14,0,0,1-17.71-17.71l11.62-34.87A102,102,0,1,1,230,128Zm-12,0A90,90,0,1,0,50.08,173.06a6,6,0,0,1,.5,4.91L38.12,215.35a2,2,0,0,0,2.53,2.53L78,205.42a6.2,6.2,0,0,1,1.9-.31,6.09,6.09,0,0,1,3,.81A90,90,0,0,0,218,128Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-circle-notch" viewBox="0 0 256 256"><path d="M230,128a102,102,0,0,1-204,0c0-40.18,23.35-76.86,59.5-93.45a6,6,0,0,1,5,10.9C58.61,60.09,38,92.49,38,128a90,90,0,0,0,180,0c0-35.51-20.61-67.91-52.5-82.55a6,6,0,0,1,5-10.9C206.65,51.14,230,87.82,230,128Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-cursor-click" viewBox="0 0 256 256"><path d="M90,24V16a6,6,0,0,1,12,0v8a6,6,0,0,1-12,0ZM16,102h8a6,6,0,0,0,0-12H16a6,6,0,0,0,0,12ZM125.32,37.37a6,6,0,0,0,8.05-2.69l8-16a6,6,0,0,0-10.74-5.37l-8,16A6,6,0,0,0,125.32,37.37Zm-96,85.26-16,8a6,6,0,0,0,5.36,10.74l16-8a6,6,0,1,0-5.36-10.74ZM217.9,185.41a14,14,0,0,1,0,19.8L205.21,217.9a14,14,0,0,1-19.8,0L134.1,166.59a2,2,0,0,0-3.21.54l-17.75,46.24a2.44,2.44,0,0,0-.1.24A13.85,13.85,0,0,1,100.26,222c-.23,0-.45,0-.68,0A13.85,13.85,0,0,1,87,212.38L34.7,52.3A14,14,0,0,1,52.3,34.7L212.38,87A14,14,0,0,1,213.61,113l-.24.09-46.25,17.76a2,2,0,0,0-.53,3.21Zm-8.49,8.49L158.1,142.59h0a14,14,0,0,1,4.32-22.74l.24-.1L208.91,102a2,2,0,0,0-.26-3.61L48.58,46.11a2.33,2.33,0,0,0-.65-.11,2,2,0,0,0-1.82,2.58L98.38,208.65a1.84,1.84,0,0,0,1.77,1.35,1.81,1.81,0,0,0,1.84-1.09l17.76-46.25.1-.24a14,14,0,0,1,22.74-4.32l51.31,51.31a2,2,0,0,0,2.83,0l12.68-12.68A2,2,0,0,0,209.41,193.9Z"/></symbol><symbol id="i-film-strip" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM38,86h84v84H38Zm96-12V54h36V74Zm-12,0H86V54h36Zm0,108v20H86V182Zm12,0h36v20H134Zm0-12V86h84v84ZM218,56V74H182V54h34A2,2,0,0,1,218,56ZM40,54H74V74H38V56A2,2,0,0,1,40,54ZM38,200V182H74v20H40A2,2,0,0,1,38,200Zm178,2H182V182h36v18A2,2,0,0,1,216,202Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-lightning" viewBox="0 0 256 256"><path d="M213.84,118.63a6,6,0,0,0-3.73-4.25L150.88,92.17l15-75a6,6,0,0,0-10.27-5.27l-112,120a6,6,0,0,0,2.28,9.71l59.23,22.21-15,75a6,6,0,0,0,3.14,6.52A6.07,6.07,0,0,0,96,246a6,6,0,0,0,4.39-1.91l112-120A6,6,0,0,0,213.84,118.63ZM106,220.46l11.85-59.28a6,6,0,0,0-3.77-6.8l-55.6-20.85,91.46-98L138.12,94.82a6,6,0,0,0,3.77,6.8l55.6,20.85Z"/></symbol><symbol id="i-link-simple" viewBox="0 0 256 256"><path d="M164.25,91.75a6,6,0,0,1,0,8.49l-64,64a6,6,0,0,1-8.49-8.48l64-64A6,6,0,0,1,164.25,91.75ZM214.2,41.8a54.07,54.07,0,0,0-76.38,0L107.75,71.85a6,6,0,0,0,8.49,8.49l30.07-30.06a42,42,0,0,1,59.41,59.41l-30.08,30.07a6,6,0,1,0,8.49,8.49l30.07-30.07A54,54,0,0,0,214.2,41.8ZM139.76,175.64l-30.07,30.08a42,42,0,0,1-59.41-59.41l30.06-30.07a6,6,0,0,0-8.49-8.49l-30,30.07a54,54,0,0,0,76.38,76.39l30.07-30.08a6,6,0,0,0-8.49-8.49Z"/></symbol><symbol id="i-play" viewBox="0 0 256 256"><path d="M231.36,116.19,87.28,28.06a14,14,0,0,0-14.18-.27A13.69,13.69,0,0,0,66,39.87V216.13a13.69,13.69,0,0,0,7.1,12.08,14,14,0,0,0,14.18-.27l144.08-88.13a13.82,13.82,0,0,0,0-23.62Zm-6.26,13.38L81,217.7a2,2,0,0,1-2.06,0,1.78,1.78,0,0,1-1-1.61V39.87a1.78,1.78,0,0,1,1-1.61A2.06,2.06,0,0,1,80,38a2,2,0,0,1,1,.31L225.1,126.43a1.82,1.82,0,0,1,0,3.14Z"/></symbol><symbol id="i-shopping-bag-open" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42ZM40,54H216a2,2,0,0,1,2,2V74H38V56A2,2,0,0,1,40,54ZM216,202H40a2,2,0,0,1-2-2V86H218V200A2,2,0,0,1,216,202Zm-42-90a46,46,0,0,1-92,0,6,6,0,0,1,12,0,34,34,0,0,0,68,0,6,6,0,0,1,12,0Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-stack" viewBox="0 0 256 256"><path d="M229.18,173a6,6,0,0,1-2.16,8.2l-96,56a6,6,0,0,1-6,0l-96-56a6,6,0,0,1,6-10.36l93,54.23,93-54.23A6,6,0,0,1,229.18,173ZM221,122.82l-93,54.23L35,122.82a6,6,0,0,0-6,10.36l96,56a6,6,0,0,0,6,0l96-56a6,6,0,0,0-6-10.36ZM26,80a6,6,0,0,1,3-5.18l96-56a6,6,0,0,1,6,0l96,56a6,6,0,0,1,0,10.36l-96,56a6,6,0,0,1-6,0l-96-56A6,6,0,0,1,26,80Zm17.91,0L128,129.05,212.09,80,128,31Z"/></symbol><symbol id="i-star" viewBox="0 0 256 256"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-question" viewBox="0 0 256 256"><path d="M138,180a10,10,0,1,1-10-10A10,10,0,0,1,138,180ZM128,74c-21,0-38,15.25-38,34v4a6,6,0,0,0,12,0v-4c0-12.13,11.66-22,26-22s26,9.87,26,22-11.66,22-26,22a6,6,0,0,0-6,6v8a6,6,0,0,0,12,0v-2.42c18.11-2.58,32-16.66,32-33.58C166,89.25,149,74,128,74Zm102,54A102,102,0,1,1,128,26,102.12,102.12,0,0,1,230,128Zm-12,0a90,90,0,1,0-90,90A90.1,90.1,0,0,0,218,128Z"/></symbol><symbol id="i-angle" viewBox="0 0 256 256"><path d="M98,72a6,6,0,0,1,6-6A102.12,102.12,0,0,1,206,168a6,6,0,0,1-12,0,90.1,90.1,0,0,0-90-90A6,6,0,0,1,98,72ZM240,194H78V32a6,6,0,0,0-12,0V66H32a6,6,0,0,0,0,12H66V200a6,6,0,0,0,6,6H240a6,6,0,0,0,0-12Z"/></symbol></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-angle" viewBox="0 0 256 256"><path d="M98,72a6,6,0,0,1,6-6A102.12,102.12,0,0,1,206,168a6,6,0,0,1-12,0,90.1,90.1,0,0,0-90-90A6,6,0,0,1,98,72ZM240,194H78V32a6,6,0,0,0-12,0V66H32a6,6,0,0,0,0,12H66V200a6,6,0,0,0,6,6H240a6,6,0,0,0,0-12Z"/></symbol><symbol id="i-download-simple" viewBox="0 0 256 256"><path d="M222,144v64a6,6,0,0,1-6,6H40a6,6,0,0,1-6-6V144a6,6,0,0,1,12,0v58H210V144a6,6,0,0,1,12,0Zm-98.24,4.24a6,6,0,0,0,8.48,0l40-40a6,6,0,0,0-8.48-8.48L134,129.51V32a6,6,0,0,0-12,0v97.51L92.24,99.76a6,6,0,0,0-8.48,8.48Z"/></symbol></defs></svg>
 
 <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -720,70 +661,51 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
       <div class="wrap hero-inner">
         <p class="eyebrow hero-eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>Creativos con IA para Meta Ads</p>
         <h1 class="hero-title">
-          <span class="line"><span>Testeá creativos nuevos más rápido</span></span>
-          <span class="line"><span>de lo que los viejos se agotan.</span></span>
+          <span class="line"><span>Generá creativos nuevos</span></span>
+          <span class="line"><span>con un link.</span></span>
         </h1>
-        <p class="hero-sub">Pegás el link de tu tienda y recibís un lote de creativos para Meta Ads, cada uno con su hipótesis.</p>
+        <p class="hero-sub">Pegás el link de tu producto y recibís campañas de imágenes listas para publicar, cada una con su propia estética.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener">Agendá una llamada<span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
           <a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
         </div>
 
-        <ul class="fan" aria-label="Ejemplos de creativos de un lote" style="list-style:none;margin:0;padding:0">
+        <ul class="fan" aria-label="Imágenes de campañas de ejemplo" style="list-style:none;margin:0;padding:0">
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-04">
-                <div class="cv-stars" aria-label="5 estrellas"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></div>
-                <p class="cv-quote">“Tenía miedo de que me irritara y nada, cero reacción.”</p>
-                <p class="cv-fine">Paula G., compra verificada</p>
-                <div class="cv-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-              </div>
-              <p class="ccard-meta"><b>#04</b><span class="fm-format">Carrusel</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Citas reales de clientes generan más confianza que un claim de marca.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/lumbre-cedro-02.webp" width="720" height="1290" alt="La vela Lumbre encendida sobre una mesa de madera, con un apagavelas." decoding="async">
+              <figcaption class="ccard-meta"><b>Noche de cedro</b><span class="fm-format">Lumbre</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-01">
-                <div class="cv-days"><span>Día 1</span><span>Día 14</span></div>
-                <span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span>
-                <p class="cv-hook">Día 1 y día 14. Sin filtro, misma luz.</p>
-              </div>
-              <p class="ccard-meta"><b>#01</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Mostrar el cambio real a las dos semanas convence más que los ingredientes.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/almibar-jardin-02.webp" width="720" height="1290" alt="El sérum Almíbar apoyado dentro de un durazno cortado." decoding="async">
+              <figcaption class="ccard-meta"><b>Jardín de rosas</b><span class="fm-format">Almíbar</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-02">
-                <p class="cv-kicker">Menos que un café</p>
-                <p class="cv-big">$315<small>por día</small></p>
-                <p class="cv-fine">Sérum vitamina C a $18.900. Rinde 60 días.</p>
-              </div>
-              <p class="ccard-meta"><b>#02</b><span class="fm-format">Imagen 1:1</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Traducir el precio a costo por día baja la objeción de precio.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/brote-manana-02.webp" width="720" height="1290" alt="La barra Brote junto a un sol dibujado con avena y quinoa." decoding="async">
+              <figcaption class="ccard-meta"><b>Media mañana al sol</b><span class="fm-format">Brote</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-03"><span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-kicker">Mi rutina entera</p><p class="cv-big">2:00</p><p class="cv-hook">antes de que se haga el café.</p></div>
-              <p class="ccard-meta"><b>#03</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Mostrar que la rutina entra en dos minutos baja el “no tengo tiempo”.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/almibar-jardin-04.webp" width="720" height="1290" alt="Una mujer junta duraznos del árbol mientras el sérum espera en la mesa del jardín." decoding="async">
+              <figcaption class="ccard-meta"><b>Jardín de rosas</b><span class="fm-format">Almíbar</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-07"><span class="cv-play cv-play--corner" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-quote">“Tengo rosácea y esto es lo único que tolero.”</p></div>
-              <p class="ccard-meta"><b>#07</b><span class="fm-format">Video 9:16</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Resolver la objeción de irritación abre un público que hoy no compra.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/brote-merienda-04.webp" width="720" height="1290" alt="Una mano sostiene la barra Brote frente a una taza de café." decoding="async">
+              <figcaption class="ccard-meta"><b>Merienda de tarde</b><span class="fm-format">Brote</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
-            <div class="ccard">
-              <div class="cv cv-10"><p class="cv-kicker">Vs. marcas de farmacia</p><p class="cv-big">1/3</p><p class="cv-hook">Misma concentración, un tercio del precio.</p></div>
-              <p class="ccard-meta"><b>#10</b><span class="fm-format">Imagen 4:5</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></p>
-              <p class="ccard-hyp">Comparar con farmacia lo posiciona como la opción inteligente.</p>
-            </div>
+            <figure class="ccard">
+              <img class="ph" src="img/lumbre-cedro-03.webp" width="720" height="1290" alt="La vela Lumbre junto a un espejo redondo que refleja un higo." decoding="async">
+              <figcaption class="ccard-meta"><b>Noche de cedro</b><span class="fm-format">Lumbre</span><span class="chip chip-fat fm-state fm-tired">Fatigado</span><span class="chip chip-win fm-state fm-new">Nuevo</span></figcaption>
+            </figure>
           </div></div></li>
         </ul>
       </div>
@@ -814,17 +736,17 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
-          <div><p class="pain-line">Le pedís videos a un creador y tardan días en llegar.</p><p class="pain-fact">Y cada uno te sale cerca de USD 200.</p></div>
+          <div><p class="pain-line">Generar contenido para tus anuncios te lleva semanas.</p><p class="pain-fact">Entre producir, sacar fotos y editar, cuando llega ya pasó la fecha.</p></div>
           <div class="pv pv-chat" aria-hidden="true">
-            <div class="pv-top"><span class="pv-avatar">M</span><span class="pv-who"><b>Mica</b><span>Creadora UGC</span></span><span>Lun 9:41</span></div>
-            <p class="pv-bubble" style="--d:.3s">¡Hola! Te paso los 3 videos el jueves.</p>
-            <p class="pv-bubble" style="--d:.8s">Serían USD 600 en total.</p>
+            <div class="pv-top"><span class="pv-avatar">F</span><span class="pv-who"><b>Flor</b><span>Fotografía de producto</span></span><span>Lun 9:41</span></div>
+            <p class="pv-bubble" style="--d:.3s">¡Hola! La sesión la podemos hacer el 22.</p>
+            <p class="pv-bubble" style="--d:.8s">Después son 10 días más de edición.</p>
             <span class="pv-typing"><i></i><i></i><i></i></span>
           </div>
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar-blank"/></svg></span>
-          <div><p class="pain-line">Llega el Hot Sale y estás grabando a las apuradas.</p><p class="pain-fact">Necesitás el doble de piezas justo cuando menos tiempo tenés.</p></div>
+          <div><p class="pain-line">Llega el Hot Sale y estás armando piezas a las apuradas.</p><p class="pain-fact">Necesitás el doble de piezas justo cuando menos tiempo tenés.</p></div>
           <div class="pv pv-week" aria-hidden="true">
             <div class="pv-top"><span>Mayo</span><span class="pv-alert">Faltan 3 días</span></div>
             <ol class="pv-days"><li>9</li><li class="is-today">10</li><li>11</li><li>12</li><li class="is-hot">13</li><li class="is-hot">14</li><li class="is-hot">15</li></ol>
@@ -833,16 +755,18 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
           </div>
         </li>
         <li class="pain">
-          <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-question"/></svg></span>
-          <div><p class="pain-line">Algo funciona y no sabés por qué.</p><p class="pain-fact">De cada 20 piezas gana una. Si no sabés por qué, no la podés repetir.</p></div>
-          <div class="pv pv-results" aria-hidden="true">
-            <div class="pv-top"><span>Resultados del mes</span></div>
-            <ul class="pv-rows">
-              <li class="is-win"><span>Anuncio 07</span><b>CPA $3.620</b><span class="chip chip-win">Ganó</span></li>
-              <li><span>Anuncio 12</span><b>CPA $6.010</b><span></span></li>
-              <li><span>Anuncio 15</span><b>CPA $7.940</b><span></span></li>
+          <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-images-square"/></svg></span>
+          <div><p class="pain-line">Cada post parece de una marca distinta.</p><p class="pain-fact">Una foto de estudio, otra con el celular, una placa armada a las apuradas. Tu cuenta no tiene una línea.</p></div>
+          <div class="pv pv-mix" aria-hidden="true">
+            <div class="pv-top"><span>Tu feed</span><span class="pv-alert">Sin una línea</span></div>
+            <ul class="pv-feed">
+              <li class="pf-sale" style="--d:.15s">50% off</li>
+              <li class="pf-soft" style="--d:.25s">Te esperamos</li>
+              <li class="pf-new" style="--d:.35s"><span>¡Nuevo!</span></li>
+              <li class="pf-ship" style="--d:.45s">Envío gratis</li>
+              <li class="pf-last" style="--d:.55s">Últimas unidades</li>
+              <li class="pf-hot" style="--d:.65s">Hot sale</li>
             </ul>
-            <span class="pv-ask"><svg class="icon"><use href="#i-question"/></svg>¿Por qué ganó el 07?</span>
           </div>
         </li>
       </ul>
@@ -852,75 +776,52 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   <!-- ================= How it works ================= -->
   <section class="section how" id="como-funciona" aria-labelledby="como-t">
     <div class="wrap">
-      <h2 class="h2" id="como-t">Del link al lote, en minutos.</h2>
-      <p class="lede" data-reveal>Generamos con IA, desde un link, lo que hoy toma semanas y cientos de dólares.</p>
+      <h2 class="h2" id="como-t">Todo empieza con un link.</h2>
+      <p class="lede" data-reveal>Ángulo lee tu producto, te propone cuatro ángulos y crea las imágenes de los que elijas.</p>
     </div>
 
     <div class="how-pin">
       <div class="wrap how-grid">
         <ol class="how-steps">
           <span class="how-rail" aria-hidden="true"><i class="js-rail"></i></span>
-          <li class="how-step is-active"><button class="how-hit" type="button" aria-label="Ver paso 1: Pegás el link"></button><span class="how-num">1</span><div><h3>Pegás el link</h3><p>La URL de tu tienda. Nada más.</p></div></li>
-          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 2: Un click"></button><span class="how-num">2</span><div><h3>Un click</h3><p>Ángulo lee tus productos, beneficios, objeciones y precios.</p></div></li>
-          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 3: Recibís los creativos"></button><span class="how-num">3</span><div><h3>Recibís los creativos</h3><p>Un lote listo para lanzar, cada pieza etiquetada con la hipótesis que testea.</p></div></li>
+          <li class="how-step is-active"><button class="how-hit" type="button" aria-label="Ver paso 1: Pegás el link"></button><span class="how-num">1</span><div><h3>Pegás el link</h3><p>El de la página de tu producto. Ángulo la lee y arma una ficha que revisás vos.</p></div></li>
+          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 2: Elegís tus ángulos"></button><span class="how-num">2</span><div><h3>Elegís tus ángulos</h3><p>Te propone cuatro, cada uno con su escena, su paleta y lo que destaca. Te quedás con los que quieras.</p></div></li>
+          <li class="how-step"><button class="how-hit" type="button" aria-label="Ver paso 3: Recibís tus imágenes"></button><span class="how-num">3</span><div><h3>Recibís tus imágenes</h3><p>Nueve por ángulo, todas con la misma estética y en formato Stories 9:16. Se descargan juntas.</p></div></li>
         </ol>
 
-        <figure class="shell app" style="margin:0" aria-label="Vista previa del producto">
+        <!-- Steps 1 and 2 are screenshots of the product; step 3 rebuilds its results screen with real campaign photos. -->
+        <figure class="shell app device" style="margin:0" aria-label="Así se ve Ángulo por dentro">
           <div class="core">
-            <div class="app-bar">
-              <svg class="logo" viewBox="0 0 1077 351" aria-hidden="true"><use href="#logo-word"/></svg>
-              <span class="app-step js-app-step">Prototipo</span>
-            </div>
+            <div class="device-bar" aria-hidden="true"><span class="device-dots"><i></i><i></i><i></i></span><span class="device-step js-app-step">Ángulo</span></div>
             <div class="app-views">
-              <!-- View 1: connect store -->
               <div class="app-view">
                 <p class="view-step">1. Pegás el link</p>
-                <h4>Empecemos por tu tienda</h4>
-                <p>Pegá la URL y leemos lo que ya dicen tus clientes.</p>
-                <div class="field">
-                  <svg class="icon" aria-hidden="true"><use href="#i-link-simple"/></svg>
-                  <span class="field-text"><span class="js-url" data-url="lumbrecosmetica.com.ar">lumbrecosmetica.com.ar</span><span class="caret" aria-hidden="true"></span></span>
-                  <span class="app-btn js-analyze">Analizar tienda</span>
-                </div>
-                <div class="compat"><span>Compatible con</span><span class="tag">Tiendanube</span><span class="tag">Shopify</span><span class="tag">WooCommerce</span></div>
-                <div class="reads">
-                  <div class="read"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg><div><b>Reseñas y preguntas</b><span>Qué valoran tus clientes y qué dudas frenan la compra.</span></div></div>
-                  <div class="read"><svg class="icon" aria-hidden="true"><use href="#i-shopping-bag-open"/></svg><div><b>Catálogo y precios</b><span>Productos, variantes y promos activas.</span></div></div>
-                  <div class="read"><svg class="icon" aria-hidden="true"><use href="#i-books"/></svg><div><b>Meta Ad Library</b><span>Qué anuncios corre tu competencia y qué ángulos nadie usa.</span></div></div>
+                <div class="screen screen--start">
+                  <picture><source media="(max-width: 899px)" srcset="img/app-cel-1.webp" width="600" height="1200"><img src="img/app-compu-1.webp" width="1600" height="1000" alt="Inicio de Ángulo: un campo para pegar el link del producto y el botón Leer mi producto." loading="lazy" decoding="async"></picture>
+                  <span class="typed" aria-hidden="true"><span class="js-url" data-url="almibar.com.ar/serum-durazno-rosa">almibar.com.ar/serum-durazno-rosa</span><span class="caret"></span></span>
+                  <span class="tap" aria-hidden="true"><i></i></span>
                 </div>
               </div>
-
-              <!-- View 2: reading -->
               <div class="app-view">
-                <p class="view-step">2. Un click</p>
-                <div class="urlrow"><svg class="icon" aria-hidden="true"><use href="#i-link-simple"/></svg>lumbrecosmetica.com.ar</div>
-                <h4>Leyendo tu tienda</h4>
-                <p>Tarda alrededor de un minuto.</p>
-                <div class="progress">
-                  <div class="progress-top"><span class="js-phase">Listo</span><span class="js-pct">100%</span></div>
-                  <div class="progress-bar"><i class="js-bar"></i></div>
+                <p class="view-step">2. Elegís tus ángulos</p>
+                <div class="screen screen--angles">
+                  <picture><source media="(max-width: 899px)" srcset="img/app-cel-5.webp" width="600" height="1200"><img src="img/app-compu-5.webp" width="1600" height="1000" alt="Ángulo propone cuatro campañas para el producto, cada una con su escena, su paleta y lo que destaca. Dos están elegidas." loading="lazy" decoding="async"></picture>
+                  <span class="tap" aria-hidden="true"><i></i></span>
                 </div>
-                <ul class="checks">
-                  <li class="check" data-state="done" data-label="Detectando plataforma"><span class="check-dot"><svg class="icon i-done" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon i-spin" aria-hidden="true"><use href="#i-circle-notch"/></svg></span><span class="check-label">Detectando plataforma</span><span class="check-meta">Tiendanube</span></li>
-                  <li class="check" data-state="done" data-label="Leyendo reseñas y preguntas"><span class="check-dot"><svg class="icon i-done" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon i-spin" aria-hidden="true"><use href="#i-circle-notch"/></svg></span><span class="check-label">Leyendo reseñas y preguntas</span><span class="check-meta">212 y 38</span></li>
-                  <li class="check" data-state="done" data-label="Leyendo catálogo y precios"><span class="check-dot"><svg class="icon i-done" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon i-spin" aria-hidden="true"><use href="#i-circle-notch"/></svg></span><span class="check-label">Leyendo catálogo y precios</span><span class="check-meta">24 productos</span></li>
-                  <li class="check" data-state="done" data-label="Revisando la Ad Library de tu competencia"><span class="check-dot"><svg class="icon i-done" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon i-spin" aria-hidden="true"><use href="#i-circle-notch"/></svg></span><span class="check-label">Revisando la Ad Library de tu competencia</span><span class="check-meta">38 anuncios</span></li>
-                </ul>
               </div>
-
-              <!-- View 3: batch -->
               <div class="app-view">
-                <p class="view-step">3. Recibís los creativos</p>
-                <div class="batch-head"><h4>Lote #1, listo</h4><span>12 creativos, 12 hipótesis</span></div>
-                <ul class="minis">
-                  <li class="mini"><div class="cv cv-01"><div class="cv-days"><span>Día 1</span><span>Día 14</span></div><p class="cv-hook">Sin filtro, misma luz.</p></div><p>Prueba visible</p></li>
-                  <li class="mini"><div class="cv cv-02"><p class="cv-kicker">Menos que un café</p><p class="cv-big">$315</p></div><p>Precio por uso</p></li>
-                  <li class="mini"><div class="cv cv-03"><p class="cv-kicker">Mi rutina entera</p><p class="cv-big">2:00</p></div><p>Conveniencia</p></li>
-                  <li class="mini"><div class="cv cv-04"><p class="cv-quote">“Cero reacción.”</p><p class="cv-fine">212 reseñas</p></div><p>Prueba social</p></li>
-                  <li class="mini"><div class="cv cv-07"><p class="cv-quote">“Es lo único que tolero.”</p></div><p>Objeción resuelta</p></li>
-                  <li class="mini"><div class="cv cv-10"><p class="cv-kicker">Vs. farmacia</p><p class="cv-big">1/3</p></div><p>Comparativa</p></li>
-                </ul>
-                <div class="batch-foot"><span>La IA propone, vos decidís qué se publica.</span><span class="app-btn">Revisar lote</span></div>
+                <p class="view-step">3. Recibís tus imágenes</p>
+                <div class="screen results" role="img" aria-label="Imágenes listas: la primera campaña con cuatro de sus nueve imágenes y el botón para descargar todas.">
+                  <div class="res-band"><p class="res-title">ángulos listos.</p><p class="res-sub">18 imágenes para tus anuncios, en 2 campañas.</p></div>
+                  <div class="res-head"><span class="res-chip">Campaña 01</span><span class="res-meta">Formato 9:16</span></div>
+                  <ul class="res-grid">
+                    <li><img src="img/almibar-jardin-01.webp" width="720" height="1290" alt="" loading="lazy" decoding="async"></li>
+                    <li><img src="img/almibar-jardin-02.webp" width="720" height="1290" alt="" loading="lazy" decoding="async"></li>
+                    <li><img src="img/almibar-jardin-03.webp" width="720" height="1290" alt="" loading="lazy" decoding="async"></li>
+                    <li><img src="img/almibar-jardin-04.webp" width="720" height="1290" alt="" loading="lazy" decoding="async"></li>
+                  </ul>
+                  <div class="res-foot"><span class="res-done"><b>18 imágenes listas</b><small>Se descargan juntas en un .zip</small></span><span class="res-btn"><svg class="icon" aria-hidden="true"><use href="#i-download-simple"/></svg>Descargar</span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -929,156 +830,142 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
     </div>
   </section>
 
-  <!-- ================= Evidence ================= -->
-  <section class="section evidence" id="evidencia" aria-labelledby="evidencia-t">
+  <!-- ================= Angles ================= -->
+  <section class="section angles" id="angulos" aria-labelledby="angulos-t">
     <div class="wrap">
-      <div>
-        <h2 class="h2" id="evidencia-t">Primero lee lo que tus clientes ya dicen.</h2>
-        <p class="lede" data-reveal>Reseñas, preguntas, catálogo y los anuncios activos de tu competencia. Solo información pública, sin conectar tu cuenta de Meta.</p>
-      </div>
-
-      <div class="bento" data-stagger>
-        <article class="b b-angle spot">
-          <p class="b-label">Ángulo con más evidencia</p>
-          <div class="b-angle-main">
-            <p class="b-quote">“Se nota en dos semanas”</p>
-            <p class="b-body">Tus clientes lo mencionan como razón de recompra, es la duda más repetida antes de comprar y ninguno de tus 5 competidores da un plazo concreto.</p>
+      <h2 class="h2" id="angulos-t">Cada anuncio tiene su ángulo.</h2>
+      <p class="lede" data-reveal>Un ángulo es una dirección de escena: dónde aparece tu producto, con qué luz y en qué paleta. Las nueve imágenes de cada ángulo la respetan, así la campaña se ve como una sola.</p>
+      <div class="duo" data-stagger>
+        <article class="camp camp--day">
+          <img class="camp-ph is-lead" src="img/almibar-jardin-01.webp" width="720" height="1290" alt="Una mano toma el sérum Almíbar sobre un mantel de lino, entre duraznos y rosas." decoding="async" loading="lazy">
+          <div class="camp-info">
+            <p class="camp-top"><span class="camp-chip">Campaña 01</span><span>Almíbar, sérum facial</span></p>
+            <h3 class="camp-name">jardín de rosas</h3>
+            <p class="camp-line">Tu sérum al aire libre, con la fruta y las flores que lo inspiran.</p>
+            <dl class="camp-spec">
+              <div><dt>Cómo se ve</dt><dd>Mesa de madera, duraznos cortados, rosas y luz de tarde entre las hojas.</dd></div>
+              <div><dt>Paleta</dt><dd><span class="sw" aria-hidden="true"><i style="--c:#EFA27A"></i><i style="--c:#F2C4BD"></i><i style="--c:#6E8A45"></i></span>Durazno, rosa y verde hoja</dd></div>
+              <div><dt>Destaca</dt><dd>Aroma suave</dd></div>
+            </dl>
           </div>
-          <ul class="b-stats">
-            <li><strong data-count="64">64</strong><span>reseñas mencionan resultados visibles en dos semanas</span></li>
-            <li><strong data-count="17">17</strong><span>preguntas antes de comprar: “¿en cuánto se nota?”</span></li>
-            <li><strong>0<small> de 38</small></strong><span>anuncios de la competencia dan un plazo concreto</span></li>
-          </ul>
+          <img class="camp-ph" src="img/almibar-jardin-02.webp" width="720" height="1290" alt="El sérum Almíbar apoyado dentro de un durazno cortado." decoding="async" loading="lazy">
+          <img class="camp-ph" src="img/almibar-jardin-03.webp" width="720" height="1290" alt="El sérum sobre una mesa al sol, con ramas de durazno y su sombra en una tela." decoding="async" loading="lazy">
+          <img class="camp-ph" src="img/almibar-jardin-04.webp" width="720" height="1290" alt="Una mujer junta duraznos del árbol mientras el sérum espera en la mesa del jardín." decoding="async" loading="lazy">
         </article>
-
-        <article class="b b-reviews spot">
-          <p class="b-label">Hallazgos de reseñas</p>
-          <p class="b-sub">212 reseñas, 4,6 estrellas de promedio</p>
-          <ul class="themes js-bars">
-            <li><div class="theme-top"><span>Resultados visibles en dos semanas</span><span>64</span></div><span class="bar" style="--v:1"></span></li>
-            <li><div class="theme-top"><span>Rinde mucho, el frasco dura meses</span><span>31</span></div><span class="bar" style="--v:.48"></span></li>
-            <li><div class="theme-top"><span>Apto para piel sensible</span><span>27</span></div><span class="bar" style="--v:.42"></span></li>
-            <li><div class="theme-top"><span>Textura liviana, se absorbe rápido</span><span>22</span></div><span class="bar" style="--v:.34"></span></li>
-          </ul>
-        </article>
-
-        <article class="b b-objections spot">
-          <p class="b-label">Objeciones detectadas</p>
-          <p class="b-sub">De preguntas del sitio y reseñas de 3 estrellas o menos</p>
-          <ul class="objs">
-            <li class="obj"><b>¿En cuánto tiempo se ven resultados?</b><span>17 preguntas, la duda n.º 1</span><span class="chip chip-neg">Alta</span></li>
-            <li class="obj"><b>¿Irrita si tengo piel sensible o rosácea?</b><span>11 preguntas y 6 reseñas bajas</span><span class="chip chip-neg">Alta</span></li>
-            <li class="obj"><b>¿Se oxida una vez abierto?</b><span>8 preguntas</span><span class="chip chip-fat">Media</span></li>
-            <li class="obj"><b>¿Se usa de día o de noche?</b><span>5 preguntas</span><span class="chip chip-idle">Baja</span></li>
-          </ul>
-        </article>
-
-        <article class="b b-gaps spot">
-          <p class="b-label">Huecos en lo que corre la competencia</p>
-          <p class="b-sub">Meta Ad Library, 38 anuncios activos en los últimos 30 días</p>
-          <div class="gaps" role="table" aria-label="Uso de cada ángulo en la competencia">
-            <div class="gap-row gap-head" role="row"><span role="columnheader">Ángulo</span><span role="columnheader">Uso en competencia</span><span role="columnheader">Tu evidencia</span><span role="columnheader">Oportunidad</span></div>
-            <div class="gap-row" role="row"><b role="cell">Descuento y 2×1</b><span class="gap-pct" role="cell">68%<small>26 anuncios</small></span><span role="cell">Solo 4 reseñas mencionan el precio</span><span role="cell"><span class="chip chip-neg">Saturado</span></span></div>
-            <div class="gap-row" role="row"><b role="cell">Especialista a cámara</b><span class="gap-pct" role="cell">24%<small>9 anuncios</small></span><span role="cell">Ninguna reseña lo menciona como motivo</span><span role="cell"><span class="chip chip-fat">Competido</span></span></div>
-            <div class="gap-row" role="row"><b role="cell">Resultados en 14 días</b><span class="gap-pct" role="cell">0%<small>0 anuncios</small></span><span role="cell">64 menciones y la objeción n.º 1</span><span role="cell"><span class="chip chip-win">Libre</span></span></div>
-            <div class="gap-row" role="row"><b role="cell">Rendimiento del frasco</b><span class="gap-pct" role="cell">5%<small>2 anuncios</small></span><span role="cell">31 reseñas: “me duró dos meses”</span><span role="cell"><span class="chip chip-win">Libre</span></span></div>
-            <div class="gap-row" role="row"><b role="cell">Reseñas de clientes</b><span class="gap-pct" role="cell">8%<small>3 anuncios</small></span><span role="cell">48 reseñas con foto disponibles</span><span role="cell"><span class="chip chip-test">Poco usado</span></span></div>
+        <article class="camp camp--night">
+          <img class="camp-ph is-lead" src="img/almibar-tocador-02.webp" width="720" height="1290" alt="El sérum inclinado sobre un disco de algodón, con la sombra de una rosa en la pared." decoding="async" loading="lazy">
+          <div class="camp-info">
+            <p class="camp-top"><span class="camp-chip">Campaña 02</span><span>Almíbar, sérum facial</span></p>
+            <h3 class="camp-name">noche de tocador</h3>
+            <p class="camp-line">El último paso de la rutina, antes de dormir.</p>
+            <dl class="camp-spec">
+              <div><dt>Cómo se ve</dt><dd>Tocador en penumbra, luz cálida de lámpara y la sombra de una rosa en la pared.</dd></div>
+              <div><dt>Paleta</dt><dd><span class="sw" aria-hidden="true"><i style="--c:#A9707F"></i><i style="--c:#4A2733"></i><i style="--c:#EBD5CC"></i></span>Malva, ciruela y crema</dd></div>
+              <div><dt>Destaca</dt><dd>Textura liviana</dd></div>
+            </dl>
           </div>
+          <img class="camp-ph" src="img/almibar-tocador-01.webp" width="720" height="1290" alt="Una mujer se recoge el pelo frente al tocador, con el sérum sobre la mesada." decoding="async" loading="lazy">
+          <img class="camp-ph" src="img/almibar-tocador-03.webp" width="720" height="1290" alt="Una mano sostiene el sérum frente a una lámpara encendida." decoding="async" loading="lazy">
+          <img class="camp-ph" src="img/almibar-tocador-04.webp" width="720" height="1290" alt="El sérum entre toallas enrolladas, una rosa y un cepillo." decoding="async" loading="lazy">
         </article>
       </div>
-      <p class="caption">Datos de ejemplo.</p>
+      <p class="caption">Producto de ejemplo.</p>
     </div>
   </section>
 
-  <!-- ================= Batch ================= -->
+  <!-- ================= Examples ================= -->
   <section class="lote" id="lote" aria-labelledby="lote-t">
    <div class="stage stage--night night">
     <canvas class="lightfield" data-variant="night" aria-hidden="true"></canvas>
     <div class="lote-pin">
       <div class="wrap lote-head">
-        <h2 class="h2" id="lote-t">Cada creativo llega con la hipótesis que prueba.</h2>
-        <p class="lede" data-reveal>Así sabés qué ángulo probar, por qué, y qué repetir en el próximo lote. Nada se publica sin tu aprobación.</p>
+        <h2 class="h2" id="lote-t">Cada campaña, una misma estética.</h2>
+        <p class="lede" data-reveal>Tres productos y cinco campañas, cada una con su escena de principio a fin.</p>
       </div>
-      <div class="lote-viewport" role="region" aria-label="Creativos del lote" tabindex="0">
+      <div class="lote-viewport" role="region" aria-label="Campañas de ejemplo" tabindex="0">
         <ul class="lote-track">
-          <li class="hcard">
-            <div class="cv cv-01"><div class="cv-days"><span>Día 1</span><span>Día 14</span></div><span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-hook">Día 1 y día 14. Sin filtro, misma luz.</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#01, video 9:16</span><span class="chip chip-win">Ganador</span></div>
-              <h3>Antes y después de 14 días</h3>
-              <p class="hyp"><b>Hipótesis</b>Mostrar el cambio real en la piel a las dos semanas convence más que describir los ingredientes.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>64 de 212 reseñas dicen “se nota en dos semanas”.</p>
-              <p class="result">CPA $3.620 <span class="delta-good">34% menos que el lote</span></p>
+          <li class="gcard">
+            <div class="gcard-strip">
+              <img class="gcard-ph" src="img/almibar-jardin-04.webp" width="720" height="1290" alt="Una mujer junta duraznos del árbol mientras el sérum espera en la mesa del jardín." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-01.webp" width="720" height="1290" alt="Una mano toma el sérum Almíbar sobre un mantel de lino, entre duraznos y rosas." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-02.webp" width="720" height="1290" alt="El sérum Almíbar apoyado dentro de un durazno cortado." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-03.webp" width="720" height="1290" alt="El sérum sobre una mesa al sol, con ramas de durazno y su sombra en una tela." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Almíbar, sérum facial</span><span class="sw" aria-hidden="true"><i style="--c:#EFA27A"></i><i style="--c:#F2C4BD"></i><i style="--c:#6E8A45"></i></span></p>
+              <h3 class="gcard-name">jardín de rosas</h3>
+              <p class="gcard-line">Mesa de madera al aire libre, duraznos cortados, rosas y luz de tarde entre las hojas.</p>
             </div>
           </li>
-          <li class="hcard">
-            <div class="cv cv-02"><p class="cv-kicker">Menos que un café</p><p class="cv-big">$315<small>por día</small></p><p class="cv-fine">Sérum vitamina C a $18.900. Rinde 60 días.</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#02, imagen 1:1</span><span class="chip chip-win">Ganador</span></div>
-              <h3>Precio por uso</h3>
-              <p class="hyp"><b>Hipótesis</b>Traducir $18.900 a “$315 por día” baja la objeción de precio en una compra impulsiva.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>31 reseñas hablan de lo que rinde el frasco.</p>
-              <p class="result">CPA $4.060 <span class="delta-good">26% menos que el lote</span></p>
+          <li class="gcard">
+            <div class="gcard-strip">
+              <img class="gcard-ph" src="img/brote-manana-02.webp" width="720" height="1290" alt="La barra Brote junto a un sol dibujado con avena y quinoa." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-manana-01.webp" width="720" height="1290" alt="La barra Brote apoyada sobre avena y almendras, con sol de ventana." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-manana-03.webp" width="720" height="1290" alt="La barra Brote parada sobre un montón de avena, con almendras alrededor." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-manana-04.webp" width="720" height="1290" alt="La barra Brote entre almendras y avena que caen sobre un fondo terracota." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Brote, barra de cereales</span><span class="sw" aria-hidden="true"><i style="--c:#E9A23B"></i><i style="--c:#B5643C"></i><i style="--c:#E8D8B8"></i></span></p>
+              <h3 class="gcard-name">media mañana al sol</h3>
+              <p class="gcard-line">Sol de ventana, avena y almendras en el aire, fondos ámbar y terracota.</p>
             </div>
           </li>
-          <li class="hcard">
-            <div class="cv cv-03"><span class="cv-play" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-kicker">Mi rutina entera</p><p class="cv-big">2:00</p><p class="cv-hook">antes de que se haga el café.</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#03, video 9:16</span><span class="chip chip-test">En test</span></div>
-              <h3>La rutina de 2 minutos</h3>
-              <p class="hyp"><b>Hipótesis</b>Mostrar que la rutina entra en dos minutos reduce la fricción de “no tengo tiempo”.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>22 reseñas mencionan que es rápido de usar.</p>
-              <p class="result">Día 4 de 7 <span class="muted">CTR 2,31% hasta ahora</span></p>
+          <li class="gcard">
+            <div class="gcard-strip">
+              <img class="gcard-ph" src="img/lumbre-cedro-01.webp" width="720" height="1290" alt="La vela Lumbre encendida, inclinada frente a un trozo de cedro." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/lumbre-cedro-03.webp" width="720" height="1290" alt="La vela Lumbre junto a un espejo redondo que refleja un higo." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/lumbre-cedro-02.webp" width="720" height="1290" alt="La vela Lumbre encendida sobre una mesa de madera, con un apagavelas." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/lumbre-cedro-04.webp" width="720" height="1290" alt="Una mano acomoda un trozo de cedro junto a la vela Lumbre." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Lumbre, vela de soja</span><span class="sw" aria-hidden="true"><i style="--c:#5B1622"></i><i style="--c:#46552F"></i><i style="--c:#F1EBDD"></i></span></p>
+              <h3 class="gcard-name">noche de cedro</h3>
+              <p class="gcard-line">Fondo bordó, madera de cedro, higos y la llama encendida.</p>
             </div>
           </li>
-          <li class="hcard">
-            <div class="cv cv-07"><span class="cv-play cv-play--corner" aria-hidden="true"><svg class="icon"><use href="#i-play"/></svg></span><p class="cv-quote">“Tengo rosácea y esto es lo único que tolero.”</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#07, video 9:16</span><span class="chip chip-test">En test</span></div>
-              <h3>Pieles sensibles también</h3>
-              <p class="hyp"><b>Hipótesis</b>Resolver de frente la objeción de irritación abre un público que hoy no compra.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>27 reseñas mencionan piel sensible.</p>
-              <p class="result">Día 3 de 7 <span class="muted">CTR 2,44% hasta ahora</span></p>
+          <li class="gcard">
+            <div class="gcard-strip">
+              <img class="gcard-ph" src="img/brote-merienda-03.webp" width="720" height="1290" alt="La barra Brote sobre un mantel de lino, con una taza y almendras." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-merienda-01.webp" width="720" height="1290" alt="Una mano deja la barra Brote junto a una taza, al lado de la ventana." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-merienda-02.webp" width="720" height="1290" alt="La barra Brote sobre avena, espigas y almendras." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/brote-merienda-04.webp" width="720" height="1290" alt="Una mano sostiene la barra Brote frente a una taza de café." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Brote, barra de cereales</span><span class="sw" aria-hidden="true"><i style="--c:#EDE3D3"></i><i style="--c:#C2734E"></i><i style="--c:#D79A52"></i></span></p>
+              <h3 class="gcard-name">merienda de tarde</h3>
+              <p class="gcard-line">Mantel de lino, taza de arcilla, espigas de avena y luz baja de la tarde.</p>
             </div>
           </li>
-          <li class="hcard is-fatigued">
-            <div class="cv cv-08"><p class="cv-kicker">Promo de temporada</p><p class="cv-big">2×1</p><p class="cv-hook">Solo hasta el domingo.</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#08, imagen 1:1</span><span class="chip chip-fat">Fatigado</span></div>
-              <h3>Oferta 2×1 de temporada</h3>
-              <p class="hyp"><b>Hipótesis</b>Una oferta directa y limitada acelera la compra en público que ya conoce la marca.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-books"/></svg>14 de 38 anuncios de la categoría usan 2×1.</p>
-              <p class="result">CTR <span class="delta-bad">38% más bajo que en la semana 1</span></p>
+          <li class="gcard">
+            <div class="gcard-strip">
+              <img class="gcard-ph" src="img/almibar-tocador-02.webp" width="720" height="1290" alt="El sérum inclinado sobre un disco de algodón, con la sombra de una rosa en la pared." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-tocador-03.webp" width="720" height="1290" alt="Una mano sostiene el sérum frente a una lámpara encendida." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-tocador-01.webp" width="720" height="1290" alt="Una mujer se recoge el pelo frente al tocador, con el sérum sobre la mesada." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-tocador-04.webp" width="720" height="1290" alt="El sérum entre toallas enrolladas, una rosa y un cepillo." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Almíbar, sérum facial</span><span class="sw" aria-hidden="true"><i style="--c:#A9707F"></i><i style="--c:#4A2733"></i><i style="--c:#EBD5CC"></i></span></p>
+              <h3 class="gcard-name">noche de tocador</h3>
+              <p class="gcard-line">Tocador en penumbra, luz cálida de lámpara y la sombra de una rosa en la pared.</p>
             </div>
           </li>
-          <li class="hcard">
-            <div class="cv cv-10"><p class="cv-kicker">Vs. marcas de farmacia</p><p class="cv-big">1/3</p><p class="cv-hook">Misma concentración, un tercio del precio.</p></div>
-            <div class="hcard-body">
-              <div class="hcard-top"><span>#10, imagen 4:5</span><span class="chip chip-idle">Sin lanzar</span></div>
-              <h3>Comparado con marcas de farmacia</h3>
-              <p class="hyp"><b>Hipótesis</b>Comparar concentración y precio con marcas de farmacia lo posiciona como la opción inteligente.</p>
-              <p class="src"><svg class="icon" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>19 reseñas lo comparan con marcas de farmacia.</p>
-              <p class="result">Esperando tu aprobación</p>
-            </div>
-          </li>
-          <li class="hcard-learn">
-            <p class="b-label"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Aprendizaje guardado</p>
-            <h3>El plazo concreto funciona mejor que la promesa genérica.</h3>
-            <p>Nombrar “14 días” en los primeros 2 segundos bajó el CPA un 34%. El lote #15 arranca desde ahí.</p>
-            <p class="muted">Cada lote apunta mejor que el anterior.</p>
+          <li class="gcard-end">
+            <h3>¿Cómo se vería tu producto?</h3>
+            <p>Mandanos el link y te mostramos sus ángulos.</p>
+            <a class="btn btn-primary js-calendly" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener">Agendá una llamada<span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
           </li>
         </ul>
       </div>
       <div class="wrap lote-controls">
         <div class="lote-progress" aria-hidden="true"><i class="js-lote-progress"></i></div>
         <div class="lote-nav">
-          <button class="lote-btn lote-btn--prev js-lote-prev" type="button" aria-label="Creativo anterior"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
-          <button class="lote-btn js-lote-next" type="button" aria-label="Creativo siguiente"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+          <button class="lote-btn lote-btn--prev js-lote-prev" type="button" aria-label="Campaña anterior"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+          <button class="lote-btn js-lote-next" type="button" aria-label="Campaña siguiente"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
         </div>
       </div>
-      <div class="wrap"><p class="caption">Datos de ejemplo.</p></div>
+      <div class="wrap"><p class="caption">Productos de ejemplo.</p></div>
     </div>
-    <div class="angle-band" aria-hidden="true"><div class="angle-band-track js-angle-band"><span>Prueba visible</span><svg class="icon"><use href="#i-angle"/></svg><span>Precio por uso</span><svg class="icon"><use href="#i-angle"/></svg><span>Objeción resuelta</span><svg class="icon"><use href="#i-angle"/></svg><span>Prueba social</span><svg class="icon"><use href="#i-angle"/></svg><span>Conveniencia</span><svg class="icon"><use href="#i-angle"/></svg><span>Comparativa</span></div></div>
+    <div class="angle-band" aria-hidden="true"><div class="angle-band-track js-angle-band"><span>jardín de rosas</span><svg class="icon"><use href="#i-angle"/></svg><span>media mañana al sol</span><svg class="icon"><use href="#i-angle"/></svg><span>noche de cedro</span><svg class="icon"><use href="#i-angle"/></svg><span>merienda de tarde</span><svg class="icon"><use href="#i-angle"/></svg><span>noche de tocador</span></div></div>
    </div>
   </section>
 
@@ -1090,23 +977,23 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         <div class="vs" role="table" aria-label="Comparación con las alternativas actuales" data-stagger>
           <div class="vs-row vs-head" role="row"><span role="columnheader">Alternativa</span><span role="columnheader">Qué te da hoy</span><span role="columnheader">Qué le falta</span></div>
           <div class="vs-row" role="row">
-            <div class="vs-alt" role="cell"><strong>IA genérica</strong></div>
-            <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Volumen a bajo costo</div>
-            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Sin criterio: no sabe qué probar ni por qué</div>
+            <div class="vs-alt" role="cell"><strong>Sesión de fotos</strong><small>con fotógrafo o estudio</small></div>
+            <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Calidad y control de cada escena</div>
+            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Semanas de producción y una sola escena por sesión</div>
           </div>
           <div class="vs-row" role="row">
-            <div class="vs-alt" role="cell"><strong>Creadores UGC</strong><small>o freelancers</small></div>
-            <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Calidad y autenticidad</div>
-            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Caro, lento, poca cantidad y difícil de iterar</div>
+            <div class="vs-alt" role="cell"><strong>IA genérica</strong></div>
+            <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Rápida y barata</div>
+            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Cada imagen sale con otro estilo, no arma una campaña</div>
           </div>
           <div class="vs-row" role="row">
             <div class="vs-alt" role="cell"><strong>Funciones de Meta</strong><small>gratis, dentro de Ads Manager</small></div>
             <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Adaptaciones automáticas</div>
-            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Solo transforma lo que ya subiste, no crea ángulos nuevos</div>
+            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Solo transforma lo que ya subiste, no crea escenas nuevas</div>
           </div>
           <div class="vs-row vs-us" role="row">
             <div role="cell"><svg class="logo" viewBox="0 0 1077 351" role="img" aria-label="Ángulo"><use href="#logo-word"/></svg></div>
-            <p role="cell">Volumen con criterio. Cada creativo viene con la hipótesis que prueba, no es volumen al azar.</p>
+            <p role="cell">Campañas completas con una misma estética, desde el link de tu producto.</p>
           </div>
         </div>
 
@@ -1161,7 +1048,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   <div class="wrap foot-grid">
     <div>
       <svg class="logo" viewBox="0 0 1077 351" role="img" aria-label="Ángulo"><use href="#logo-word"/></svg>
-      <p class="foot-tag">Testeá creativos nuevos más rápido de lo que los viejos se agotan.</p>
+      <p class="foot-tag">Generá creativos nuevos con un link.</p>
     </div>
     <ul class="foot-nav">
       <li><a href="#como-funciona">Cómo funciona</a></li>
@@ -1374,16 +1261,7 @@ void main(){
   document.body.prepend(sentinel);
   new IntersectionObserver(([e]) => nav.classList.toggle('is-scrolled', !e.isIntersecting)).observe(sentinel);
 
-  // Cursor-following light on evidence cards.
-  if (fineMQ.matches) {
-    $$('.spot').forEach((el) => el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      el.style.setProperty('--my', `${e.clientY - r.top}px`);
-    }));
-  }
-
-  /* ===================== Batch carousel ===================== */
+  /* ===================== Examples carousel ===================== */
   // Native horizontal scroll, so the page wheel still scrolls down. Arrows, mouse drag, trackpad and swipe move the
   // cards. While on screen it advances one card every few seconds, pauses on hover or focus, and stops for good as
   // soon as someone moves it themselves.
@@ -1568,19 +1446,6 @@ void main(){
       scrollTrigger: { trigger: g, start: 'top 85%', once: true },
     }));
   };
-  const counters = (scope) => {
-    $$('[data-count]', scope).forEach((el) => {
-      const end = Number(el.dataset.count);
-      const o = { v: 0 };
-      el.textContent = '0';
-      gsap.to(o, {
-        v: end, duration: 1.6, ease: EASE,
-        onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString('es-AR'); },
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-      });
-    });
-  };
-
   const mm = gsap.matchMedia();
   mm.add({ motion: '(prefers-reduced-motion: no-preference)', desktop: '(min-width: 900px)' }, (ctx) => {
     const { motion, desktop } = ctx.conditions;
@@ -1597,7 +1462,7 @@ void main(){
       .from('.nav-soc-face', { scale: 0.8, rotate: -25, autoAlpha: 0, duration: 1, stagger: 0.08, clearProps: 'transform,opacity,visibility' }, 0.55);
 
     // Cards drift up as the hero scrolls away (depth), and lean toward the pointer.
-    gsap.to('.fan', { yPercent: -10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    if (desktop) gsap.to('.fan', { yPercent: -10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     if (fineMQ.matches) {
       const stage = $('.stage--hero');
       const qs = $$('.fan-tilt').map((el) => ({
@@ -1750,7 +1615,7 @@ void main(){
       pains.forEach((row) => row.classList.remove('is-seen', 'is-current'));
     });
 
-    /* ---- How it works: product walkthrough that plays on its own while in view ---- */
+    /* ---- How it works: the real screens play on their own while in view ---- */
     const how = $('#como-funciona');
     reveal(how);
     {
@@ -1758,28 +1623,14 @@ void main(){
       const views = $$('.app-view', how);
       const steps = $$('.how-step', how);
       const urlEl = $('.js-url', how);
-      const pctEl = $('.js-pct', how);
-      const barEl = $('.js-bar', how);
-      const phaseEl = $('.js-phase', how);
       const stepEl = $('.js-app-step', how);
       const railEl = $('.js-rail', how);
-      const checks = $$('.check', how);
+      const taps = $$('.tap i', how);
+      const tiles = $$('.res-grid li', how);
       const URL_TXT = urlEl.dataset.url;
-      const labels = ['Paso 1 de 2', 'Paso 2 de 2', 'Lote #1'];
-      const state = { n: 0, pct: 0 };
-      const render = () => {
-        urlEl.textContent = URL_TXT.slice(0, Math.round(state.n));
-        const p = state.pct;
-        pctEl.textContent = `${Math.round(p)}%`;
-        barEl.style.transform = `scaleX(${p / 100})`;
-        let active = -1;
-        checks.forEach((c, i) => {
-          const s = p >= (i + 1) * 25 ? 'done' : p > i * 25 ? 'active' : 'idle';
-          c.dataset.state = s;
-          if (s === 'active') active = i;
-        });
-        phaseEl.textContent = active >= 0 ? checks[active].dataset.label : (p >= 100 ? 'Listo' : checks[0].dataset.label);
-      };
+      const labels = ['Producto', 'Campañas', 'Imágenes'];
+      const state = { n: 0 };
+      const render = () => { urlEl.textContent = URL_TXT.slice(0, Math.round(state.n)); };
       let current = -1;
       const setStep = (i) => {
         if (i === current) return;
@@ -1793,24 +1644,31 @@ void main(){
       const tl = gsap.timeline({ paused: true, repeat: -1 });
       const sync = () => {
         const t = tl.time();
-        railEl.style.transform = `scaleY(${tl.progress()})`;
+        railEl.style.transform = 'scaleY(' + tl.progress() + ')';
         setStep(t < tl.labels.s1 ? 0 : t < tl.labels.s2 ? 1 : 2);
         render();
       };
+      const press = (el, at) => tl
+        .fromTo(el, { autoAlpha: 0, scale: 0.92 }, { autoAlpha: 1, scale: 1, duration: 0.18, ease: 'power2.out' }, at)
+        .to(el, { autoAlpha: 0, scale: 1.14, duration: 0.55, ease: 'power2.out' });
+      const viewIn = { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' };
+      const viewOut = { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' };
       tl.eventCallback('onUpdate', sync);
-      tl.fromTo(views[0], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' })
-        .fromTo(state, { n: 0 }, { n: URL_TXT.length, duration: 1.8, ease: 'none' }, 0.45)
-        .to('.js-analyze', { scale: 0.94, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' })
-        .addLabel('s1', '+=0.2')
-        .to(views[0], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, 's1')
-        .fromTo(views[1], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 's1+=0.15')
-        .fromTo(state, { pct: 0 }, { pct: 100, duration: 3.6, ease: 'none' }, 's1+=0.5')
-        .addLabel('s2', '+=0.6')
-        .to(views[1], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, 's2')
-        .fromTo(views[2], { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 's2+=0.15')
-        .from($$('.mini', how), { autoAlpha: 0, y: 22, scale: 0.94, duration: 0.6, stagger: 0.12, ease: 'power2.out' }, 's2+=0.4')
-        .to(views[2], { autoAlpha: 0, y: -18, duration: 0.45, ease: 'power2.out' }, '+=3.4');
-      state.n = 0; state.pct = 0;
+      tl.fromTo(views[0], { autoAlpha: 0, y: 18 }, viewIn)
+        .fromTo(state, { n: 0 }, { n: URL_TXT.length, duration: 1.8, ease: 'none' }, 0.5);
+      press(taps[0], '+=0.3');
+      tl.addLabel('s1', '+=0.1')
+        .to(views[0], viewOut, 's1')
+        .fromTo(views[1], { autoAlpha: 0, y: 18 }, viewIn, 's1+=0.15')
+        .fromTo($('.screen--angles img', how), { scale: 1.05 }, { scale: 1, duration: 3.4, ease: 'power1.out' }, 's1+=0.15');
+      press(taps[1], 's1+=2.3');
+      tl.addLabel('s2', '+=0.15')
+        .to(views[1], viewOut, 's2')
+        .fromTo(views[2], { autoAlpha: 0, y: 18 }, viewIn, 's2+=0.15')
+        .fromTo(tiles, { autoAlpha: 0, y: 12, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.32, ease: 'power2.out' }, 's2+=0.45')
+        .fromTo('.res-foot', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '>-0.15')
+        .to(views[2], viewOut, '+=3.2');
+      state.n = 0;
       sync();
 
       // Plays only while the section is on screen, from the start the first time.
@@ -1823,7 +1681,7 @@ void main(){
       // Each step on the left jumps straight to that part of the demo.
       const jumps = steps.map((s, i) => {
         const btn = $('.how-hit', s);
-        const go = () => { tl.seek(i === 0 ? 0 : `s${i}`, false); sync(); if (inView) tl.play(); };
+        const go = () => { tl.seek(i === 0 ? 0 : 's' + i, false); sync(); if (inView) tl.play(); };
         btn.addEventListener('click', go);
         return () => btn.removeEventListener('click', go);
       });
@@ -1831,20 +1689,21 @@ void main(){
       cleanups.push(() => {
         jumps.forEach((off) => off());
         how.classList.remove('is-playing');
-        state.n = URL_TXT.length; state.pct = 100; render();
+        state.n = URL_TXT.length; render();
         steps.forEach((s) => { s.classList.remove('is-active'); s.removeAttribute('aria-current'); });
-        stepEl.textContent = 'Prototipo';
+        stepEl.textContent = 'Ángulo';
         railEl.style.transform = '';
       });
     }
 
-    /* ---- Evidence ---- */
-    const evidence = $('#evidencia');
-    reveal(evidence);
-    counters(evidence);
-    gsap.from($$('.js-bars .bar', evidence), { scaleX: 0, duration: 1.3, ease: EASE, stagger: 0.1, scrollTrigger: { trigger: '.js-bars', start: 'top 85%', once: true } });
+    /* ---- Angles: each campaign's photos open upward, one after another ---- */
+    const angles = $('#angulos');
+    reveal(angles);
+    $$('.camp', angles).forEach((c) => gsap.fromTo($$('.camp-ph', c),
+      { clipPath: 'inset(100% 0% 0% 0% round 14px)' },
+      { clipPath: 'inset(0% 0% 0% 0% round 14px)', duration: 1.3, ease: EASE, stagger: 0.1, scrollTrigger: { trigger: c, start: 'top 82%', once: true } }));
 
-    /* ---- Batch: cards slide in once; the carousel itself is plain scrolling ---- */
+    /* ---- Examples: cards slide in once; the carousel itself is plain scrolling ---- */
     reveal($('#lote'));
     gsap.fromTo('.js-angle-band', { xPercent: 0 }, { xPercent: -38, ease: 'none', scrollTrigger: { trigger: '#lote', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
     gsap.from($$('.lote-track > li'), {
