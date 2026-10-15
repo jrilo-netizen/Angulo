@@ -147,6 +147,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .section{padding-block:clamp(88px,9vw,136px);position:relative}
 .h2{font-weight:700;font-size:clamp(2rem,1.2rem + 2.6vw,3.5rem);line-height:1.04;letter-spacing:-.03em}
 .lede{margin-top:20px;font-size:clamp(1.05rem,1rem + .25vw,1.2rem);line-height:1.55;max-width:54ch;color:var(--ink-2)}
+.lede--even{text-wrap:balance}
 .caption{margin-top:20px;font-size:.84rem;line-height:1.5;color:var(--ink-3);max-width:70ch}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-ring);font:600 .72rem/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
 .eyebrow .icon{width:14px;height:14px;color:var(--ink)}
@@ -195,7 +196,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .nav-links a{display:block;padding:10px 14px;border-radius:999px;font:500 .875rem/1 var(--font-body);color:var(--ink-2);text-decoration:none;transition:background-color .2s ease,color .2s ease}
 .nav-links a:hover{background:var(--tint);color:var(--ink)}
 @media (max-width:899px){.nav-links{display:none}.nav{padding-left:18px}}
-/* Social links: a brand glow blooms from the centre, the icon rolls up and a copy rolls in, a small label appears below. */
+/* Social links: a brand glow blooms from the centre and a small label appears below. */
 .nav-end{display:flex;align-items:center;gap:10px}
 .nav-social{display:flex;gap:4px;list-style:none;margin:0;padding:0}
 .nav-soc{position:relative;display:block;width:40px;height:40px;border-radius:999px;color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .16s var(--ease-out)}
@@ -203,8 +204,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .nav-soc::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;box-shadow:0 0 0 5px rgb(var(--mag) / .1),0 0 26px 4px rgb(var(--mag) / .4);opacity:0;transition:opacity .3s ease;pointer-events:none}
 .nav-soc-face{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;width:100%;height:100%;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--line-strong);transition:box-shadow .3s ease}
 .nav-soc-face::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 40% 35%,#FFF4FA 0 14%,var(--mag-soft) 60%,rgb(var(--mag) / .7));opacity:0;transform:scale(.4);transition:opacity .25s ease,transform .45s var(--ease-out)}
-.nav-soc .icon{grid-area:1/1;width:19px;height:19px;transition:transform .42s var(--ease-out),color .25s ease}
-.nav-soc .nav-soc-next{transform:translateY(170%)}
+.nav-soc .icon{width:19px;height:19px;transition:color .25s ease}
 .nav-tip{position:absolute;top:calc(100% + 12px);left:50%;translate:-50% 0;padding:7px 10px;border-radius:8px;background:var(--btn-bg);color:var(--btn-fg);font:600 .72rem/1 var(--font-body);letter-spacing:.01em;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(-4px) scale(.97);transform-origin:50% 0;transition:opacity .125s var(--ease-out),transform .125s var(--ease-out)}
 .nav-soc:focus-visible .nav-tip{opacity:1;transform:none}
 /* Once one label has shown, its neighbour's shows at once (class set by the script). */
@@ -214,8 +214,6 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   .nav-soc:hover::after{opacity:1}
   .nav-soc:hover .nav-soc-face{box-shadow:inset 0 0 0 1px transparent}
   .nav-soc:hover .nav-soc-face::before{opacity:1;transform:none}
-  .nav-soc:hover .icon{transform:translateY(-170%)}
-  .nav-soc:hover .nav-soc-next{transform:none}
   .nav-soc:hover .nav-tip{opacity:1;transform:none;transition-delay:.35s}
   .nav-social.is-warm .nav-soc:hover .nav-tip{transition-delay:0s}
 }
@@ -232,8 +230,8 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 .lightfield.is-ready{opacity:1}
 
 /* ---------- Hero ---------- */
-.hero{padding:10px;padding-top:calc(env(safe-area-inset-top,0px) + 10px)}
-.stage--hero{min-height:clamp(700px,calc(100dvh - 20px),960px);display:flex}
+.hero{padding:0}
+.stage--hero{min-height:clamp(720px,100dvh,980px);display:flex;border-radius:0 0 clamp(24px,3vw,40px) clamp(24px,3vw,40px)}
 .hero-inner{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding-top:clamp(120px,15vh,156px);padding-bottom:56px}
 .hero-title{margin-top:24px;font-weight:700;font-size:clamp(2.3rem,.9rem + 4.2vw,4.6rem);line-height:1.02;letter-spacing:-.04em}
 .hero-title .line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
@@ -497,10 +495,6 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   radial-gradient(45% 55% at 98% 8%,var(--nt-mag),transparent 72%),
   linear-gradient(90deg,var(--nt-cream) 0 30%,var(--nt-pink))}
 .lote-pin{position:relative;z-index:1}
-/* Giant outlined sales angles drifting behind the cards */
-.angle-band{position:relative;margin:clamp(36px,5vw,64px) 0 calc(-1 * clamp(40px,5vw,72px));overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-.angle-band-track{display:flex;align-items:center;gap:.35em;width:max-content;padding-left:4vw;white-space:nowrap;font:800 clamp(4rem,1rem + 9vw,10.5rem)/1 var(--font-display);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px rgb(245 236 240 / .2);padding-bottom:.06em}
-.angle-band-track .icon{width:.55em;height:.55em;color:rgb(219 158 184 / .4)}
 .lote-head .h2{max-width:17ch}
 .lote-viewport{margin-top:clamp(36px,4.5vw,56px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--lote-pad);scrollbar-width:none;overscroll-behavior-x:contain;outline-offset:-4px}
 .lote-viewport::-webkit-scrollbar{display:none}
@@ -633,7 +627,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
 </head>
 <body>
 <!-- Icons: Phosphor Light (MIT). Logo: Ángulo wordmark. -->
-<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-angle" viewBox="0 0 256 256"><path d="M98,72a6,6,0,0,1,6-6A102.12,102.12,0,0,1,206,168a6,6,0,0,1-12,0,90.1,90.1,0,0,0-90-90A6,6,0,0,1,98,72ZM240,194H78V32a6,6,0,0,0-12,0V66H32a6,6,0,0,0,0,12H66V200a6,6,0,0,0,6,6H240a6,6,0,0,0,0-12Z"/></symbol><symbol id="i-download-simple" viewBox="0 0 256 256"><path d="M222,144v64a6,6,0,0,1-6,6H40a6,6,0,0,1-6-6V144a6,6,0,0,1,12,0v58H210V144a6,6,0,0,1,12,0Zm-98.24,4.24a6,6,0,0,0,8.48,0l40-40a6,6,0,0,0-8.48-8.48L134,129.51V32a6,6,0,0,0-12,0v97.51L92.24,99.76a6,6,0,0,0-8.48,8.48Z"/></symbol></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false"><defs><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></symbol><symbol id="i-images-square" viewBox="0 0 256 256"><path d="M208,34H80A14,14,0,0,0,66,48V66H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V190h18a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM78,48a2,2,0,0,1,2-2H208a2,2,0,0,1,2,2v74.2l-20.1-20.1a14,14,0,0,0-19.8,0L94.2,178H80a2,2,0,0,1-2-2ZM178,208a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2H66v98a14,14,0,0,0,14,14h98Zm30-30H111.17l67.41-67.41a2,2,0,0,1,2.83,0L210,139.17V176A2,2,0,0,1,208,178Zm-88-68A22,22,0,1,0,98,88,22,22,0,0,0,120,110Zm0-32a10,10,0,1,1-10,10A10,10,0,0,1,120,78Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></symbol><symbol id="i-trend-down" viewBox="0 0 256 256"><path d="M238,128v64a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h49.52L136,104.49l-35.76,35.75a6,6,0,0,1-8.48,0l-72-72a6,6,0,0,1,8.48-8.48L96,127.51l35.76-35.75a6,6,0,0,1,8.48,0L226,177.52V128a6,6,0,0,1,12,0Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></symbol><symbol id="logo-word" viewBox="0 0 1077 351"><path d="M0 282.71C0 281.104 27.2734 248.392 144.695 109.142C167.79 81.7498 196.284 47.9561 208.012 34.0415C233.669 3.59838 236.064 3.08331 240 1.15471C242 0.154694 248.5 -0.845375 252.5 1.15465C256.567 3.18836 258 10.6547 258.5 18.1547C259 19.1547 259.698 67.5991 259.698 152.688V284.155C254.038 281.655 230.93 275.155 210.085 275.155C192.085 275.155 138.5 282.71 138.5 282.71L212.5 183.655C215.368 180.179 230.442 158.012 232 155.155C233.558 152.297 237.794 144.913 240 138.655C241.047 135.684 242.52 127.763 243 123.655C243.861 116.291 243.642 108.327 243 104.155C241.615 95.1548 238 89.1547 229.031 88.2725C222.234 88.3013 213.836 95.1547 207.5 102.655C193.308 119.454 96.8877 234.224 69.033 267.603L55.2265 284.155H19.1133H0V282.71Z"/><path d="M269 135.9H308V285H269V135.9ZM377.3 132.6C386.5 132.6 395 133.8 402.8 136.2C410.6 138.6 417.4 142.3 423.2 147.3C429 152.3 433.5 158.7 436.7 166.5C439.9 174.1 441.5 183.2 441.5 193.8V285H402.5V200.7C402.5 188.1 399.4 178.9 393.2 173.1C387.2 167.1 377.3 164.1 363.5 164.1C353.1 164.1 343.7 166.1 335.3 170.1C326.9 174.1 320.1 179.2 314.9 185.4C309.7 191.4 306.7 197.7 305.9 204.3L305.6 189C306.6 182 308.9 175.2 312.5 168.6C316.1 162 320.9 156 326.9 150.6C333.1 145 340.4 140.6 348.8 137.4C357.2 134.2 366.7 132.6 377.3 132.6ZM530.408 262.2C514.208 262.2 499.908 259.8 487.508 255C475.308 250 465.808 242.7 459.008 233.1C452.208 223.5 448.808 211.9 448.808 198.3C448.808 184.9 452.108 173.3 458.708 163.5C465.308 153.7 474.708 146.1 486.908 140.7C499.308 135.3 513.808 132.6 530.408 132.6C535.008 132.6 539.408 132.9 543.608 133.5C548.008 134.1 552.308 134.9 556.508 135.9L631.808 136.2V165.6C621.608 165.8 611.208 164.6 600.608 162C590.208 159.2 581.008 156.2 573.008 153L572.108 150.9C578.908 154.1 585.308 158.1 591.308 162.9C597.308 167.5 602.108 172.9 605.708 179.1C609.508 185.1 611.408 192.1 611.408 200.1C611.408 213.1 608.108 224.3 601.508 233.7C594.908 242.9 585.508 250 573.308 255C561.308 259.8 547.008 262.2 530.408 262.2ZM580.508 346.5V339.3C580.508 330.1 577.508 323.7 571.508 320.1C565.708 316.5 557.708 314.7 547.508 314.7H501.008C492.008 314.7 484.408 314 478.208 312.6C472.208 311.2 467.408 309.2 463.808 306.6C460.208 304 457.608 300.9 456.008 297.3C454.408 293.9 453.608 290.2 453.608 286.2C453.608 278.2 456.208 272.2 461.408 268.2C466.608 264 473.608 261.2 482.408 259.8C491.208 258.4 500.908 258.1 511.508 258.9L530.408 262.2C517.808 262.6 508.408 263.7 502.208 265.5C496.208 267.1 493.208 270.4 493.208 275.4C493.208 278.4 494.408 280.8 496.808 282.6C499.208 284.2 502.608 285 507.008 285H555.908C569.308 285 580.708 286.4 590.108 289.2C599.708 292.2 607.008 297.1 612.008 303.9C617.008 310.9 619.508 320.4 619.508 332.4V346.5H580.508ZM530.408 234C539.008 234 546.508 232.6 552.908 229.8C559.508 227 564.608 223 568.208 217.8C571.808 212.4 573.608 206 573.608 198.6C573.608 191 571.808 184.5 568.208 179.1C564.608 173.7 559.608 169.6 553.208 166.8C546.808 163.8 539.208 162.3 530.408 162.3C521.808 162.3 514.208 163.8 507.608 166.8C501.008 169.6 495.908 173.7 492.308 179.1C488.708 184.5 486.908 191 486.908 198.6C486.908 206 488.708 212.4 492.308 217.8C495.908 223 500.908 227 507.308 229.8C513.908 232.6 521.608 234 530.408 234ZM808.777 285H769.777V135.9H808.777V285ZM771.877 213.3L772.177 223.5C771.777 226.3 770.777 230.4 769.177 235.8C767.577 241 765.077 246.6 761.677 252.6C758.477 258.6 754.277 264.4 749.077 270C743.877 275.4 737.477 279.9 729.877 283.5C722.277 286.9 713.277 288.6 702.877 288.6C694.677 288.6 686.577 287.6 678.577 285.6C670.777 283.6 663.677 280.3 657.277 275.7C650.877 270.9 645.777 264.5 641.977 256.5C638.177 248.5 636.277 238.4 636.277 226.2V135.9H675.277V219.6C675.277 229.2 676.777 236.8 679.777 242.4C682.977 247.8 687.577 251.6 693.577 253.8C699.577 256 706.677 257.1 714.877 257.1C725.677 257.1 734.977 254.8 742.777 250.2C750.577 245.4 756.877 239.6 761.677 232.8C766.677 226 770.077 219.5 771.877 213.3ZM826.285 75.9H865.285V285H826.285V75.9ZM971.63 288.6C952.83 288.6 936.23 285.6 921.83 279.6C907.63 273.6 896.53 264.9 888.53 253.5C880.53 241.9 876.53 227.7 876.53 210.9C876.53 194.1 880.53 179.9 888.53 168.3C896.53 156.5 907.63 147.6 921.83 141.6C936.23 135.6 952.83 132.6 971.63 132.6C990.43 132.6 1006.83 135.6 1020.83 141.6C1035.03 147.6 1046.13 156.5 1054.13 168.3C1062.13 179.9 1066.13 194.1 1066.13 210.9C1066.13 227.7 1062.13 241.9 1054.13 253.5C1046.13 264.9 1035.03 273.6 1020.83 279.6C1006.83 285.6 990.43 288.6 971.63 288.6ZM971.63 258.6C982.03 258.6 991.33 256.8 999.53 253.2C1007.93 249.4 1014.53 244 1019.33 237C1024.13 229.8 1026.53 221.1 1026.53 210.9C1026.53 200.7 1024.13 192 1019.33 184.8C1014.53 177.4 1008.03 171.8 999.83 168C991.63 164.2 982.23 162.3 971.63 162.3C961.23 162.3 951.83 164.2 943.43 168C935.03 171.8 928.33 177.3 923.33 184.5C918.53 191.7 916.13 200.5 916.13 210.9C916.13 221.1 918.53 229.8 923.33 237C928.13 244 934.73 249.4 943.13 253.2C951.53 256.8 961.03 258.6 971.63 258.6Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,34H182V24a6,6,0,0,0-12,0V34H86V24a6,6,0,0,0-12,0V34H48A14,14,0,0,0,34,48V208a14,14,0,0,0,14,14H208a14,14,0,0,0,14-14V48A14,14,0,0,0,208,34ZM48,46H74V56a6,6,0,0,0,12,0V46h84V56a6,6,0,0,0,12,0V46h26a2,2,0,0,1,2,2V82H46V48A2,2,0,0,1,48,46ZM208,210H48a2,2,0,0,1-2-2V94H210V208A2,2,0,0,1,208,210Z"/></symbol><symbol id="i-download-simple" viewBox="0 0 256 256"><path d="M222,144v64a6,6,0,0,1-6,6H40a6,6,0,0,1-6-6V144a6,6,0,0,1,12,0v58H210V144a6,6,0,0,1,12,0Zm-98.24,4.24a6,6,0,0,0,8.48,0l40-40a6,6,0,0,0-8.48-8.48L134,129.51V32a6,6,0,0,0-12,0v97.51L92.24,99.76a6,6,0,0,0-8.48,8.48Z"/></symbol></defs></svg>
 
 <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -646,8 +640,8 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   </ul>
   <div class="nav-end">
     <ul class="nav-social" aria-label="Redes de Ángulo">
-      <li><a class="nav-soc js-magnetic" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-instagram-logo"/></svg><svg class="icon nav-soc-next"><use href="#i-instagram-logo"/></svg></span><span class="nav-tip" aria-hidden="true">Instagram</span></a></li>
-      <li><a class="nav-soc js-magnetic" href="https://www.linkedin.com/company/angulo-app" target="_blank" rel="noopener" aria-label="LinkedIn de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-linkedin-logo"/></svg><svg class="icon nav-soc-next"><use href="#i-linkedin-logo"/></svg></span><span class="nav-tip" aria-hidden="true">LinkedIn</span></a></li>
+      <li><a class="nav-soc js-magnetic" href="https://www.instagram.com/angulo.digital_/" target="_blank" rel="noopener" aria-label="Instagram de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-instagram-logo"/></svg></span><span class="nav-tip" aria-hidden="true">Instagram</span></a></li>
+      <li><a class="nav-soc js-magnetic" href="https://www.linkedin.com/company/angulo-app" target="_blank" rel="noopener" aria-label="LinkedIn de Ángulo (se abre en otra pestaña)"><span class="nav-soc-face" aria-hidden="true"><svg class="icon"><use href="#i-linkedin-logo"/></svg></span><span class="nav-tip" aria-hidden="true">LinkedIn</span></a></li>
     </ul>
     <a class="btn btn-primary btn-sm js-calendly js-magnetic" href="https://calendly.com/d/dz7q-6kq-57y/demo-angulo-30-min" target="_blank" rel="noopener"><span class="lbl-long">Agendá una llamada</span><span class="lbl-short">Agendar</span><span class="btn-dot"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span></a>
   </div>
@@ -662,7 +656,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         <p class="eyebrow hero-eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>Creativos con IA para Meta Ads</p>
         <h1 class="hero-title">
           <span class="line"><span>Generá creativos nuevos</span></span>
-          <span class="line"><span>con un link.</span></span>
+          <span class="line"><span>con un link</span></span>
         </h1>
         <p class="hero-sub">Pegás el link de tu producto y recibís campañas de imágenes listas para publicar, cada una con su propia estética.</p>
         <div class="hero-ctas">
@@ -670,7 +664,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
           <a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
         </div>
 
-        <ul class="fan" aria-label="Imágenes de campañas de ejemplo" style="list-style:none;margin:0;padding:0">
+        <ul class="fan" aria-label="Imágenes generadas con Ángulo" style="list-style:none;margin:0;padding:0">
           <li class="fan-slot"><div class="fan-card"><div class="fan-tilt">
             <figure class="ccard">
               <img class="ph" src="img/lumbre-cedro-02.webp" width="720" height="1290" alt="La vela Lumbre encendida sobre una mesa de madera, con un apagavelas." decoding="async">
@@ -717,12 +711,12 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
     <div class="wrap">
       <div>
         <p class="pains-kicker" data-reveal>Si vendés con Meta Ads, esto te suena.</p>
-        <h2 class="h2 pains-title" id="problema-t">Tu mejor anuncio dejó de vender. <span class="pains-q">¿Y ahora qué subís?</span></h2>
+        <h2 class="h2 pains-title" id="problema-t">Tu mejor anuncio dejó de vender <span class="pains-q">¿Y ahora qué subís?</span></h2>
       </div>
       <ul class="pains js-pains">
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-trend-down"/></svg></span>
-          <div><p class="pain-line">El CTR cae y no tenés nada nuevo para reemplazarlo.</p><p class="pain-fact">Un anuncio suele cansarse en menos de tres semanas.</p></div>
+          <div><p class="pain-line">El CTR cae y no tenés nada nuevo para reemplazarlo</p><p class="pain-fact">Un anuncio suele cansarse en menos de tres semanas.</p></div>
           <div class="pv pv-ctr" aria-hidden="true">
             <div class="pv-top"><span>Anuncio: Promo 2×1</span><span class="chip chip-fat">Fatigado</span></div>
             <div class="pv-metric"><b>1,12%</b><span>CTR</span><em class="delta-bad">38% menos que en la semana 1</em></div>
@@ -736,7 +730,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
-          <div><p class="pain-line">Generar contenido para tus anuncios te lleva semanas.</p><p class="pain-fact">Entre producir, sacar fotos y editar, cuando llega ya pasó la fecha.</p></div>
+          <div><p class="pain-line">Generar contenido para tus anuncios te lleva semanas</p><p class="pain-fact">Entre producir, sacar fotos y editar, cuando llega ya pasó la fecha.</p></div>
           <div class="pv pv-chat" aria-hidden="true">
             <div class="pv-top"><span class="pv-avatar">F</span><span class="pv-who"><b>Flor</b><span>Fotografía de producto</span></span><span>Lun 9:41</span></div>
             <p class="pv-bubble" style="--d:.3s">¡Hola! La sesión la podemos hacer el 22.</p>
@@ -746,7 +740,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendar-blank"/></svg></span>
-          <div><p class="pain-line">Llega el Hot Sale y estás armando piezas a las apuradas.</p><p class="pain-fact">Necesitás el doble de piezas justo cuando menos tiempo tenés.</p></div>
+          <div><p class="pain-line">Llega el Hot Sale y estás armando piezas a las apuradas</p><p class="pain-fact">Necesitás el doble de piezas justo cuando menos tiempo tenés.</p></div>
           <div class="pv pv-week" aria-hidden="true">
             <div class="pv-top"><span>Mayo</span><span class="pv-alert">Faltan 3 días</span></div>
             <ol class="pv-days"><li>9</li><li class="is-today">10</li><li>11</li><li>12</li><li class="is-hot">13</li><li class="is-hot">14</li><li class="is-hot">15</li></ol>
@@ -756,9 +750,9 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         </li>
         <li class="pain">
           <span class="pain-icon" aria-hidden="true"><svg class="icon"><use href="#i-images-square"/></svg></span>
-          <div><p class="pain-line">Cada post parece de una marca distinta.</p><p class="pain-fact">Una foto de estudio, otra con el celular, una placa armada a las apuradas. Tu cuenta no tiene una línea.</p></div>
+          <div><p class="pain-line">Muchas veces cuesta mantener una misma línea</p><p class="pain-fact">Entre promos, fechas especiales y productos nuevos, cada pieza sale de un momento distinto.</p></div>
           <div class="pv pv-mix" aria-hidden="true">
-            <div class="pv-top"><span>Tu feed</span><span class="pv-alert">Sin una línea</span></div>
+            <div class="pv-top"><span>Últimos posts</span><span class="pv-alert">Varios estilos</span></div>
             <ul class="pv-feed">
               <li class="pf-sale" style="--d:.15s">50% off</li>
               <li class="pf-soft" style="--d:.25s">Te esperamos</li>
@@ -776,8 +770,8 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   <!-- ================= How it works ================= -->
   <section class="section how" id="como-funciona" aria-labelledby="como-t">
     <div class="wrap">
-      <h2 class="h2" id="como-t">Todo empieza con un link.</h2>
-      <p class="lede" data-reveal>Ángulo lee tu producto, te propone cuatro ángulos y crea las imágenes de los que elijas.</p>
+      <h2 class="h2" id="como-t">Todo empieza con un link</h2>
+      <p class="lede lede--even" data-reveal>Ángulo lee tu producto, te propone cuatro ángulos y crea las imágenes de los que elijas.</p>
     </div>
 
     <div class="how-pin">
@@ -833,7 +827,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   <!-- ================= Angles ================= -->
   <section class="section angles" id="angulos" aria-labelledby="angulos-t">
     <div class="wrap">
-      <h2 class="h2" id="angulos-t">Cada anuncio tiene su ángulo.</h2>
+      <h2 class="h2" id="angulos-t">Cada anuncio tiene su ángulo</h2>
       <p class="lede" data-reveal>Un ángulo es una dirección de escena: dónde aparece tu producto, con qué luz y en qué paleta. Las nueve imágenes de cada ángulo la respetan, así la campaña se ve como una sola.</p>
       <div class="duo" data-stagger>
         <article class="camp camp--day">
@@ -869,7 +863,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
           <img class="camp-ph" src="img/almibar-tocador-04.webp" width="720" height="1290" alt="El sérum entre toallas enrolladas, una rosa y un cepillo." decoding="async" loading="lazy">
         </article>
       </div>
-      <p class="caption">Producto de ejemplo.</p>
+      <p class="caption">Imágenes generadas con Ángulo.</p>
     </div>
   </section>
 
@@ -879,37 +873,11 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
     <canvas class="lightfield" data-variant="night" aria-hidden="true"></canvas>
     <div class="lote-pin">
       <div class="wrap lote-head">
-        <h2 class="h2" id="lote-t">Cada campaña, una misma estética.</h2>
-        <p class="lede" data-reveal>Tres productos y cinco campañas, cada una con su escena de principio a fin.</p>
+        <h2 class="h2" id="lote-t">Cada campaña, una misma estética</h2>
+        <p class="lede" data-reveal>Imágenes generadas por Ángulo: una campaña por producto, cada una con su escena de principio a fin.</p>
       </div>
-      <div class="lote-viewport" role="region" aria-label="Campañas de ejemplo" tabindex="0">
+      <div class="lote-viewport" role="region" aria-label="Campañas generadas con Ángulo" tabindex="0">
         <ul class="lote-track">
-          <li class="gcard">
-            <div class="gcard-strip">
-              <img class="gcard-ph" src="img/almibar-jardin-04.webp" width="720" height="1290" alt="Una mujer junta duraznos del árbol mientras el sérum espera en la mesa del jardín." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-jardin-01.webp" width="720" height="1290" alt="Una mano toma el sérum Almíbar sobre un mantel de lino, entre duraznos y rosas." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-jardin-02.webp" width="720" height="1290" alt="El sérum Almíbar apoyado dentro de un durazno cortado." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-jardin-03.webp" width="720" height="1290" alt="El sérum sobre una mesa al sol, con ramas de durazno y su sombra en una tela." decoding="async" loading="lazy" draggable="false">
-            </div>
-            <div class="gcard-body">
-              <p class="gcard-top"><span>Almíbar, sérum facial</span><span class="sw" aria-hidden="true"><i style="--c:#EFA27A"></i><i style="--c:#F2C4BD"></i><i style="--c:#6E8A45"></i></span></p>
-              <h3 class="gcard-name">jardín de rosas</h3>
-              <p class="gcard-line">Mesa de madera al aire libre, duraznos cortados, rosas y luz de tarde entre las hojas.</p>
-            </div>
-          </li>
-          <li class="gcard">
-            <div class="gcard-strip">
-              <img class="gcard-ph" src="img/brote-manana-02.webp" width="720" height="1290" alt="La barra Brote junto a un sol dibujado con avena y quinoa." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/brote-manana-01.webp" width="720" height="1290" alt="La barra Brote apoyada sobre avena y almendras, con sol de ventana." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/brote-manana-03.webp" width="720" height="1290" alt="La barra Brote parada sobre un montón de avena, con almendras alrededor." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/brote-manana-04.webp" width="720" height="1290" alt="La barra Brote entre almendras y avena que caen sobre un fondo terracota." decoding="async" loading="lazy" draggable="false">
-            </div>
-            <div class="gcard-body">
-              <p class="gcard-top"><span>Brote, barra de cereales</span><span class="sw" aria-hidden="true"><i style="--c:#E9A23B"></i><i style="--c:#B5643C"></i><i style="--c:#E8D8B8"></i></span></p>
-              <h3 class="gcard-name">media mañana al sol</h3>
-              <p class="gcard-line">Sol de ventana, avena y almendras en el aire, fondos ámbar y terracota.</p>
-            </div>
-          </li>
           <li class="gcard">
             <div class="gcard-strip">
               <img class="gcard-ph" src="img/lumbre-cedro-01.webp" width="720" height="1290" alt="La vela Lumbre encendida, inclinada frente a un trozo de cedro." decoding="async" loading="lazy" draggable="false">
@@ -925,6 +893,19 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
           </li>
           <li class="gcard">
             <div class="gcard-strip">
+              <img class="gcard-ph" src="img/almibar-jardin-04.webp" width="720" height="1290" alt="Una mujer junta duraznos del árbol mientras el sérum espera en la mesa del jardín." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-01.webp" width="720" height="1290" alt="Una mano toma el sérum Almíbar sobre un mantel de lino, entre duraznos y rosas." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-02.webp" width="720" height="1290" alt="El sérum Almíbar apoyado dentro de un durazno cortado." decoding="async" loading="lazy" draggable="false">
+              <img class="gcard-ph" src="img/almibar-jardin-03.webp" width="720" height="1290" alt="El sérum sobre una mesa al sol, con ramas de durazno y su sombra en una tela." decoding="async" loading="lazy" draggable="false">
+            </div>
+            <div class="gcard-body">
+              <p class="gcard-top"><span>Almíbar, sérum facial</span><span class="sw" aria-hidden="true"><i style="--c:#EFA27A"></i><i style="--c:#F2C4BD"></i><i style="--c:#6E8A45"></i></span></p>
+              <h3 class="gcard-name">jardín de rosas</h3>
+              <p class="gcard-line">Mesa de madera al aire libre, duraznos cortados, rosas y luz de tarde entre las hojas.</p>
+            </div>
+          </li>
+          <li class="gcard">
+            <div class="gcard-strip">
               <img class="gcard-ph" src="img/brote-merienda-03.webp" width="720" height="1290" alt="La barra Brote sobre un mantel de lino, con una taza y almendras." decoding="async" loading="lazy" draggable="false">
               <img class="gcard-ph" src="img/brote-merienda-01.webp" width="720" height="1290" alt="Una mano deja la barra Brote junto a una taza, al lado de la ventana." decoding="async" loading="lazy" draggable="false">
               <img class="gcard-ph" src="img/brote-merienda-02.webp" width="720" height="1290" alt="La barra Brote sobre avena, espigas y almendras." decoding="async" loading="lazy" draggable="false">
@@ -934,19 +915,6 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
               <p class="gcard-top"><span>Brote, barra de cereales</span><span class="sw" aria-hidden="true"><i style="--c:#EDE3D3"></i><i style="--c:#C2734E"></i><i style="--c:#D79A52"></i></span></p>
               <h3 class="gcard-name">merienda de tarde</h3>
               <p class="gcard-line">Mantel de lino, taza de arcilla, espigas de avena y luz baja de la tarde.</p>
-            </div>
-          </li>
-          <li class="gcard">
-            <div class="gcard-strip">
-              <img class="gcard-ph" src="img/almibar-tocador-02.webp" width="720" height="1290" alt="El sérum inclinado sobre un disco de algodón, con la sombra de una rosa en la pared." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-tocador-03.webp" width="720" height="1290" alt="Una mano sostiene el sérum frente a una lámpara encendida." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-tocador-01.webp" width="720" height="1290" alt="Una mujer se recoge el pelo frente al tocador, con el sérum sobre la mesada." decoding="async" loading="lazy" draggable="false">
-              <img class="gcard-ph" src="img/almibar-tocador-04.webp" width="720" height="1290" alt="El sérum entre toallas enrolladas, una rosa y un cepillo." decoding="async" loading="lazy" draggable="false">
-            </div>
-            <div class="gcard-body">
-              <p class="gcard-top"><span>Almíbar, sérum facial</span><span class="sw" aria-hidden="true"><i style="--c:#A9707F"></i><i style="--c:#4A2733"></i><i style="--c:#EBD5CC"></i></span></p>
-              <h3 class="gcard-name">noche de tocador</h3>
-              <p class="gcard-line">Tocador en penumbra, luz cálida de lámpara y la sombra de una rosa en la pared.</p>
             </div>
           </li>
           <li class="gcard-end">
@@ -963,28 +931,26 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
           <button class="lote-btn js-lote-next" type="button" aria-label="Campaña siguiente"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
         </div>
       </div>
-      <div class="wrap"><p class="caption">Productos de ejemplo.</p></div>
     </div>
-    <div class="angle-band" aria-hidden="true"><div class="angle-band-track js-angle-band"><span>jardín de rosas</span><svg class="icon"><use href="#i-angle"/></svg><span>media mañana al sol</span><svg class="icon"><use href="#i-angle"/></svg><span>noche de cedro</span><svg class="icon"><use href="#i-angle"/></svg><span>merienda de tarde</span><svg class="icon"><use href="#i-angle"/></svg><span>noche de tocador</span></div></div>
    </div>
   </section>
 
   <!-- ================= Why ================= -->
   <section class="section why" id="por-que" aria-labelledby="por-que-t">
     <div class="wrap">
-      <h2 class="h2" id="por-que-t">Por qué Ángulo y no lo que ya usás.</h2>
+      <h2 class="h2" id="por-que-t">Por qué Ángulo y no lo que ya usás</h2>
       <div class="why-grid">
         <div class="vs" role="table" aria-label="Comparación con las alternativas actuales" data-stagger>
           <div class="vs-row vs-head" role="row"><span role="columnheader">Alternativa</span><span role="columnheader">Qué te da hoy</span><span role="columnheader">Qué le falta</span></div>
           <div class="vs-row" role="row">
             <div class="vs-alt" role="cell"><strong>Sesión de fotos</strong><small>con fotógrafo o estudio</small></div>
             <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Calidad y control de cada escena</div>
-            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Semanas de producción y una sola escena por sesión</div>
+            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Semanas de producción, costos elevados y es difícil iterar o probar cosas nuevas</div>
           </div>
           <div class="vs-row" role="row">
             <div class="vs-alt" role="cell"><strong>IA genérica</strong></div>
             <div class="vs-cell vs-give" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Rápida y barata</div>
-            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Cada imagen sale con otro estilo, no arma una campaña</div>
+            <div class="vs-cell vs-miss" role="cell"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>Necesitás saber cómo pedirle para lograr un buen resultado, y cada imagen sale con otro estilo</div>
           </div>
           <div class="vs-row" role="row">
             <div class="vs-alt" role="cell"><strong>Funciones de Meta</strong><small>gratis, dentro de Ads Manager</small></div>
@@ -1009,7 +975,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
         <svg class="cta-word js-word" viewBox="0 0 1077 351" aria-hidden="true"><use href="#logo-word"/></svg>
         <div class="cta-card shell">
           <div class="core">
-            <h2 id="contacto-t">Hablemos de tu tienda.</h2>
+            <h2 id="contacto-t">Hablemos de tu tienda</h2>
             <p class="lede">Estamos probando Ángulo con tiendas de ecommerce. Agendá una llamada de 30 minutos o escribinos por mail.</p>
             <!-- Contact data: Calendly booking link (also on the nav and hero buttons), email address (copied on click) and social profiles. -->
             <div class="contacts">
@@ -1048,7 +1014,7 @@ body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opa
   <div class="wrap foot-grid">
     <div>
       <svg class="logo" viewBox="0 0 1077 351" role="img" aria-label="Ángulo"><use href="#logo-word"/></svg>
-      <p class="foot-tag">Generá creativos nuevos con un link.</p>
+      <p class="foot-tag">Generá creativos nuevos con un link</p>
     </div>
     <ul class="foot-nav">
       <li><a href="#como-funciona">Cómo funciona</a></li>
@@ -1705,7 +1671,6 @@ void main(){
 
     /* ---- Examples: cards slide in once; the carousel itself is plain scrolling ---- */
     reveal($('#lote'));
-    gsap.fromTo('.js-angle-band', { xPercent: 0 }, { xPercent: -38, ease: 'none', scrollTrigger: { trigger: '#lote', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
     gsap.from($$('.lote-track > li'), {
       x: 80, autoAlpha: 0, duration: 1.1, ease: EASE, stagger: 0.08,
       scrollTrigger: { trigger: '.lote-track', start: 'top 85%', once: true },
